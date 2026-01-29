@@ -8,7 +8,7 @@ __pycache__/
 dist/
 build/
 .eggs/
-*.whl
+# *.whl
 
 # Virtual Environment
 venv/
