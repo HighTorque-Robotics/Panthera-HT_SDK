@@ -649,7 +649,7 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
         original_gravity = self.model.gravity.copy()
 
         # 设置重力方向为 Z 轴负方向
-        self.model.gravity.linear = np.array([9.81, 0.0, 0.0])
+        self.model.gravity.linear = np.array([0.0, 0.0, -9.81])
 
         # 计算重力补偿
         G = pin.computeGeneralizedGravity(self.model, self.data, q)
