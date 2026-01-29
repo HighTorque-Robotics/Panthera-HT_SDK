@@ -629,13 +629,34 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
         return None  # 未收敛
 
     def get_Gravity(self, q=None):
-        """获取重力补偿力矩 G(q)，返回np.ndarray"""
+        """
+        获取重力补偿力矩 G(q)，返回np.ndarray
+        默认重力方向设定为 Z 轴负方向 [0, 0, -9.81]
+        可以根据自己需求再修改
+
+        参数:
+            q: 关节角度数组，如果为None则使用当前角度
+
+        返回:
+            G: 重力补偿力矩数组 np.ndarray
+        """
         if q is None:
             q = self.get_current_pos()
         # 确保为numpy数组（如果已是数组则不复制）
         q = np.asarray(q)
+
+        # 临时保存原始重力设置
+        original_gravity = self.model.gravity.copy()
+
+        # 设置重力方向为 Z 轴负方向
+        self.model.gravity.linear = np.array([9.81, 0.0, 0.0])
+
         # 计算重力补偿
         G = pin.computeGeneralizedGravity(self.model, self.data, q)
+
+        # 恢复原始重力设置
+        self.model.gravity.linear = original_gravity.linear
+
         return G
 
     def get_Coriolis(self, q=None, v=None):

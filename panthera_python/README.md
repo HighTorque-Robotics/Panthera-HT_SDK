@@ -47,13 +47,13 @@ conda activate panthera
 
 ```bash
 # Python 3.9
-pip install motor_whl/hightorque_robot-1.0.0-cp39-cp39-linux_x86_64.whl
+pip install motor_whl/hightorque_robot-1.1.0-cp39-cp39-linux_x86_64.whl
 
 # Python 3.10
-pip install motor_whl/hightorque_robot-1.0.0-cp310-cp310-linux_x86_64.whl
+pip install motor_whl/hightorque_robot-1.1.0-cp310-cp310-linux_x86_64.whl
 
 # Python 3.12
-pip install motor_whl/hightorque_robot-1.0.0-cp312-cp312-linux_x86_64.whl
+pip install motor_whl/hightorque_robot-1.1.0-cp312-cp312-linux_x86_64.whl
 ```
 
 **步骤2：安装高层库依赖（使用 Panthera_lib 时需要）**
@@ -371,6 +371,55 @@ c.
 sudo udevadm control --reload-rules
 ```
 重新连接电脑和主板即可生效。
+
+
+## 常见问题
+1.ibserialport.so.0缺失
+更新包列表
+sudo apt-get update
+
+安装 libserialport 开发库
+sudo apt-get install libserialport-dev
+
+检查安装的文件
+dpkg -L libserialport-dev | grep "\.so"
+
+2.导入hightorque_robot失败: libyaml-cpp.so.0.6: cannot open shared object file: No such file or directory
+请确保已安装hightorque_robot whl包
+安装方法: pip install hightorque_robot-*.whl
+ # 检查库文件是否正确安装
+ls -la /usr/local/lib/libyaml-cpp*
+
+应该看到类似输出：
+libyaml-cpp.so -> libyaml-cpp.so.0.7
+ 需要换成libyaml-cpp.so.0.6.0
+cd ~
+删除之前0.7的版本
+sudo rm /usr/local/lib/libyaml-cpp.so.0.7
+sudo rm /usr/local/lib/libyaml-cpp.so.0.7.0
+克隆仓库到用户主目录
+cd ~
+git clone https://github.com/jbeder/yaml-cpp.git
+cd yaml-cpp
+git checkout yaml-cpp-0.6.1
+
+创建干净的构建目录
+mkdir build
+cd build
+
+配置编译选项
+cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON
+
+编译
+make -j$(nproc)
+
+安装
+sudo make install
+
+更新库缓存
+sudo ldconfig
+
+
 ## 许可证
 
 MIT License
