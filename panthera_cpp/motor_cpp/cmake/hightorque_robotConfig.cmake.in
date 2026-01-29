@@ -1,0 +1,30 @@
+@PACKAGE_INIT@
+
+# 包含CMakeFindDependencyMacro以使用find_dependency
+include(CMakeFindDependencyMacro)
+
+# 查找必需的依赖项
+find_dependency(lcm REQUIRED)
+find_dependency(serial_cmake REQUIRED)  
+find_dependency(yaml-cpp REQUIRED)
+
+# 查找libserialport库
+find_library(SERIALPORT_LIBRARY serialport)
+if(NOT SERIALPORT_LIBRARY)
+    set(hightorque_robot_FOUND FALSE)
+    if(NOT hightorque_robot_FIND_QUIETLY)
+        message(FATAL_ERROR "libserialport not found. Please install with: sudo apt-get install libserialport-dev")
+    endif()
+    return()
+endif()
+
+# 包含导出的目标
+include("${CMAKE_CURRENT_LIST_DIR}/hightorque_robotTargets.cmake")
+
+# 设置配置文件路径变量（供用户使用）
+get_filename_component(HIGHTORQUE_ROBOT_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}" DIRECTORY)
+get_filename_component(HIGHTORQUE_ROBOT_CMAKE_DIR "${HIGHTORQUE_ROBOT_CMAKE_DIR}" DIRECTORY)
+get_filename_component(HIGHTORQUE_ROBOT_CMAKE_DIR "${HIGHTORQUE_ROBOT_CMAKE_DIR}" DIRECTORY)
+set(HIGHTORQUE_ROBOT_CONFIG_DIR "${HIGHTORQUE_ROBOT_CMAKE_DIR}/share/hightorque_robot/robot_param")
+
+check_required_components(hightorque_robot)

@@ -1,0 +1,63 @@
+/* 
+ * File level comments come before the package statement. 
+Written by LCM contributors. 
+ * This goes directly bellow the generated with lcm statement.
+ * Documentation for the type should go on the struct itself.
+ */
+// Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+// labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+// nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+// velit esse cillum dolore eu fugiat nulla pariatur.
+package // comments after package keyword
+lcmtest // comments after package name
+;
+
+/// Contains a number of primitive data types
+struct // comment after struct keyword
+comments_t // comment after struct name
+{
+    // Comments immediately preceding a field are attached to that field.
+    int8_t   field_a;
+
+    // Both single line comments.
+    /* And multi-line
+     * comments.
+     */
+    int16_t field_b;
+
+    // Test empty comments.
+    //
+    int32_t  field_c; //
+    /**/
+    int64_t field_d;
+    /**/
+    //
+
+    float // comment after type specifier
+      /* */
+      field_e // comment after field name
+      /* */
+      ;
+
+    double field_f; // Comment at end of line is applied to the next field. Comments should not go here.
+
+    double field_g;
+
+    // const_field_no_comment should have no comment
+    const int8_t const_field = 4;
+
+    const // comment after const keyword
+      int8_t // comment after const type specifier
+       const_field_no_comment // comment after const field name
+        = // comment after const '='
+        5 // comment after const field value
+        ;
+
+    // array_no_comment should have no comment
+    int32_t array[field_a];
+
+    int32_t array_no_comment[ // comment after array opening brace
+      field_a // comment after array length
+      ] // comment after array closing bace.
+      ;
+}

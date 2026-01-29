@@ -1,0 +1,6 @@
+@PACKAGE_INIT@
+
+include("${CMAKE_CURRENT_LIST_DIR}/serial_cmakeTargets.cmake")
+
+set(serial_INCLUDE_DIRS "@CMAKE_INSTALL_INCLUDEDIR@")
+set(serial_LIBRARIES serial)

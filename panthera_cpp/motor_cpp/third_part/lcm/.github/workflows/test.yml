@@ -1,0 +1,244 @@
+name: test
+
+on: [push, pull_request]
+
+env:
+  CMAKE_FLAGS: -DCMAKE_CXX_FLAGS="-Werror" -DCMAKE_C_FLAGS="-Werror"
+
+jobs:
+
+  ubuntu:
+    strategy:
+      matrix:
+        os: [ubuntu-24.04, ubuntu-22.04]
+        build_type: [Debug, Release]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install Dependencies
+      run: |
+        sudo apt update
+        sudo apt install liblua5.3-dev lua5.3 libjchart2d-java libglib2.0-dev
+
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build ${{env.CMAKE_FLAGS}} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build
+
+    - name: Test
+      working-directory: ${{github.workspace}}/build
+      run: ctest --output-on-failure
+
+    - name: Install
+      run: sudo cmake --install ${{github.workspace}}/build
+
+    - name: Build C Example
+      working-directory: ${{github.workspace}}/examples/c
+      run: |
+        cmake -B build ${{env.CMAKE_FLAGS}}
+        cmake --build build
+
+    - name: Build C++ Example
+      working-directory: ${{github.workspace}}/examples/cpp
+      run: |
+        cmake -B build ${{env.CMAKE_FLAGS}}
+        cmake --build build
+
+    - name: Build and Run C++ Log Writer Example
+      working-directory: ${{github.workspace}}/examples/cpp/lcm_log_writer
+      run: |
+        cmake -B build ${{env.CMAKE_FLAGS}}
+        cmake --build build
+        LD_LIBRARY_PATH=/usr/local/lib/ build/lcm_log_writer build/example.log
+
+  fedora:
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build and Start Container
+      run: |
+        docker build -f docker/Dockerfile.fedora -t lcm-fedora docker
+        docker run -v $(pwd):/work -d --rm -it --name lcm-fedora lcm-fedora /bin/bash
+
+    - name: Configure CMake
+      run: docker exec lcm-fedora cmake -B ${{github.workspace}}/build ${{env.CMAKE_FLAGS}}
+
+    - name: Build
+      run: docker exec lcm-fedora cmake --build ${{github.workspace}}/build
+
+    - name: Test
+      run: docker exec lcm-fedora ctest --test-dir ${{github.workspace}}/build --output-on-failure
+
+    - name: Install
+      run: docker exec lcm-fedora cmake --install ${{github.workspace}}/build
+
+    - name: Build C Example
+      run: |
+        docker exec --workdir /work/examples/c -e PKG_CONFIG_PATH=/usr/local/lib/pkgconfig lcm-fedora cmake -B build ${{env.CMAKE_FLAGS}}
+        docker exec --workdir /work/examples/c lcm-fedora cmake --build build
+
+    - name: Build C++ Example
+      run: |
+        docker exec --workdir /work/examples/cpp -e PKG_CONFIG_PATH=/usr/local/lib/pkgconfig lcm-fedora cmake -B build ${{env.CMAKE_FLAGS}}
+        docker exec --workdir /work/examples/cpp lcm-fedora cmake --build build
+
+    - name: Build and Run C++ Log Writer Example
+      working-directory: ${{github.workspace}}/examples/cpp/lcm_log_writer
+      run: |
+        docker exec --workdir /work/examples/cpp/lcm_log_writer -e PKG_CONFIG_PATH=/usr/local/lib/pkgconfig lcm-fedora cmake -B build ${{env.CMAKE_FLAGS}}
+        docker exec --workdir /work/examples/cpp/lcm_log_writer lcm-fedora cmake --build build
+        docker exec --workdir /work/examples/cpp/lcm_log_writer -e LD_LIBRARY_PATH=/usr/local/lib/ lcm-fedora build/lcm_log_writer build/example.log
+
+  macos:
+    strategy:
+      matrix:
+        os: [macos-13, macos-14]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install Dependencies
+      run: |
+        brew install lua
+
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build ${{env.CMAKE_FLAGS}}
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build
+
+    - name: Test
+      working-directory: ${{github.workspace}}/build
+      run: ctest --output-on-failure
+
+    - name: Install
+      run: sudo cmake --install ${{github.workspace}}/build
+
+    - name: Build C Example
+      working-directory: ${{github.workspace}}/examples/c
+      run: |
+        cmake -B build ${{env.CMAKE_FLAGS}}
+        cmake --build build
+
+    - name: Build C++ Example
+      working-directory: ${{github.workspace}}/examples/cpp
+      run: |
+        cmake -B build ${{env.CMAKE_FLAGS}}
+        cmake --build build
+
+    - name: Build and Run C++ Log Writer Example
+      working-directory: ${{github.workspace}}/examples/cpp/lcm_log_writer
+      run: |
+        cmake -B build ${{env.CMAKE_FLAGS}}
+        cmake --build build
+        build/lcm_log_writer build/example.log
+
+  windows_msys2:
+    strategy:
+      matrix:
+        os: [windows-2019, windows-2022]
+
+    runs-on: ${{ matrix.os }}
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: msys2/setup-msys2@v2
+      with:
+        msystem: mingw64
+        update: false
+        install: >-
+          git
+          make
+        pacboy: >-
+          toolchain:p
+          cmake:p
+          glib2:p
+          gtest:p
+          lua:p
+
+    - name: Configure CMake
+      run: cmake -B build ${{env.CMAKE_FLAGS}}
+
+    - name: Build
+      run: cmake --build build
+
+    - name: Test
+      run: ctest --output-on-failure
+
+
+  windows_msvc:
+    runs-on: windows-2022
+
+    steps:
+    - uses: actions/checkout@v4
+
+      # Set up vcpkg, leveraging cache. This does not build any packages.
+    - name: Setup vcpkg
+      uses: lukka/run-vcpkg@v11
+      with:
+        vcpkgDirectory: '${{ runner.workspace }}/b/vcpkg'
+        vcpkgGitCommitId: 'a42af01b72c28a8e1d7b48107b33e4f286a55ef6'
+
+    # Builds dependencies using vcpkg, leveraging cache
+    - name: Run CMake
+      uses: lukka/run-cmake@v10
+      with:
+        configurePreset: 'vcpkg-vs-github'
+
+    - name: Build
+      run: cmake --build build --config Release
+
+    - name: Test
+      run: ctest --output-on-failure --test-dir build -C Release
+
+
+  docs:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install doxygen liblua5.4-dev lua5.4 python3-sphinx-rtd-theme python3-sphinx python3-myst-parser libglib2.0-dev
+
+      - name: Build Docs
+        run: |
+          cmake -B ${{github.workspace}}/build
+          cd build
+          make doc
+
+      - name: Archive Docs
+        uses: actions/upload-artifact@v4
+        with:
+          name: archived-docs
+          path: build/docs/_build
+
+  formatting:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install clang-format-15
+
+      - name: Check formatting
+        run: |
+          ./format_code.sh
+          git diff --exit-code

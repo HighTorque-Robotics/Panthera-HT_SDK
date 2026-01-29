@@ -1,0 +1,10 @@
+package motor_msg;
+
+struct motor_msg
+{
+    int16_t can1_num;
+    int16_t can2_num;
+    int16_t can3_num;
+    int16_t can4_num;
+    float  motor_status[40];
+}

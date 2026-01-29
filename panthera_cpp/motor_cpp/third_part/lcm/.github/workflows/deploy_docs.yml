@@ -1,0 +1,40 @@
+name: deploy_docs
+
+on:
+  push:
+    branches: [ "master" ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  docs:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install doxygen liblua5.4-dev libglib2.0-dev
+          pip install sphinx-rtd-theme Sphinx myst-parser
+
+      - name: Build Docs
+        run: |
+          cmake -B ${{github.workspace}}/build
+          cd build
+          make doc
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '${{github.workspace}}/build/docs/_build'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

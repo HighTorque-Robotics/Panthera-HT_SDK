@@ -1,0 +1,14 @@
+build*/
+__pycache__
+docs/_build/
+bazel-*
+MODULE.bazel.lock
+
+.vscode/
+.idea/
+.settings/
+.project
+.classpath
+.venv
+.DS_Store
+.cache/

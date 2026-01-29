@@ -1,0 +1,18 @@
+# Panthera-HT 高层库（Panthera_lib）的依赖
+#
+# 说明：
+# - hightorque_robot whl 包只包含底层电机控制 SDK
+# - 使用 Panthera_lib 高层封装时需要安装这些额外依赖
+#
+# 安装方法:
+#   pip install -r requirements.txt
+
+# 必需依赖
+pyyaml>=6.0,<7.0      # YAML 配置文件解析（6.0+ 支持 Python 3.12+）
+pin>=2.6.0            # 机器人动力学库（注意：是 'pin'，不是 'pinocchio'）
+
+# 注意事项:
+# 1. 先安装 hightorque_robot whl 包
+# 2. 如果不使用 Panthera_lib，只需安装 whl 包即可
+# 3. 建议在 conda 环境中安装，Python 版本 3.9-3.12
+# 4. 避免与 ROS 环境冲突，建议使用独立的 conda 环境

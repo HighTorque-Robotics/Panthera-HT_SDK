@@ -1,0 +1,41 @@
+# Build release archive
+
+1. Update NEWS (use Markdown syntax)
+2. Verify that all manpages are up to date
+3. Verify that supported platforms and version numbers are correct in the README
+4. Bump the version number in:
+  a. lcm/lcm_version.h
+  b. lcm-lua/rock/lcm-<version>-0.rockspec (both filename and contents of file)
+  c. pyproject.toml
+5. Commit the above changes and create the vX.Y.Z git tag.
+  $ git commit -a -m "Release X.Y.Z"
+  $ git tag vX.Y.Z
+
+# Test
+
+1. Build and run all unit tests.  Verify that they all pass.
+  $ make test
+2. Repeat unit tests on:
+  * GNU/Linux
+  * OS X
+3. Test C/C++ library on Windows.  Run lcm-source.exe and lcm-sink.exe
+4. Test on other available platforms
+5. Fix any errors that appear, and repeat as necessary.
+
+# Upload release artifact
+
+1. Push the changes and release tag to GitHub.
+  $ git push origin master
+  $ git push origin vX.Y.Z
+2. Draft a new release on GitHub
+  a. Associate the release with tag vX.Y.Z
+  b. Name the release title "vX.Y.Z"
+  c. Add release notes from the NEWS file
+
+# PyPi Release
+
+1. Download all wheels generated from CI job from the latest push
+2. Test a macOS wheel and a Linux wheel
+    - Run `test/python/test_python_module.py`
+    - Run `lcm-logplayer-gui`
+3. Upload all wheels to PyPi

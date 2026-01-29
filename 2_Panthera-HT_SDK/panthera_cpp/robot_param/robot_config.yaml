@@ -1,3 +1,0 @@
-robot:
-  name: "HI"
-  param_file: "../robot_param/23dof_STM32H730_model_test_Orin_params.yaml"
