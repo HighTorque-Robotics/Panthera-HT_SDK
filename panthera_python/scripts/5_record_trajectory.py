@@ -2,6 +2,7 @@
 """
 单主臂重力补偿程序 + 实时轨迹记录（位置+速度+夹爪）
 """
+import os
 import time
 import numpy as np
 from Panthera_lib import Panthera, TrajectoryRecorder

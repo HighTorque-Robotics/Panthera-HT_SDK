@@ -3,7 +3,7 @@
 回放 *.jsonl 轨迹文件（单臂+夹爪）
 支持位置+速度+夹爪回放
 """
-import time
+import os,sys
 import numpy as np
 from Panthera_lib import Panthera, TrajectoryRecorder
 
@@ -11,8 +11,8 @@ from Panthera_lib import Panthera, TrajectoryRecorder
 TRAJECTORY_FILE = "trajectory_test_1.jsonl"  # ← 改成实际记录生成的文件名
 
 # 关节PD增益
-kp_play = [10.0, 21.0, 21.0, 6.0, 5.0, 1.0]        # 回放时刚度（可微调）
-kd_play = [1.0, 2.0, 2.0, 0.9, 0.7, 0.1]           # 回放时阻尼
+kp_play = [30.0, 40.0, 55.0, 15.0, 7.0, 5.0]        # 回放时刚度（可微调）
+kd_play = [3.0, 4.0, 5.5, 1.5, 0.7, 0.5]           # 回放时阻尼
 
 # 夹爪PD增益
 gripper_kp = 5.0   # 夹爪刚度

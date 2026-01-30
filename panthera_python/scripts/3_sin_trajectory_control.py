@@ -9,7 +9,7 @@ from Panthera_lib import Panthera
 
 def main():
     # 控制参数
-    frequency = 0.45  # Hz，正弦波频率（可调节：0.1-2.0 Hz）(频率越高速度越快)
+    frequency = 0.2  # Hz，正弦波频率（可调节：0.1-2.0 Hz）(频率越高速度越快)
     duration = 600.0  # 运动持续时间（秒）
     control_rate = 500  # 控制频率 Hz
     dt = 1.0 / control_rate

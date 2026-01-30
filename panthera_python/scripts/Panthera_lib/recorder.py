@@ -95,8 +95,14 @@ class Recorder:
                     robot_torque = np.clip(robot_torque, -np.array(tau_limit), np.array(tau_limit))
             else:
                 robot_torque = [0.0] * 6
-            robot.pos_vel_tqe_kp_kd(f["pos"], f["vel"], robot_torque, kp, kd)
-            # robot.Joint_Pos_Vel(f["pos"], f["vel"], max_torque)
+            
+            # 根据需要选择模式：
+
+            # 使用mit模式有一定阻抗效果，但是位置精度低
+            # robot.pos_vel_tqe_kp_kd(f["pos"], f["vel"], robot_torque, kp, kd)
+            
+            # 使用位置速度模式位置精度更高
+            robot.Joint_Pos_Vel(f["pos"], f["vel"], max_torque)
 
             # 夹爪控制（如果有夹爪数据）
             if "gripper_pos" in f:
