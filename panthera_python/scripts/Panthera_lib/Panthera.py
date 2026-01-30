@@ -534,17 +534,177 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
             'joint_angles': joint_angles
         }
     
-    def inverse_kinematics(self, target_position, target_rotation=None, init_q=None, max_iter=1000, eps=1e-3):
-        """使用pinocchio计算逆运动学"""
+    # def inverse_kinematics(self, target_position, target_rotation=None, init_q=None, max_iter=1000, eps=1e-3):
+    #     """
+    #     使用pinocchio计算逆运动学（基于雅可比伪逆的迭代方法）
+
+    #     参数:
+    #         target_position: 目标位置 [x, y, z] (m)
+    #         target_rotation: 目标旋转矩阵 3x3，如果为None则只考虑位置
+    #         init_q: 初始关节角度，如果为None则使用当前角度
+    #         max_iter: 最大迭代次数
+    #         eps: 收敛阈值（位置误差范数）
+
+    #     返回:
+    #         关节角度列表，如果求解失败则返回None
+
+    #     说明:
+    #         该方法使用基于雅可比伪逆的迭代算法求解逆运动学
+    #         使用极小的阻尼系数（1e-12）来避免雅可比矩阵奇异性
+    #         在接近奇异位形时可能不稳定，推荐使用 inverse_kinematics_dls 方法
+    #         包含关节限位检查和速度限幅保护
+    #     """
+    #     if self.model is None:
+    #         return None
+
+    #     # 目标位姿
+    #     if target_rotation is None:
+    #         target_rotation = np.eye(3)
+
+    #     # 将工具坐标系目标转换为最后一个关节坐标系目标
+    #     # 减去工具偏移：相对于最后一个关节在X轴方向偏移0.14m
+    #     tool_offset = np.array([0.14, 0.0, 0.0])
+    #     target_rotation_matrix = np.array(target_rotation)
+
+    #     # 计算最后关节的目标位置（减去偏移）
+    #     last_joint_target_position = np.array(target_position) - target_rotation_matrix.dot(tool_offset)
+
+    #     oMdes = pin.SE3(target_rotation_matrix, last_joint_target_position)
+
+    #     # 初始关节角度
+    #     if init_q is None:
+    #         init_q = self.get_current_pos()
+
+    #     q = np.zeros(self.model.nq)
+    #     for i, joint_name in enumerate(self.joint_names):
+    #         if i < len(init_q):
+    #             joint_id = self.model.getJointId(joint_name)
+    #             idx = self.model.joints[joint_id].idx_q
+    #             q[idx] = init_q[i]
+
+    #     # 获取最后一个活动关节ID
+    #     last_joint_name = self.joint_names[-1]
+    #     joint_id = self.model.getJointId(last_joint_name)
+
+    #     # 迭代求解
+    #     dt = 1e-1
+    #     damp = 1e-12
+
+    #     # 获取关节限位（如果有的话）
+    #     lower_limits = None
+    #     upper_limits = None
+    #     if self.joint_limits is not None:
+    #         lower_limits = self.joint_limits['lower']
+    #         upper_limits = self.joint_limits['upper']
+
+    #     for i in range(max_iter):
+    #         # 计算误差
+    #         pin.forwardKinematics(self.model, self.data, q)
+    #         iMd = self.data.oMi[joint_id].actInv(oMdes)
+    #         err = pin.log(iMd).vector
+
+    #         if np.linalg.norm(err) < eps:
+    #             # 提取关节角度
+    #             result = []
+    #             for joint_name in self.joint_names:
+    #                 jid = self.model.getJointId(joint_name)
+    #                 idx = self.model.joints[jid].idx_q
+    #                 result.append(q[idx])
+    #             return result
+
+    #         # 计算雅可比和速度
+    #         J = pin.computeJointJacobian(self.model, self.data, q, joint_id)
+    #         J = -np.dot(pin.Jlog6(iMd.inverse()), J)
+    #         v = -J.T.dot(np.linalg.solve(J.dot(J.T) + damp * np.eye(6), err))
+
+    #         # 限制速度大小，防止数值爆炸
+    #         v_norm = np.linalg.norm(v)
+    #         if v_norm > 10.0:  # 如果速度过大，进行缩放
+    #             v = v * (10.0 / v_norm)
+
+    #         q_new = pin.integrate(self.model, q, v * dt)
+
+    #         # 检查新的关节角度是否在限位范围内
+    #         if lower_limits is not None and upper_limits is not None:
+    #             # 提取关节角度进行检查
+    #             q_check = []
+    #             for joint_name in self.joint_names:
+    #                 jid = self.model.getJointId(joint_name)
+    #                 idx = self.model.joints[jid].idx_q
+    #                 q_check.append(q_new[idx])
+    #             q_check = np.array(q_check)
+
+    #             # 检查是否超出限位
+    #             out_of_range = np.logical_or(q_check < lower_limits, q_check > upper_limits)
+    #             if np.any(out_of_range):
+    #                 print("逆解迭代过程中检测到关节角度超出限位，目标位姿可能不可达")
+    #                 print(f"当前迭代: {i+1}/{max_iter}, 误差范数: {np.linalg.norm(err):.6f}")
+    #                 return None
+
+    #         q = q_new
+
+    #     print("该解未收敛，请检查是否超出工作空间")
+    #     return None  # 未收敛
+
+    def inverse_kinematics(self, target_position, target_rotation=None, init_q=None,
+                               max_iter=1000, eps=1e-3, damping=1e-2, adaptive_damping=True,
+                               multi_init=True, num_attempts=8):
+        """
+        使用阻尼最小二乘法（Damped Least Squares）计算逆运动学
+
+        参数:
+            target_position: 目标位置 [x, y, z] (m)
+            target_rotation: 目标旋转矩阵 3x3，如果为None则只考虑位置
+            init_q: 初始关节角度，如果为None则使用当前角度（multi_init=False时有效）
+            max_iter: 最大迭代次数
+            eps: 收敛阈值（位置误差范数）
+            damping: 阻尼系数 λ，用于避免雅可比矩阵奇异性
+            adaptive_damping: 是否使用自适应阻尼系数
+            multi_init: 是否使用多初始值尝试（提高求解成功率）
+            num_attempts: 多初始值尝试次数（仅在multi_init=True时有效）
+
+        返回:
+            关节角度列表，如果求解失败则返回None
+
+        说明:
+            阻尼最小二乘法使用公式: Δq = J^T(JJ^T + λ^2I)^(-1) * e
+            相比标准伪逆方法，DLS在接近奇异位形时更加稳定和鲁棒
+            自适应阻尼会根据误差大小动态调整阻尼系数
+
+            当multi_init=True时，会尝试多个不同的初始关节配置：
+            - 当前位置
+            - 零位
+            - 关节限位中点
+            - 随机配置（在关节限位范围内）
+            返回第一个成功求解的结果，或最佳结果
+        """
         if self.model is None:
+            print("模型未加载")
             return None
 
+        # 如果启用多初始值尝试
+        if multi_init:
+            return self._inverse_kinematics_dls_multi_init_impl(
+                target_position, target_rotation, num_attempts,
+                max_iter, eps, damping, adaptive_damping
+            )
+
+        # 单初始值求解
+        return self._inverse_kinematics_dls_single_impl(
+            target_position, target_rotation, init_q,
+            max_iter, eps, damping, adaptive_damping
+        )
+
+    def _inverse_kinematics_dls_single_impl(self, target_position, target_rotation, init_q,
+                                            max_iter, eps, damping, adaptive_damping):
+        """
+        阻尼最小二乘法逆运动学求解的单初始值实现（内部函数）
+        """
         # 目标位姿
         if target_rotation is None:
             target_rotation = np.eye(3)
 
         # 将工具坐标系目标转换为最后一个关节坐标系目标
-        # 减去工具偏移：相对于最后一个关节在X轴方向偏移0.14m
         tool_offset = np.array([0.14, 0.0, 0.0])
         target_rotation_matrix = np.array(target_rotation)
 
@@ -568,24 +728,28 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
         last_joint_name = self.joint_names[-1]
         joint_id = self.model.getJointId(last_joint_name)
 
-        # 迭代求解
-        dt = 1e-1
-        damp = 1e-12
-
-        # 获取关节限位（如果有的话）
+        # 获取关节限位
         lower_limits = None
         upper_limits = None
         if self.joint_limits is not None:
             lower_limits = self.joint_limits['lower']
             upper_limits = self.joint_limits['upper']
 
+        # 迭代求解
+        dt = 1e-1
+        lambda_base = damping  # 基础阻尼系数
+
         for i in range(max_iter):
-            # 计算误差
+            # 计算正运动学和误差
             pin.forwardKinematics(self.model, self.data, q)
             iMd = self.data.oMi[joint_id].actInv(oMdes)
             err = pin.log(iMd).vector
 
-            if np.linalg.norm(err) < eps:
+            # 计算误差范数
+            err_norm = np.linalg.norm(err)
+
+            # 检查收敛
+            if err_norm < eps:
                 # 提取关节角度
                 result = []
                 for joint_name in self.joint_names:
@@ -594,21 +758,44 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
                     result.append(q[idx])
                 return result
 
-            # 计算雅可比和速度
+            # 计算雅可比矩阵
             J = pin.computeJointJacobian(self.model, self.data, q, joint_id)
             J = -np.dot(pin.Jlog6(iMd.inverse()), J)
-            v = -J.T.dot(np.linalg.solve(J.dot(J.T) + damp * np.eye(6), err))
+
+            # 自适应阻尼系数（根据误差大小调整）
+            if adaptive_damping:
+                # 误差越大，阻尼系数越小，允许更大的步长
+                # 误差越小，阻尼系数越大，提高稳定性
+                lambda_adaptive = lambda_base * (1.0 + 1.0 / (err_norm + 0.1))
+            else:
+                lambda_adaptive = lambda_base
+
+            # 阻尼最小二乘法求解
+            # Δq = J^T(JJ^T + λ^2I)^(-1) * e
+            JJT = J.dot(J.T)
+            damping_matrix = lambda_adaptive**2 * np.eye(6)
+
+            # 求解线性系统 (JJ^T + λ^2I) * α = e
+            try:
+                alpha = np.linalg.solve(JJT + damping_matrix, err)
+            except np.linalg.LinAlgError:
+                print(f"阻尼最小二乘法求解失败（迭代 {i+1}），矩阵可能病态")
+                return None
+
+            # 计算关节速度 v = J^T * α
+            v = -J.T.dot(alpha)
 
             # 限制速度大小，防止数值爆炸
             v_norm = np.linalg.norm(v)
-            if v_norm > 10.0:  # 如果速度过大，进行缩放
-                v = v * (10.0 / v_norm)
+            max_velocity = 10.0
+            if v_norm > max_velocity:
+                v = v * (max_velocity / v_norm)
 
+            # 更新关节角度
             q_new = pin.integrate(self.model, q, v * dt)
 
             # 检查新的关节角度是否在限位范围内
             if lower_limits is not None and upper_limits is not None:
-                # 提取关节角度进行检查
                 q_check = []
                 for joint_name in self.joint_names:
                     jid = self.model.getJointId(joint_name)
@@ -619,14 +806,86 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
                 # 检查是否超出限位
                 out_of_range = np.logical_or(q_check < lower_limits, q_check > upper_limits)
                 if np.any(out_of_range):
-                    print("逆解迭代过程中检测到关节角度超出限位，目标位姿可能不可达")
-                    print(f"当前迭代: {i+1}/{max_iter}, 误差范数: {np.linalg.norm(err):.6f}")
+                    print("DLS逆解迭代过程中检测到关节角度超出限位，目标位姿可能不可达")
+                    print(f"当前迭代: {i+1}/{max_iter}, 误差范数: {err_norm:.6f}")
                     return None
 
             q = q_new
 
-        print("该解未收敛，请检查是否超出工作空间")
-        return None  # 未收敛
+        print(f"DLS逆解未收敛，最终误差: {err_norm:.6f}，请检查是否超出工作空间")
+        return None
+
+    def _inverse_kinematics_dls_multi_init_impl(self, target_position, target_rotation,
+                                                num_attempts, max_iter, eps, damping, adaptive_damping):
+        """
+        阻尼最小二乘法逆运动学求解的多初始值实现（内部函数）
+        """
+        # 准备多个初始值
+        init_configs = []
+
+        # 1. 当前位置
+        init_configs.append(self.get_current_pos())
+
+        # 2. 零位
+        init_configs.append(np.zeros(self.motor_count))
+
+        # 3. 中间位置（关节限位的中点）
+        if self.joint_limits is not None:
+            mid_config = (self.joint_limits['lower'] + self.joint_limits['upper']) / 2
+            init_configs.append(mid_config)
+
+        # 4. 随机配置（在关节限位范围内）
+        if self.joint_limits is not None:
+            lower = self.joint_limits['lower']
+            upper = self.joint_limits['upper']
+
+            for _ in range(num_attempts - 3):
+                random_config = np.random.uniform(lower, upper)
+                init_configs.append(random_config)
+        else:
+            # 如果没有限位信息，使用随机小角度
+            for _ in range(num_attempts - 3):
+                random_config = np.random.uniform(-np.pi/4, np.pi/4, self.motor_count)
+                init_configs.append(random_config)
+
+        # 尝试每个初始值
+        best_result = None
+        best_error = float('inf')
+
+        for i, init_q in enumerate(init_configs[:num_attempts]):
+            result_q = self._inverse_kinematics_dls_single_impl(
+                target_position=target_position,
+                target_rotation=target_rotation,
+                init_q=init_q,
+                max_iter=max_iter,
+                eps=eps,
+                damping=damping,
+                adaptive_damping=adaptive_damping
+            )
+
+            if result_q is not None:
+                # 验证解的质量（计算实际末端位置与目标位置的误差）
+                fk_result = self.forward_kinematics(result_q)
+                if fk_result is not None:
+                    actual_pos = np.array(fk_result['position'])
+                    target_pos = np.array(target_position)
+                    error = np.linalg.norm(actual_pos - target_pos)
+
+                    if error < best_error:
+                        best_error = error
+                        best_result = result_q
+
+                    # 如果误差足够小，直接返回
+                    if error < eps:
+                        print(f"多初始值求解成功（尝试 {i+1}/{num_attempts}），误差: {error:.6f}m")
+                        return result_q
+
+        if best_result is not None:
+            print(f"多初始值求解完成，最佳误差: {best_error:.6f}m")
+            return best_result
+
+        print(f"多初始值求解失败，尝试了 {num_attempts} 个不同的初始配置")
+        return None
 
     def get_Gravity(self, q=None):
         """

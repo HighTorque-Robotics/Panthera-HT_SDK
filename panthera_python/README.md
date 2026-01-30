@@ -93,7 +93,7 @@ from Panthera_lib import Panthera
 
 ### 通信板接线参考
 
-![通信板接线图](Board.png)
+![通信板接线图](images/Board.png)
 
 ### 赋串口权限
 设备正常连接可以看到七个设备
