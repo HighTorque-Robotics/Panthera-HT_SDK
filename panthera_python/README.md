@@ -27,6 +27,10 @@
 - **主从协同控制**：支持双臂协同操作和轨迹记录回放
 - **基于 YAML 的配置系统**
 
+## 基座坐标系参考
+
+![基座坐标系图](images/base_joint.png)
+
 ## 环境安装
 
 ### 推荐：使用独立的 conda 环境
@@ -201,11 +205,11 @@ Panthera 类继承自 `htr.Robot`，提供了机械臂级别的控制接口。
   - `tolerance`: 位置容差 (rad)
   - `timeout`: 超时时间 (s)
 
-- `Joints_Sync_Arrival(pos, duration, max_tqu=None, iswait=False, tolerance=0.1, timeout=15.0)`
-  - 多关节同步到达控制（所有关节同时到达）
+- `moveJ(pos, duration, max_tqu=None, iswait=False, tolerance=0.1, timeout=15.0)`
+  - 关节空间运动控制（所有关节同步到达目标位置）
   - `pos`: 目标位置数组 [6,] (rad)
   - `duration`: 运动时间 (s)
-  - `max_tqu`: 最大力矩数组 [6,] (Nm)，为None时使用配置文件中的默认值
+  - `max_tqu`: 最大力矩数组 [6,] (Nm)，为 None 时使用配置文件中的默认值
   - `iswait`: 是否等待到达目标
   - `tolerance`: 位置容差 (rad)
   - `timeout`: 超时时间 (s)
@@ -303,7 +307,7 @@ panthera_python/
 │   ├── 0_robot_set_zero.py     # 设置零位
 │   │
 │   ├── 1_Joint_PosVel_control.py           # 单关节位置速度控制
-│   ├── 1_Joints_Sync_Arrival_control.py    # 多关节同步到达控制
+│   ├── 1_moveJ_control.py                   # 关节空间运动控制 (moveJ)
 │   ├── 1_PD_control.py                    # PD控制
 │   ├── 1_Vel_control.py                   # 速度控制
 │   ├── 1_forward_kinematics_test.py       # 正运动学测试

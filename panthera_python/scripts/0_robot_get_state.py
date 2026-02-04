@@ -11,6 +11,12 @@ def print_robot_state(robot):
     # 获取关节角度
     robot.send_get_motor_state_cmd()
     robot.motor_send_cmd()
+    robot.send_get_motor_state_cmd()
+    robot.motor_send_cmd()
+    robot.send_get_motor_state_cmd()
+    robot.motor_send_cmd()
+    robot.send_get_motor_state_cmd()
+    robot.motor_send_cmd()
     positions = robot.get_current_pos()
     velocities = robot.get_current_vel()
     torque = robot.get_current_torque()

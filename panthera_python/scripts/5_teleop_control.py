@@ -6,12 +6,7 @@ import time
 import sys
 import os
 import numpy as np
-
-# 添加上一级目录(python目录)到sys.path
-parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(parent_dir)
-
-from scripts.Panthera_lib.Panthera import Panthera
+from Panthera_lib import Panthera
 
 def main():
     # ******臂控制******* 

@@ -10,6 +10,7 @@
 # 必需依赖
 pyyaml>=6.0,<7.0      # YAML 配置文件解析（6.0+ 支持 Python 3.12+）
 pin>=2.6.0            # 机器人动力学库（注意：是 'pin'，不是 'pinocchio'）
+scipy>=1.9.0          # 科学计算库（用于旋转插值等）
 
 # 注意事项:
 # 1. 先安装 hightorque_robot whl 包

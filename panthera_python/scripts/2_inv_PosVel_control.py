@@ -13,24 +13,24 @@ def main():
 
     pos1 = robot.inverse_kinematics(ik_pos1, ik_rot2, robot.get_current_pos())
     # 在逆解执行前尽量检查逆解是否收敛,否则未收敛时程序会直接退出掉电
-    if(pos1!=None):
-        issuccess1 = robot.Joints_Sync_Arrival(pos1, duration=3.0, max_tqu = max_torque, iswait=True)
+    if pos1 is not None:
+        issuccess1 = robot.moveJ(pos1, duration=3.0, max_tqu = max_torque, iswait=True)
         print(f"执行状态1：{issuccess1}")
         time.sleep(3)
 
     pos2 = robot.inverse_kinematics(ik_pos2, ik_rot2, robot.get_current_pos())
-    if(pos2!=None):
-        issuccess2 = robot.Joints_Sync_Arrival(pos2, duration=3.0, max_tqu = max_torque, iswait=True)
-        print(f"执行状态1：{issuccess2}")
+    if pos2 is not None:
+        issuccess2 = robot.moveJ(pos2, duration=3.0, max_tqu = max_torque, iswait=True)
+        print(f"执行状态2：{issuccess2}")
         time.sleep(3)
 
     pos3 = robot.inverse_kinematics(ik_pos3, ik_rot2, robot.get_current_pos())
-    if(pos3!=None):
-        issuccess3 = robot.Joints_Sync_Arrival(pos3, duration=3.0, max_tqu = max_torque, iswait=True)
-        print(f"执行状态1：{issuccess3}")
+    if pos3 is not None:
+        issuccess3 = robot.moveJ(pos3, duration=3.0, max_tqu = max_torque, iswait=True)
+        print(f"执行状态3：{issuccess3}")
         time.sleep(3)
 
-    issuccess3 = robot.Joints_Sync_Arrival(zero_pos, duration=3.0, max_tqu = max_torque, iswait=True)
+    issuccess3 = robot.moveJ(zero_pos, duration=3.0, max_tqu = max_torque, iswait=True)
     print(f"执行状态3：{issuccess3}")
     # 保持位置2秒
     print("\n保持位置2秒...")
@@ -42,8 +42,9 @@ if __name__ == "__main__":
     zero_pos = [0.0] * robot.motor_count
     vel = [0.5] * robot.motor_count      
     max_torque = [21.0, 36.0, 36.0, 21.0, 10.0, 10.0]  
-    ik_pos1 = [0.2, 0.1, 0.18]
-    ik_pos2 = [-0.16, 0.20, 0.18]
+    ik_pos1 = [0.20, 0.0, 0.1]
+    ik_pos2 = [0.20, 0.0, 0.20]
+    # ik_pos2 = [-0.16, 0.20, 0.18]
     # 提供一个超限的位置做例子
     ik_pos3 = [0.74, 0.0, 0.2] 
     
