@@ -23,7 +23,7 @@ def main():
 
     # 2. 移动到初始位置
     print("\n移动到初始位置...")
-    ik_pos1 = [0.2, 0.1, 0.18]
+    ik_pos1 = [0.24, 0.0, 0.1]
     ik_rot1 = np.array([[0, 0, 1], [0, 1, 0], [-1, 0, 0]])
     zero_pos = [0.0] * robot.motor_count
     vel = [0.5] * robot.motor_count

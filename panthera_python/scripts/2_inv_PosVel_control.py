@@ -30,8 +30,8 @@ def main():
         print(f"执行状态3：{issuccess3}")
         time.sleep(3)
 
-    issuccess3 = robot.moveJ(zero_pos, duration=3.0, max_tqu = max_torque, iswait=True)
-    print(f"执行状态3：{issuccess3}")
+    issuccess4 = robot.moveJ(zero_pos, duration=3.0, max_tqu = max_torque, iswait=True)
+    print(f"执行状态4：{issuccess4}")
     # 保持位置2秒
     print("\n保持位置2秒...")
     time.sleep(2)
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     vel = [0.5] * robot.motor_count      
     max_torque = [21.0, 36.0, 36.0, 21.0, 10.0, 10.0]  
     ik_pos1 = [0.20, 0.0, 0.1]
-    ik_pos2 = [0.20, 0.0, 0.20]
+    ik_pos2 = [0.20, 0.0, 0.15]
     # ik_pos2 = [-0.16, 0.20, 0.18]
     # 提供一个超限的位置做例子
     ik_pos3 = [0.74, 0.0, 0.2] 

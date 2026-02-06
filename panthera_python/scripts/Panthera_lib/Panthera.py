@@ -605,8 +605,8 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
         last_joint_id = self.model.getJointId(last_joint_name)
         last_joint_transform = self.data.oMi[last_joint_id]
         
-        # 添加工具坐标系偏移：相对于最后一个关节在X轴方向偏移0.14m
-        tool_offset = np.array([0.14, 0.0, 0.0])
+        # 添加工具坐标系偏移：相对于最后一个关节在X轴方向偏移0.165m
+        tool_offset = np.array([0.165, 0.0, 0.0])
         
         # 计算工具坐标系的位置和旋转
         position = last_joint_transform.translation + last_joint_transform.rotation.dot(tool_offset)
@@ -684,7 +684,7 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
             target_rotation = np.eye(3)
 
         # 将工具坐标系目标转换为最后一个关节坐标系目标
-        tool_offset = np.array([0.14, 0.0, 0.0])
+        tool_offset = np.array([0.165, 0.0, 0.0])
         target_rotation_matrix = np.array(target_rotation)
 
         # 计算最后关节的目标位置（减去偏移）

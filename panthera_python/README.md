@@ -51,13 +51,16 @@ conda activate panthera
 
 ```bash
 # Python 3.9
-pip install motor_whl/hightorque_robot-1.1.0-cp39-cp39-linux_x86_64.whl
+pip install motor_whl/hightorque_robot-1.2.0-cp39-cp39-linux_x86_64.whl
 
 # Python 3.10
-pip install motor_whl/hightorque_robot-1.1.0-cp310-cp310-linux_x86_64.whl
+pip install motor_whl/hightorque_robot-1.2.0-cp310-cp310-linux_x86_64.whl
+
+# Python 3.11
+pip install motor_whl/hightorque_robot-1.2.0-cp311-cp311-linux_x86_64.whl
 
 # Python 3.12
-pip install motor_whl/hightorque_robot-1.1.0-cp312-cp312-linux_x86_64.whl
+pip install motor_whl/hightorque_robot-1.2.0-cp312-cp312-linux_x86_64.whl
 ```
 
 **步骤2：安装高层库依赖（使用 Panthera_lib 时需要）**
@@ -69,6 +72,7 @@ pip install -r requirements.txt
 # 方法2：手动安装
 pip install "pyyaml>=6.0"
 pip install "pin>=2.6.0"
+pip install "scipy>=1.9.0"
 ```
 
 **重要提示：**
@@ -118,7 +122,7 @@ python 0_robot_get_state.py
 
 b. 运行位置速度控制程序
 ```bash
-python 1_PosVel_control.py
+python 1_Joint_PosVel_control.py
 ```
 机械臂会按指定速度运动到不同位置。若机械臂依次完成动作，则说明工作正常。
 
@@ -278,14 +282,17 @@ Panthera 类继承自 `htr.Robot`，提供了机械臂级别的控制接口。
 
 ```
 panthera_python/
-├── motor_wheels/               # 预编译whl包
-│   ├── hightorque_robot-1.0.0-cp39-cp39-linux_x86_64.whl
-│   ├── hightorque_robot-1.0.0-cp310-cp310-linux_x86_64.whl
-│   └── hightorque_robot-1.0.0-cp312-cp312-linux_x86_64.whl
+├── motor_whl/                  # 预编译whl包
+│   ├── hightorque_robot-1.2.0-cp39-cp39-linux_x86_64.whl
+│   ├── hightorque_robot-1.2.0-cp310-cp310-linux_x86_64.whl
+│   ├── hightorque_robot-1.2.0-cp311-cp311-linux_x86_64.whl
+│   └── hightorque_robot-1.2.0-cp312-cp312-linux_x86_64.whl
 │
 ├── Panthera-HT_description/    # 机械臂URDF模型
 │   ├── urdf/                   # URDF文件
-│   └── meshes/                 # 3D模型文件
+│   ├── meshes/                 # 3D模型文件
+│   ├── config/                 # 配置文件
+│   └── launch/                 # 启动文件
 │
 ├── robot_param/                # 机械臂配置文件
 │   ├── Leader.yaml             # 主臂配置
@@ -307,14 +314,14 @@ panthera_python/
 │   ├── 0_robot_set_zero.py     # 设置零位
 │   │
 │   ├── 1_Joint_PosVel_control.py           # 单关节位置速度控制
-│   ├── 1_moveJ_control.py                   # 关节空间运动控制 (moveJ)
-│   ├── 1_PD_control.py                    # PD控制
-│   ├── 1_Vel_control.py                   # 速度控制
-│   ├── 1_forward_kinematics_test.py       # 正运动学测试
-│   ├── 1_inverse_kinematics_test.py       # 逆运动学测试
+│   ├── 1_Joint_Vel_control.py              # 速度控制
+│   ├── 1_Joint_PD_control.py               # PD控制
+│   ├── 1_moveJ_control.py                  # 关节空间运动控制 (moveJ)
+│   ├── 1_forward_kinematics_test.py        # 正运动学测试
+│   ├── 1_inverse_kinematics_test.py        # 逆运动学测试
 │   │
-│   ├── 2_inv_PosVel_control.py            # 基于逆运动学的位置控制
-│   ├── 2_gravity_compensation_control.py  # 重力补偿控制
+│   ├── 2_inv_PosVel_control.py             # 基于逆运动学的位置控制
+│   ├── 2_gravity_compensation_control.py   # 重力补偿控制
 │   ├── 2_gravity_friction_compensation_control.py  # 重力摩擦力补偿控制
 │   ├── 2_Jointimpendence_control_with_gra_pd.py    # 关节阻抗控制(重力+PD)
 │   ├── 2_Jointimpendence_control_with_gra_fri_pd.py # 关节阻抗控制(重力+摩擦力+PD)
@@ -330,6 +337,9 @@ panthera_python/
 │   ├── 5_record_trajectory.py  # 轨迹记录
 │   ├── 5_replay_trajectory.py  # 轨迹回放
 │   │
+│   ├── 6_moveL_pos_control.py  # 笛卡尔空间直线运动控制
+│   ├── 6_moveL_rotate_control.py # 笛卡尔空间旋转运动控制
+│   │
 │   └── motor_example/          # 底层电机控制示例
 │       ├── 01_motor_get_status.py
 │       ├── 02_position_control.py
@@ -343,6 +353,10 @@ panthera_python/
 │       ├── motor_control.py
 │       └── motor_README.md
 │
+├── images/                     # 图片资源
+├── requirements.txt            # Python依赖
+├── setup.py                    # 安装脚本
+├── pyproject.toml              # 项目配置
 └── README.md                   # 本文档
 ```
 

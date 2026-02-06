@@ -43,7 +43,7 @@ def main():
     # 3. 移动到一个合适的工作位置
     print("\n移动到工作位置...")
     # 定义一个初始位姿
-    target_pos = [0.35, 0.0, 0.3]  # 末端位置 (m)
+    target_pos = [0.32, 0.0, 0.25]  # 末端位置 (m)
     target_rot = robot.rotation_matrix_from_euler(0, 0, 0)  # 初始姿态：无旋转
 
     # 使用逆运动学求解
