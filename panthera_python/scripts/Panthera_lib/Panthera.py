@@ -70,6 +70,7 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
         self.joint_ids = []
         self.joint_limits = None
         self.gripper_limits = None
+        self.end_effector_frame_id = None
 
     def _load_config_file(self, config_path):
         """
@@ -224,6 +225,15 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
             print(f"URDF加载成功: {urdf_path}")
             print(f"模型包含 {self.model.njoints - 1} 个关节（不含base）")
             print(f"配置关节数: {len(self.joint_ids)}")
+
+            # 获取末端执行器 frame ID
+            end_effector_link = self.config['urdf']['end_effector_link']
+            if self.model.existFrame(end_effector_link):
+                self.end_effector_frame_id = self.model.getFrameId(end_effector_link)
+                print(f"末端执行器frame: {end_effector_link} (ID: {self.end_effector_frame_id})")
+            else:
+                print(f"警告: 末端执行器frame '{end_effector_link}' 未找到，回退到最后一个关节")
+                self.end_effector_frame_id = self.model.getFrameId(self.joint_names[-1])
         except Exception as e:
             print(f"URDF加载失败: {e}")
 
@@ -381,6 +391,19 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
                 print("="*60 + "\n")
                 # 限幅处理
                 vel = np.clip(vel, -self.velocity_limits, self.velocity_limits)
+
+        # 关节限位保护：到达限位时，朝限位方向的速度置0，反方向可正常运动
+        if self.joint_limits is not None:
+            current_pos = self.get_current_pos()
+            lower = np.asarray(self.joint_limits['lower'])
+            upper = np.asarray(self.joint_limits['upper'])
+            limit_margin = 0.02  # rad，提前触发保护的裕量
+
+            at_upper = current_pos >= (upper - limit_margin)
+            at_lower = current_pos <= (lower + limit_margin)
+
+            vel = np.where(at_upper & (vel > 0), 0.0, vel)
+            vel = np.where(at_lower & (vel < 0), 0.0, vel)
 
         # 控制关节（除了夹爪电机）
         for i in range(self.motor_count):
@@ -599,18 +622,11 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
         # 计算正运动学
         pin.forwardKinematics(self.model, self.data, q)
         pin.updateFramePlacements(self.model, self.data)
-        
-        # 获取最后一个活动关节的变换矩阵
-        last_joint_name = self.joint_names[-1]
-        last_joint_id = self.model.getJointId(last_joint_name)
-        last_joint_transform = self.data.oMi[last_joint_id]
-        
-        # 添加工具坐标系偏移：相对于最后一个关节在X轴方向偏移0.165m
-        tool_offset = np.array([0.165, 0.0, 0.0])
-        
-        # 计算工具坐标系的位置和旋转
-        position = last_joint_transform.translation + last_joint_transform.rotation.dot(tool_offset)
-        rotation = last_joint_transform.rotation
+
+        # 获取末端执行器 frame 的变换矩阵
+        eef_transform = self.data.oMf[self.end_effector_frame_id]
+        position = eef_transform.translation.copy()
+        rotation = eef_transform.rotation.copy()
         
         # 构建4x4变换矩阵
         T = np.eye(4)
@@ -623,6 +639,82 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
             'transform': T,
             'joint_angles': joint_angles
         }
+
+    def get_jacobian(self, joint_angles=None):
+        """
+        获取末端执行器的雅可比矩阵（世界对齐坐标系）
+
+        参数:
+            joint_angles: 关节角度，为None时使用当前角度
+
+        返回:
+            J: 6×6 雅可比矩阵，列对应 joint_names 顺序
+        """
+        if self.model is None:
+            print("模型未加载")
+            return None
+
+        if joint_angles is None:
+            joint_angles = self.get_current_pos()
+
+        q = np.zeros(self.model.nq)
+        for i, joint_name in enumerate(self.joint_names):
+            joint_id = self.model.getJointId(joint_name)
+            idx = self.model.joints[joint_id].idx_q
+            q[idx] = joint_angles[i]
+
+        pin.forwardKinematics(self.model, self.data, q)
+        pin.updateFramePlacements(self.model, self.data)
+
+        J_full = pin.computeFrameJacobian(
+            self.model, self.data, q,
+            self.end_effector_frame_id, pin.LOCAL_WORLD_ALIGNED
+        )
+
+        J = np.zeros((6, len(self.joint_names)))
+        for i, joint_name in enumerate(self.joint_names):
+            jid = self.model.getJointId(joint_name)
+            idx = self.model.joints[jid].idx_v
+            J[:, i] = J_full[:, idx]
+
+        return J
+
+    def get_manipulability(self, joint_angles=None):
+        """
+        计算当前位形的可操作度 μ = sqrt(det(JJ^T))
+
+        参数:
+            joint_angles: 关节角度，为None时使用当前角度
+
+        返回:
+            float: 可操作度，值越小越接近奇异位形
+        """
+        J = self.get_jacobian(joint_angles)
+        if J is None:
+            return 0.0
+        JJT = J @ J.T
+        det = np.linalg.det(JJT)
+        return np.sqrt(max(det, 0.0))
+
+    @staticmethod
+    def compute_damped_pseudoinverse(J, damping=0.01):
+        """
+        计算雅可比阻尼伪逆 J_damp = J^T (JJ^T + λ^2I)^(-1)
+
+        参数:
+            J: 雅可比矩阵
+            damping: 阻尼系数 λ
+
+        返回:
+            J_damp: 阻尼伪逆矩阵
+        """
+        m = J.shape[0]
+        JJT = J @ J.T
+        try:
+            J_damp = J.T @ np.linalg.inv(JJT + (damping ** 2) * np.eye(m))
+        except np.linalg.LinAlgError:
+            J_damp = J.T @ np.linalg.inv(JJT + (damping * 10) ** 2 * np.eye(m))
+        return J_damp
 
     def inverse_kinematics(self, target_position, target_rotation=None, init_q=None,
                                max_iter=1000, eps=1e-3, damping=1e-2, adaptive_damping=True,
@@ -683,14 +775,8 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
         if target_rotation is None:
             target_rotation = np.eye(3)
 
-        # 将工具坐标系目标转换为最后一个关节坐标系目标
-        tool_offset = np.array([0.165, 0.0, 0.0])
         target_rotation_matrix = np.array(target_rotation)
-
-        # 计算最后关节的目标位置（减去偏移）
-        last_joint_target_position = np.array(target_position) - target_rotation_matrix.dot(tool_offset)
-
-        oMdes = pin.SE3(target_rotation_matrix, last_joint_target_position)
+        oMdes = pin.SE3(target_rotation_matrix, np.array(target_position))
 
         # 初始关节角度
         if init_q is None:
@@ -703,9 +789,8 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
                 idx = self.model.joints[joint_id].idx_q
                 q[idx] = init_q[i]
 
-        # 获取最后一个活动关节ID
-        last_joint_name = self.joint_names[-1]
-        joint_id = self.model.getJointId(last_joint_name)
+        # 获取末端执行器 frame ID
+        frame_id = self.end_effector_frame_id
 
         # 获取关节限位
         lower_limits = None
@@ -721,7 +806,8 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
         for i in range(max_iter):
             # 计算正运动学和误差
             pin.forwardKinematics(self.model, self.data, q)
-            iMd = self.data.oMi[joint_id].actInv(oMdes)
+            pin.updateFramePlacements(self.model, self.data)
+            iMd = self.data.oMf[frame_id].actInv(oMdes)
             err = pin.log(iMd).vector
 
             # 计算误差范数
@@ -738,7 +824,7 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
                 return np.array(result)
 
             # 计算雅可比矩阵
-            J = pin.computeJointJacobian(self.model, self.data, q, joint_id)
+            J = pin.computeFrameJacobian(self.model, self.data, q, frame_id, pin.LOCAL)
             J = -np.dot(pin.Jlog6(iMd.inverse()), J)
 
             # 自适应阻尼系数（根据误差大小调整）
@@ -1277,22 +1363,7 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
         print(f"  ✓ 实际执行时间: {total_time:.3f}s")
 
         return True
-
-    def rotation_matrix_from_euler(self, roll, pitch, yaw):
-        """
-        从欧拉角（RPY）创建旋转矩阵
-
-        参数:
-            roll: 绕 X 轴旋转角度（弧度）
-            pitch: 绕 Y 轴旋转角度（弧度）
-            yaw: 绕 Z 轴旋转角度（弧度）
-
-        返回:
-            3x3 旋转矩阵
-        """
-        rot = R.from_euler('xyz', [roll, pitch, yaw])
-        return rot.as_matrix()
-
+    
     #######################
     # 动力学方法
     #######################
@@ -1430,7 +1501,8 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
     #######################
     # 轨迹规划辅助方法
     #######################
-    def septic_interpolation(self, start_pos, end_pos, duration, current_time):
+    @staticmethod
+    def septic_interpolation(start_pos, end_pos, duration, current_time):
         """七次多项式插值轨迹生成（速度、加速度、加加速度连续），返回np.ndarray"""
         # 转换为numpy数组
         start_pos = np.asarray(start_pos)
@@ -1469,7 +1541,8 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
 
         return pos, vel, acc
     
-    def septic_interpolation_with_velocity(self, start_pos, end_pos, start_vel, end_vel, duration, current_time):
+    @staticmethod
+    def septic_interpolation_with_velocity(start_pos, end_pos, start_vel, end_vel, duration, current_time):
         """
         七次多项式插值轨迹生成（指定起始和终止速度），返回np.ndarray
         可以实现非零速度的平滑过渡
@@ -1525,6 +1598,22 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
         acc = (2*a2 + 6*a3*t + 12*a4*t2 + 20*a5*t3 + 30*a6*t4 + 42*a7*t5) / (duration * duration)
 
         return pos, vel, acc
+
+    @staticmethod
+    def rotation_matrix_from_euler(roll, pitch, yaw):
+        """
+        从欧拉角（RPY）创建旋转矩阵
+
+        参数:
+            roll: 绕 X 轴旋转角度（弧度）
+            pitch: 绕 Y 轴旋转角度（弧度）
+            yaw: 绕 Z 轴旋转角度（弧度）
+
+        返回:
+            3x3 旋转矩阵
+        """
+        rot = R.from_euler('xyz', [roll, pitch, yaw])
+        return rot.as_matrix()
 
 
 if __name__ == "__main__":

@@ -203,4 +203,10 @@
      <axis xyz="1 0 0" />
      <limit lower="-2.5" upper="2.5" effort="10" velocity="3.7" />
    </joint>
+  <link name="tool_link"/>
+  <joint name="tool_joint" type="fixed">
+    <parent link="link6"/>
+    <child link="tool_link"/>
+    <origin xyz="0.165 0 0" rpy="0 0 0"/>
+  </joint>
  </robot>

@@ -14,7 +14,7 @@ robot:
 urdf:
   file_path: "../Panthera-HT_description/urdf/Panthera-HT_description_follower.urdf"
   base_link: "base_link"
-  end_effector_link: "joint6"
+  end_effector_link: "tool_link"
 
 kinematics:
   joint_names:

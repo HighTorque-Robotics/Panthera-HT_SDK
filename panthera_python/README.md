@@ -390,6 +390,9 @@ panthera_python/
 │   ├── 6_moveL_pos_control.py  # 笛卡尔空间直线运动控制
 │   ├── 6_moveL_rotate_control.py # 笛卡尔空间旋转运动控制
 │   │
+│   ├── 7_keyboard_cartesian_pos_control.py  # 键盘控制笛卡尔空间位姿（IK求解）
+│   ├── 7_keyboard_cartesian_vel_control.py  # 键盘控制末端速度（雅可比矩阵）
+│   │
 │   └── motor_example/          # 底层电机控制示例
 │       ├── 01_motor_get_status.py
 │       ├── 02_position_control.py
