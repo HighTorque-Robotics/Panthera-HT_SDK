@@ -45,6 +45,12 @@ conda activate panthera
 
 ### 安装步骤
 
+> **注意：** 方式1 中的 whl 包在 Ubuntu 22 下编译，若使用 Ubuntu 20 或其他系统出现兼容性问题，请使用方式2 从源码编译。
+
+---
+
+#### 方式1：使用预编译 whl 包（Ubuntu 22 推荐）
+
 **步骤1：安装电机控制 SDK（whl 包）**
 
 在 `motor_whl` 文件夹中选择对应 Python 版本的 whl 文件：
@@ -63,7 +69,51 @@ pip install motor_whl/hightorque_robot-1.2.0-cp311-cp311-linux_x86_64.whl
 pip install motor_whl/hightorque_robot-1.2.0-cp312-cp312-linux_x86_64.whl
 ```
 
-**步骤2：安装高层库依赖（使用 Panthera_lib 时需要）**
+---
+
+#### 方式2：从源码编译（Ubuntu 20 或其他系统）
+
+**步骤1：安装系统依赖**
+
+```bash
+sudo apt-get install -y \
+    cmake \
+    python3-dev \
+    python3-pip \
+    liblcm-dev \
+    libyaml-cpp-dev \
+    libserialport-dev
+```
+
+**步骤2：安装 Python 编译依赖**
+
+```bash
+pip install pybind11
+```
+
+**步骤3：编译电机 SDK C++ 项目**
+
+```bash
+cd ../panthera_cpp/motor_cpp
+mkdir -p build && cd build
+cmake ..
+make
+```
+
+**步骤4：编译 Python 绑定**
+
+```bash
+cd ../../panthera_python
+mkdir -p build && cd build
+cmake ..
+make
+```
+
+编译成功后会显示 `Build target _hightorque_robot`。
+
+---
+
+**步骤2（方式1继续）/ 步骤5（方式2继续）：安装高层库依赖（使用 Panthera_lib 时需要）**
 
 ```bash
 # 方法1：使用 requirements.txt（推荐）
@@ -81,7 +131,7 @@ pip install "scipy>=1.9.0"
 - ✅ PyYAML 需要 6.0+ 版本才能支持 Python 3.12+
 - ✅ 在 conda 环境中使用 `pip`，不要用 `pip3`
 
-**步骤3：验证安装**
+**步骤3（方式1）/ 步骤6（方式2）：验证安装**
 
 手动验证：
 ```bash
