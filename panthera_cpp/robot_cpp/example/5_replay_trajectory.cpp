@@ -103,10 +103,10 @@ std::vector<TrajectoryPoint> loadTrajectory(const std::string& filepath) {
             }
         }
 
-        // 提取夹爪位置 "gripper_pos"
+        // Extract gripper position "gripper_pos" (14 chars)
         pos = line.find("\"gripper_pos\":");
         if (pos != std::string::npos) {
-            size_t start = pos + 15;
+            size_t start = pos + 14;
             size_t end = line.find(",", start);
             if (end == std::string::npos) {
                 end = line.find("}", start);
@@ -114,11 +114,14 @@ std::vector<TrajectoryPoint> loadTrajectory(const std::string& filepath) {
             point.gripper_position = std::stod(line.substr(start, end - start));
         }
 
-        // 提取夹爪速度 "gripper_vel"
+        // Extract gripper velocity "gripper_vel" (14 chars)
         pos = line.find("\"gripper_vel\":");
         if (pos != std::string::npos) {
-            size_t start = pos + 15;
-            size_t end = line.find("}", start);
+            size_t start = pos + 14;
+            size_t end = line.find(",", start);
+            if (end == std::string::npos) {
+                end = line.find("}", start);
+            }
             point.gripper_velocity = std::stod(line.substr(start, end - start));
         }
 
