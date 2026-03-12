@@ -53,6 +53,7 @@ std::vector<TrajectoryPoint> loadTrajectory(const std::string& filepath) {
         return trajectory;
     }
 
+    // TODO XXX FIXME HACK: This hand-coded json-parser should be replaced with a library
     std::string line;
     while (std::getline(file, line)) {
         if (line.empty()) continue;
