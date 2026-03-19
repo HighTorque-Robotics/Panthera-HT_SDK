@@ -27,6 +27,8 @@ def main():
 
     # 发送控制指令
     robot.pos_vel_tqe_kp_kd(zero_pos, zero_vel, tau_total, zero_kp, zero_kd)
+    #夹爪也进入零刚度零阻尼状态
+    robot.gripper_control_MIT(0.0, 0.0, 0.0, 0.0, 0.0)
 
     # 打印信息
     print(f"速度: {vel}")

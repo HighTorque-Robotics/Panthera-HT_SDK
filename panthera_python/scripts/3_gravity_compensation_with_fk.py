@@ -37,7 +37,7 @@ def main():
     current_angles = robot.get_current_pos()
     
     # 计算重力补偿力矩
-    gravity_torque = robot.get_Gravity(current_angles)
+    gravity_torque = robot.get_Gravity()
     
     # 力矩限幅（基于电机规格）
     tau_limit = np.array([15.0, 30.0, 30.0, 15.0, 5.0, 5.0])
@@ -50,6 +50,8 @@ def main():
     zero_kd = [0.0] * robot.motor_count
     
     robot.pos_vel_tqe_kp_kd(zero_pos, zero_vel, gravity_torque, zero_kp, zero_kd)
+    # 夹爪也进入零刚度零阻尼状态
+    robot.gripper_control_MIT(0.0, 0.0, 0.0, 0.0, 0.0)
     
     # 计算正运动学
     fk = robot.forward_kinematics(current_angles)
