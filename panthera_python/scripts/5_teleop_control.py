@@ -19,7 +19,7 @@ def main():
     # 计算重力力矩
     Leader_gra = Leader.get_Gravity()
     Follower_gra = Follower.get_Gravity()  
-    # 计算从臂受到的外力
+    # 从臂反馈力矩估计；当前默认模式下只用于调试打印。
     tor_diff = np.array(Follower_torque) - np.array(Follower_gra)
     # 对每个元素单独判断，小于阈值的设为 0
     tor_diff[np.abs(tor_diff) < tor_threshold] = 0
@@ -42,7 +42,9 @@ def main():
     Leader_gripper_positions = Leader.get_current_pos_gripper()
     Leader_gripper_velocity = Leader.get_current_vel_gripper()
     Follower_gripper = Follower.get_current_state_gripper()
+    # 实际送入 Leader.gripper_control_MIT(...) 的夹爪控制量。
     gripper_torque = Follower.get_friction_compensation(Leader_gripper_velocity, 0.06, 0.0, 0.15) - Follower_gripper.torque*0.5
+    # 这行只会修改调试用的 tor_diff，不会改变夹爪控制输出。
     tor_diff[np.abs(gripper_torque) < 0.2] = 0
     Leader.gripper_control_MIT(1.5, 0, gripper_torque, 0.2, 0.02)
     Follower.gripper_control_MIT(Leader_gripper_positions, Leader_gripper_velocity, 0, gripper_kp, gripper_kd)
