@@ -2,7 +2,7 @@ robot:
   name: "Panthera-HT"
   param_file: "../robot_param/motor_param/6dof_Panthera_params_leader.yaml"
   joint_limits:
-    lower: [-2.4, 0.0, 0.0, -1.6, -1.7, -2.5]
+    lower: [-2.4, -0.1, -0.1, -1.6, -1.7, -2.5]
     upper: [2.4, 3.2, 4.0, 1.6, 1.7, 2.5]
   gripper_limits:
     lower: 0.0

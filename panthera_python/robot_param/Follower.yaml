@@ -5,7 +5,7 @@ robot:
     lower: [-2.4, -0.1, -0.1, -1.6, -1.7, -2.5]
     upper: [2.4, 3.2, 4.0, 1.6, 1.7, 2.5]
   gripper_limits:
-    lower: 0.0
+    lower: -0.2
     upper: 2.0
   max_torque: [21.0, 36.0, 36.0, 21.0, 10.0, 10.0]
   velocity_limits: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
