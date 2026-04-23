@@ -102,6 +102,7 @@ PYBIND11_MODULE(_hightorque_robot, m) {
     py::class_<RobotParams>(m, "RobotParams")
         .def(py::init<>())
         .def_readwrite("motor_timeout_ms", &RobotParams::motor_timeout_ms)
+        .def_readwrite("motor_cmd_rate_limit_hz", &RobotParams::motor_cmd_rate_limit_hz)
         .def_readwrite("robot_name", &RobotParams::robot_name)
         .def_readwrite("Serial_Type", &RobotParams::Serial_Type)
         .def_readwrite("Seial_baudrate", &RobotParams::Seial_baudrate)

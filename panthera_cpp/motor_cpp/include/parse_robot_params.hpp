@@ -43,6 +43,7 @@ struct CANBoardParams {
 struct RobotParams 
 {
     int motor_timeout_ms;
+    int motor_cmd_rate_limit_hz;
     std::string robot_name;
     std::string Serial_Type;
     int Seial_baudrate;

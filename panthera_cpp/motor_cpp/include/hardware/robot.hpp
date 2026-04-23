@@ -8,7 +8,9 @@
 #include <libserialport.h>
 #include <dirent.h>
 #include <algorithm>
+#include <chrono>
 #include <lcm/lcm-cpp.hpp>
+#include <mutex>
 
 namespace hightorque_robot
 {
@@ -31,6 +33,13 @@ namespace hightorque_robot
         bool lcm_en;
         bool canport_error_output_flag = false;
         bool board_special_flag = false;
+        int motor_cmd_rate_limit_hz = 200;
+        std::mutex motor_send_mutex_;
+        std::chrono::steady_clock::time_point last_motor_send_time_;
+        bool has_last_motor_send_time_ = false;
+        std::chrono::steady_clock::time_point last_rate_limit_warning_time_;
+        bool has_rate_limit_warning_time_ = false;
+        uint64_t rate_limit_hit_count_ = 0;
     public:
         std::vector<serial_driver *> ser;
         std::vector<motor *> Motors;
@@ -49,6 +58,7 @@ namespace hightorque_robot
 
     private:
         void init_robot(const std::string& config_path);
+        void wait_for_command_slot_locked();
         int serial_pid_vid(const char *name, int *pid, int *vid);
         int serial_pid_vid(const char *name);
         std::vector<std::string> list_serial_ports(const std::string& full_prefix);

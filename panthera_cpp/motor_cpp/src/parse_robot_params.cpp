@@ -125,6 +125,7 @@ RobotParams parseRobotParams(const std::string &filePath)
         readConfigParam(robotNode, "Serial_Type", params.Serial_Type);
         readConfigParam(robotNode, "Seial_baudrate", params.Seial_baudrate);
         readConfigParam(robotNode, "motor_timeout_ms", params.motor_timeout_ms);
+        readConfigParam(robotNode, "motor_cmd_rate_limit_hz", params.motor_cmd_rate_limit_hz, 200);
         readConfigParam(robotNode, "CANboard_num", params.CANboard_num);
         readConfigParam(robotNode, "canport_error_output_flag", params.canport_error_output_flag, false);
         readConfigParam(robotNode, "board_special_flag", params.board_special_flag, false);

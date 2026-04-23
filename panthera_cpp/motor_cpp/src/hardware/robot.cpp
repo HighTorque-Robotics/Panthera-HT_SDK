@@ -41,6 +41,7 @@ namespace hightorque_robot
         Seial_baudrate = robot_params.Seial_baudrate;
         robot_name = robot_params.robot_name;
         motor_timeout_ms = robot_params.motor_timeout_ms;
+        motor_cmd_rate_limit_hz = robot_params.motor_cmd_rate_limit_hz;
         CANboard_num = robot_params.CANboard_num;
         Serial_Type = robot_params.Serial_Type;
         canport_error_output_flag = robot_params.canport_error_output_flag;
@@ -51,11 +52,19 @@ namespace hightorque_robot
             ROS_ERROR("The value of motor_timeout_ms is out of the valid range [0, 32760]");
             exit(-1);
         }
+
+        if (motor_cmd_rate_limit_hz <= 0)
+        {
+            ROS_ERROR("The value of motor_cmd_rate_limit_hz must be greater than 0");
+            exit(-1);
+        }
         
         std::cout << "\033[1;32mGot params SDK_version: v" << SDK_version2 << "\033[0m" << std::endl;
         std::cout << "\033[1;32mThe robot name is " << robot_name << "\033[0m" << std::endl;
         std::cout << "\033[1;32mThe robot has " << CANboard_num << " CANboards\033[0m" << std::endl;
         std::cout << "\033[1;32mThe Serial type is " << Serial_Type << "\033[0m" << std::endl;
+        std::cout << "\033[1;32mMotor command rate limit: " << motor_cmd_rate_limit_hz
+                  << " Hz\033[0m" << std::endl;
 
         init_ser();
         error_check_flag = true;
@@ -247,14 +256,46 @@ namespace hightorque_robot
         }
     }
 
+    void robot::wait_for_command_slot_locked()
+    {
+        const auto min_interval = std::chrono::nanoseconds(1000000000LL / motor_cmd_rate_limit_hz);
+        if (has_last_motor_send_time_)
+        {
+            const auto next_allowed_time = last_motor_send_time_ + min_interval;
+            const auto now = std::chrono::steady_clock::now();
+            if (now < next_allowed_time)
+            {
+                ++rate_limit_hit_count_;
+                if (!has_rate_limit_warning_time_ ||
+                    now - last_rate_limit_warning_time_ >= std::chrono::seconds(1))
+                {
+                    const auto wait_us = std::chrono::duration_cast<std::chrono::microseconds>(
+                        next_allowed_time - now).count();
+                    std::cerr << "[WARN] motor_cmd_rate_limit_hz=" << motor_cmd_rate_limit_hz
+                              << " exceeded, throttling command send. recent_hits="
+                              << rate_limit_hit_count_
+                              << ", current_wait_us=" << wait_us << std::endl;
+                    last_rate_limit_warning_time_ = now;
+                    has_rate_limit_warning_time_ = true;
+                    rate_limit_hit_count_ = 0;
+                }
+                std::this_thread::sleep_until(next_allowed_time);
+            }
+        }
+    }
+
     void robot::motor_send_cmd()
     {
         if(!motor_position_limit_flag && !motor_torque_limit_flag)
         {
+            std::unique_lock<std::mutex> lock(motor_send_mutex_);
+            wait_for_command_slot_locked();
             for (canboard &cb : CANboards)
             {
                 cb.motor_send_cmd();
             }
+            last_motor_send_time_ = std::chrono::steady_clock::now();
+            has_last_motor_send_time_ = true;
         }
         
     }
@@ -584,17 +625,25 @@ namespace hightorque_robot
     {
         if (fun_v >= fun_v4)
         {
+            std::unique_lock<std::mutex> lock(motor_send_mutex_);
+            wait_for_command_slot_locked();
             for (canboard &cb : CANboards)
             {
                 cb.send_get_motor_state_cmd2();
             }
+            last_motor_send_time_ = std::chrono::steady_clock::now();
+            has_last_motor_send_time_ = true;
         }
         else if (fun_v >= fun_v2)
         {
+            std::unique_lock<std::mutex> lock(motor_send_mutex_);
+            wait_for_command_slot_locked();
             for (canboard &cb : CANboards)
             {
                 cb.send_get_motor_state_cmd();
             }
+            last_motor_send_time_ = std::chrono::steady_clock::now();
+            has_last_motor_send_time_ = true;
         }
         else
         {
