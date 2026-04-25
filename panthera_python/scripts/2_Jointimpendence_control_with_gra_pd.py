@@ -20,6 +20,8 @@ def main():
     tau_limit = np.array([10.0, 20.0, 20.0, 10.0, 5.0, 5.0])
     tor = np.clip(tor, -tau_limit, tau_limit)
     robot.pos_vel_tqe_kp_kd(zero_pos, zero_vel, tor, zero_kp, zero_kd)
+    robot.gripper_control_MIT(1.2, 0.0, 0, 0.25, 0.02)
+
     print(f"阻抗力矩：{[f'{t:.3f}' for t in tor_impedance]}, \n重力补偿力矩：{[f'{t:.3f}' for t in G]}, \n总力矩：{[f'{t:.3f}' for t in tor]}")
     time.sleep(0.005)
     #结束后电机会自动掉电，请注意安全！！
@@ -32,7 +34,7 @@ if __name__ == "__main__":
     # 都为零则为重力补偿模式
     # K = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     # B = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-    q_des = np.array([0.0, 0.7, 0.7, -0.1, 0.0, 0.0]  )  # 期望目标位置
+    q_des = np.array([0.0, 0.7, 0.7, -0.3, 0.0, 0.0]  )  # 期望目标位置
     # q_des = np.zeros(6)  # 期望目标位置
     v_des = np.zeros(6) #期望目标速度为0
     # 创建零位置和零速度数组

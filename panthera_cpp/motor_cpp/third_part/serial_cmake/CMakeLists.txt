@@ -28,9 +28,15 @@ target_include_directories(${PROJECT_NAME}
 )
 
 # 链接底层库
-target_link_libraries(${PROJECT_NAME}
-    PUBLIC rt pthread
-)
+if(APPLE)
+    target_link_libraries(${PROJECT_NAME}
+        PUBLIC pthread
+    )
+else()
+    target_link_libraries(${PROJECT_NAME}
+        PUBLIC rt pthread
+    )
+endif()
 
 # 安装：头文件
 install(DIRECTORY include/serial

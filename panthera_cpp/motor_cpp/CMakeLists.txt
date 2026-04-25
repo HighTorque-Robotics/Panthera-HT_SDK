@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.12)
 project(hightorque_motor)
 
 if(NOT CMAKE_INSTALL_PREFIX)
@@ -23,8 +23,13 @@ else()
   message(STATUS "Found libserialport library: ${SERIALPORT_LIBRARY}")
 endif()
 
-set(rt_LIBRARIES rt)
-set(pthread_LIBRARIES pthread)
+if(APPLE)
+    set(rt_LIBRARIES)
+    set(pthread_LIBRARIES pthread)
+else()
+    set(rt_LIBRARIES rt)
+    set(pthread_LIBRARIES pthread)
+endif()
 
 # ==================== hightorque_motor 库 ====================
 # 电机底层驱动库
@@ -60,7 +65,7 @@ target_link_libraries(hightorque_motor
         serial_cmake
         ${SERIALPORT_LIBRARY}
     PRIVATE
-        rt
+        ${rt_LIBRARIES}
         pthread
 )
 

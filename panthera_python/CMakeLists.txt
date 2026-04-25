@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 查找Python
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
-find_package(hightorque_robot REQUIRED)
+find_package(hightorque_motor REQUIRED)
 
 # 查找pybind11 - 优先使用 Python 环境中的版本
 execute_process(
@@ -27,10 +27,10 @@ find_package(pybind11 CONFIG REQUIRED)
 
 # 添加C++项目的头文件路径
 include_directories(
-    ${HIGHTORQUE_ROBOT_DIR}/include
-    ${HIGHTORQUE_ROBOT_DIR}/include/hardware
-    ${HIGHTORQUE_ROBOT_DIR}/include/crc
-    ${HIGHTORQUE_ROBOT_DIR}/msg/motor_msg
+    ${CMAKE_INSTALL_PREFIX}/include
+    ${CMAKE_INSTALL_PREFIX}/include/hardware
+    ${CMAKE_INSTALL_PREFIX}/include/crc
+    ${CMAKE_INSTALL_PREFIX}/include/motor_msg
 )
 
 # 查找依赖库
@@ -43,12 +43,10 @@ pybind11_add_module(_hightorque_robot src/bindings.cpp)
 
 # 链接库
 target_link_libraries(_hightorque_robot PRIVATE
-    ${HIGHTORQUE_ROBOT_LIB}
+    hightorque_motor
     ${LCM_LIBRARIES}
     ${YAML_CPP_LIBRARIES}
     pthread
-    rt
-    hightorque_robot
 )
 
 # 设置输出目录

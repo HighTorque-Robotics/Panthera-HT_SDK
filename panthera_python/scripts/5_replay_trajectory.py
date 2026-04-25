@@ -8,11 +8,11 @@ import numpy as np
 from Panthera_lib import Panthera, TrajectoryRecorder
 
 # ---------------- 参数区 ----------------
-TRAJECTORY_FILE = "trajectory_test_1.jsonl"  # ← 改成实际记录生成的文件名
+TRAJECTORY_FILE = "trajectory_20260425_193811.jsonl"  # ← 改成实际记录生成的文件名
 
 # 关节PD增益
-kp_play = [30.0, 40.0, 55.0, 15.0, 7.0, 5.0]        # 回放时刚度（可微调）
-kd_play = [3.0, 4.0, 5.5, 1.5, 0.7, 0.5]           # 回放时阻尼
+kp_play = [20.0, 30.0, 45.0, 12.0, 5.0, 3.0]        # 回放时刚度（可微调）
+kd_play = [2.0, 3.0, 4.5, 1.2, 0.5, 0.3]           # 回放时阻尼
 
 # 夹爪PD增益
 gripper_kp = 5.0   # 夹爪刚度

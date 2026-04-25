@@ -297,11 +297,14 @@ namespace hightorque_robot
         try
         {
             sp_get_port_by_name(name, &port);
-            if (sp_get_port_usb_vid_pid(port, &vid, &pid) != SP_OK) 
+#ifdef __APPLE__
+            r = 1;
+#else
+            if (sp_get_port_usb_vid_pid(port, &vid, &pid) != SP_OK)
             {
                 r = -1;
-            } 
-            else 
+            }
+            else
             {
                 if (pid == 0xFFFF)
                 {
@@ -335,7 +338,8 @@ namespace hightorque_robot
                     r = -1;
                 }
             }
-            // std::cout << "Port: " << name << ", PID: 0x" << std::hex << pid << ", VID: 0x" << vid << std::dec << std::endl;
+#endif
+            std::cout << "Port: " << name << ", PID: 0x" << std::hex << pid << ", VID: 0x" << vid << std::dec << std::endl;
 
             // 关闭端口
             sp_free_port(port);
