@@ -4,7 +4,7 @@
 
 <div id="中文"></div>
 
-## 中文
+## 为macOS构建 (macOS 12+ | Apple Silicon)
 
 **Panthera-HT SDK** 是 Panthera-HT 六轴机械臂的官方软件开发工具包，提供完整的 C++ 和 Python 接口，用于电机控制、运动学、动力学和轨迹规划。
 
@@ -92,7 +92,7 @@ Panthera-HT_SDK/
 [![中文](https://img.shields.io/badge/lang-简体中文-brown.svg)](#中文) [![en](https://img.shields.io/badge/lang-English-blue.svg)](#english)
 <div id="english"></div>
 
-## English
+## Build for macOS (macOS 12+ | Apple Silicon)
 
 **Panthera-HT SDK** is the official software development kit for the Panthera-HT six-axis robotic arm, providing both C++ and Python interfaces for motor control, kinematics, dynamics, and trajectory planning.
 
