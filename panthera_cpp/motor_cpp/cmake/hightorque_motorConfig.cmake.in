@@ -1,0 +1,30 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+find_dependency(lcm REQUIRED)
+find_dependency(serial_cmake REQUIRED)
+find_dependency(yaml-cpp REQUIRED)
+
+find_library(SERIALPORT_LIBRARY serialport)
+if(NOT SERIALPORT_LIBRARY)
+    set(hightorque_motor_FOUND FALSE)
+    if(NOT hightorque_motor_FIND_QUIETLY)
+        message(FATAL_ERROR "libserialport not found. Please install libserialport-dev.")
+    endif()
+    return()
+endif()
+
+if(TARGET serial::serial_cmake AND NOT TARGET serial_cmake)
+    add_library(serial_cmake INTERFACE IMPORTED)
+    target_link_libraries(serial_cmake INTERFACE serial::serial_cmake)
+endif()
+
+include("${CMAKE_CURRENT_LIST_DIR}/hightorque_motorTargets.cmake")
+
+get_filename_component(HIGHTORQUE_MOTOR_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}" DIRECTORY)
+get_filename_component(HIGHTORQUE_MOTOR_CMAKE_DIR "${HIGHTORQUE_MOTOR_CMAKE_DIR}" DIRECTORY)
+get_filename_component(HIGHTORQUE_MOTOR_CMAKE_DIR "${HIGHTORQUE_MOTOR_CMAKE_DIR}" DIRECTORY)
+set(HIGHTORQUE_MOTOR_CONFIG_DIR "${HIGHTORQUE_MOTOR_CMAKE_DIR}/share/hightorque_motor/robot_param")
+
+check_required_components(hightorque_motor)
