@@ -7,13 +7,12 @@
 ### 构建命令
 ```bash
 # 标准构建流程
-mkdir build && cd build
-cmake ..
-make -j8
+cmake -S . -B build
+cmake --build build -j$(nproc)
 
 # 安装到自定义路径（默认：build/install）
-cmake -DCMAKE_INSTALL_PREFIX=/custom/path ..
-make install
+cmake -S . -B build -DCMAKE_INSTALL_PREFIX=/custom/path
+cmake --install build
 ```
 
 ### 依赖项

@@ -39,9 +39,8 @@ pip3 install pybind11 numpy
 需要先编译C++项目:
 ```bash
 cd path/to/hightorque_robot
-mkdir -p build && cd build
-cmake ..
-make
+cmake -S . -B build
+cmake --build build -j$(nproc)
 ```
 
 ## 安装
@@ -49,15 +48,14 @@ make
 ### 方式1: 使用pip安装 (开发模式)
 ```bash
 cd path/to/hightorque_robot_python
-pip3 install -e .
+python -m pip install -e .
 ```
 
 ### 方式2: 使用CMake构建
 ```bash
 cd path/to/hightorque_robot_python
-mkdir -p build && cd build
-cmake ..
-make
+cmake -S . -B build
+cmake --build build -j$(nproc)
 ```
 
 ## 使用示例
@@ -194,9 +192,9 @@ robot.set_reset()
 ### 找不到C++库
 确保C++项目已编译:
 ```bash
-cd path/to/hightorque_robot/build
-cmake ..
-make
+cd path/to/hightorque_robot
+cmake -S . -B build
+cmake --build build -j$(nproc)
 ```
 
 ### 找不到pybind11

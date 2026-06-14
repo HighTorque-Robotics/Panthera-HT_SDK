@@ -30,6 +30,10 @@
 
 ## 环境安装
 
+`robot_cpp` 生成高层库 `panthera_robot`。它通过
+`add_subdirectory(../motor_cpp)` 使用同仓库中的底层 `hightorque_motor`
+源码，因此单独构建本目录时不需要先安装 motor SDK。
+
 ### 系统要求
 - Ubuntu 20.04 / 22.04 / 24.04
 - CMake >= 3.10
@@ -59,13 +63,15 @@ sudo apt install pinocchio
 
 ```bash
 cd ~/Panthera-HT_git/Panthera-HT_SDK/panthera_cpp/robot_cpp
-mkdir build && cd build
-cmake ..
-make -j$(nproc)
-sudo make install
+cmake -S . -B build
+cmake --build build -j$(nproc)
+sudo cmake --install build
+sudo ldconfig
 ```
 
-编译成功后，库文件会安装到系统路径，可以在任何位置使用。
+编译成功后，库文件会安装到系统路径。当前安装规则尚未生成完整的
+`panthera_robotConfig.cmake`，外部 CMake 项目暂不能直接依赖
+`find_package(panthera_robot)`。
 
 ## 快速开始
 
