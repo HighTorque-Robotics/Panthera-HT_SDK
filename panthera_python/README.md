@@ -127,17 +127,12 @@ sudo ldconfig
 
 ```bash
 cd ../../panthera_python
-python -m pip install .
+python -m pip install -e . --no-build-isolation --no-deps -v
 ```
 
 该命令会使用当前 Python 环境构建扩展，并将 `hightorque_robot` 安装到
 当前环境的 `site-packages`。新终端中激活同一个环境后仍可导入。
 
-开发时需要让源码修改立即生效，可以改用：
-
-```bash
-python -m pip install -e .
-```
 
 在任意目录验证底层 Python 扩展：
 
