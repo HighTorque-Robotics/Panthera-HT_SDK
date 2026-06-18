@@ -1,0 +1,16 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/cmake_install.cmake",
+		"/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/third_part/lcm/cmake_install.cmake",
+		"/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/third_part/lcm/lcm/cmake_install.cmake",
+		"/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/third_part/lcm/lcmgen/cmake_install.cmake",
+		"/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/third_part/lcm/lcm-logger/cmake_install.cmake",
+		"/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/third_part/lcm/liblcm-test/cmake_install.cmake",
+		"/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/third_part/lcm/docs/cmake_install.cmake",
+		"/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/third_part/lcm/m4macros/cmake_install.cmake",
+		"/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/third_part/lcm/lcm-pkgconfig/cmake_install.cmake",
+		"/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/third_part/serial_cmake/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

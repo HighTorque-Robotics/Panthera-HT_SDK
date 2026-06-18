@@ -15,8 +15,9 @@ def main():
     # 获取重力补偿力矩
     tau_gravity = robot.get_Gravity()
 
-    # 计算摩擦力补偿力矩
-    tau_friction = robot.get_friction_compensation(vel, Fc, Fv, vel_threshold)
+    # 计算摩擦力补偿力矩，并整体缩放
+    tau_friction_raw = robot.get_friction_compensation(vel, Fc, Fv, vel_threshold)
+    tau_friction = friction_scale * tau_friction_raw
 
     # 总补偿力矩 = 重力补偿 + 摩擦力补偿
     tau_total = tau_gravity + tau_friction
@@ -72,6 +73,9 @@ if __name__ == "__main__":
     # 建议值：0.01-0.05 rad/s
     vel_threshold = 0.02
 
+    # 摩擦补偿整体缩放系数 - 小于 1.0 可整体减小摩擦补偿
+    friction_scale = 0.4
+
     # ====================================================
 
     # 创建零位置、速度、刚度、阻尼数组
@@ -83,6 +87,7 @@ if __name__ == "__main__":
     print("=" * 60)
     print("重力 + 摩擦力补偿控制启动")
     print("=" * 60)
+    print(f"摩擦补偿缩放系数: {friction_scale}")
     print(f"库伦摩擦系数 Fc: {Fc}")
     print(f"粘性摩擦系数 Fv: {Fv}")
     print(f"速度阈值: {vel_threshold} rad/s")

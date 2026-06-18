@@ -44,7 +44,7 @@ def main():
     Follower_gripper = Follower.get_current_state_gripper()
     gripper_torque = Follower.get_friction_compensation(Leader_gripper_velocity, 0.06, 0.0, 0.15) - Follower_gripper.torque*0.5
     tor_diff[np.abs(gripper_torque) < 0.2] = 0
-    Leader.gripper_control_MIT(1.5, 0, gripper_torque, 0.2, 0.02)
+    Leader.gripper_control_MIT(1.2, 0, gripper_torque, 0.6, 0.06)
     Follower.gripper_control_MIT(Leader_gripper_positions, Leader_gripper_velocity, 0, gripper_kp, gripper_kd)
 
     # 打印6个关节信息

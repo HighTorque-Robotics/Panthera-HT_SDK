@@ -39,6 +39,9 @@ keys_pressed = set()  # 记录当前按下的键
 # 加减速参数
 acceleration_factor = 0.02  # 加速因子（0-1，值越大加速越快）
                             # 0.15 约需 0.2-0.3 秒达到目标速度
+gripper_target_pos = 0.1  # 夹爪恒定目标位置 rad
+gripper_kp = 4.0
+gripper_kd = 0.1
 
 def on_press(key):
     """键盘按下事件处理"""
@@ -245,7 +248,8 @@ def main():
             q_dot = np.clip(q_dot, -max_joint_vel, max_joint_vel)
 
             robot.Joint_Vel(q_dot)
-
+            robot.gripper_control_MIT(gripper_target_pos, 0.0, 0.0, gripper_kp, gripper_kd)
+            
             # 显示信息
             vel_norm = np.linalg.norm(actual_velocity[:3])  # 使用实际速度
             print(f"\r位置: [{current_pos[0]:.3f}, {current_pos[1]:.3f}, {current_pos[2]:.3f}] | "

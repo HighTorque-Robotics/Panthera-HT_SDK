@@ -20,7 +20,7 @@ def main():
     tau_limit = np.array([10.0, 20.0, 20.0, 10.0, 5.0, 5.0])
     tor = np.clip(tor, -tau_limit, tau_limit)
     robot.pos_vel_tqe_kp_kd(zero_pos, zero_vel, tor, zero_kp, zero_kd)
-    robot.gripper_control_MIT(1.2, 0.0, 0, 0.25, 0.02)
+    robot.gripper_control_MIT(1.1, 0.0, 0, 0.55, 0.05)
 
     print(f"阻抗力矩：{[f'{t:.3f}' for t in tor_impedance]}, \n重力补偿力矩：{[f'{t:.3f}' for t in G]}, \n总力矩：{[f'{t:.3f}' for t in tor]}")
     time.sleep(0.005)
@@ -29,14 +29,17 @@ def main():
 if __name__ == "__main__":
     robot = Panthera()
     # 刚度系数和阻尼系数
-    K = np.array([4.0, 10.0, 10.0, 2.0, 2.0, 1.0])
-    B = np.array([0.5, 0.8, 0.8, 0.2, 0.2, 0.1])
+    K = np.array([4.0, 11.0, 13.0, 3.0, 2.5, 1.5])
+    B = np.array([0.5, 1.0, 1.1, 0.3, 0.2, 0.1])
     # 都为零则为重力补偿模式
     # K = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     # B = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-    q_des = np.array([0.0, 0.7, 0.7, -0.3, 0.0, 0.0]  )  # 期望目标位置
+    q_des = np.array([0.0, 0.7, 0.8, -0.4, 0.0, 0.0]  )  # 期望目标位置
     # q_des = np.zeros(6)  # 期望目标位置
     v_des = np.zeros(6) #期望目标速度为0
+    init_vel = [0.4] * robot.motor_count
+    exit_vel = [0.2] * robot.motor_count
+    max_torque = [21.0, 36.0, 36.0, 21.0, 10.0, 10.0]
     # 创建零位置和零速度数组
     zero_kp = [0.0] * robot.motor_count
     zero_kd = [0.0] * robot.motor_count
@@ -45,12 +48,22 @@ if __name__ == "__main__":
     q = np.array([])
     vel = np.array([])
     try:
+        print("\n发送初始位置控制命令...")
+        init_success = robot.Joint_Pos_Vel(q_des.tolist(), init_vel, max_torque, iswait=True)
+        print(f"初始就位状态：{init_success}")
+        if not init_success:
+            raise RuntimeError("使用 Joint_Pos_Vel 移动到初始目标位置失败")
+        time.sleep(1)
+
         while(1):
             main()
     except KeyboardInterrupt:
         # 不加这行电机在程序停止后也会掉电
         # robot.set_stop()
         print("\n\n程序被中断")
+        print("正在使用 Joint_Pos_Vel 返回零位...")
+        zero_success = robot.Joint_Pos_Vel(zero_pos, exit_vel, max_torque, iswait=True)
+        print(f"回零状态：{zero_success}")
         print("\n\n所有电机已停止")
     except Exception as e:
         print(f"\n错误: {e}")

@@ -13,6 +13,7 @@ robot:
       CANport:
         CANport_1:
           serial_id: 1
+          # serial_port_name: "/dev/tty.usbmodem20240517019"
           motor_num: 7
           motor:
             motor1:

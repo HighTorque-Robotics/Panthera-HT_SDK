@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG -dynamiclib -Wl,-headerpad_max_install_names -o libserial_cmake.dylib -install_name @rpath/libserial_cmake.dylib CMakeFiles/serial_cmake.dir/src/serial.cc.o CMakeFiles/serial_cmake.dir/src/impl/unix.cc.o CMakeFiles/serial_cmake.dir/src/impl/list_ports/list_ports_linux.cc.o  -lpthread

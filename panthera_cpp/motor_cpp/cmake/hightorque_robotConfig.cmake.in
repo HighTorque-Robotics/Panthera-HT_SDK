@@ -19,7 +19,7 @@ if(NOT SERIALPORT_LIBRARY)
 endif()
 
 # 包含导出的目标
-include("${CMAKE_CURRENT_LIST_DIR}/hightorque_robotTargets.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/hightorque_motorTargets.cmake")
 
 # 设置配置文件路径变量（供用户使用）
 get_filename_component(HIGHTORQUE_ROBOT_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}" DIRECTORY)

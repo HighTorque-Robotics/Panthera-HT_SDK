@@ -1,6 +1,6 @@
 robot:
   robot_name: "Panthera-HT"
-  Serial_Type: "/dev/ttyACM"
+  Serial_Type: "/dev/tty.usbmodem"
   Seial_baudrate: 4000000
   motor_timeout_ms: 0  # 设置电机的超时时间（单位：毫秒），取值范围：[0, 32760]，如果电机在指定时间内未接收到新的控制指令，将进入阻尼模式。将此值设为0表示禁用超时时间功能。
   canport_error_output_flag: false  # 设置是否启用CAN端口错误输出标志。启用后，当CAN端口发生错误时，系统将输出错误信息以便调试和诊断问题。
@@ -13,6 +13,7 @@ robot:
       CANport:
         CANport_1:
           serial_id: 2
+          # serial_port_name: "/dev/tty.usbmodem20240517013"
           motor_num: 7
           motor:
             motor1:

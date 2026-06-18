@@ -47,6 +47,7 @@ static void printParams(const RobotParams &params)
             std::cout << "  CAN Port Name: " << portEntry.first << std::endl;
             const CANPortParams &port = portEntry.second;
             std::cout << "    Serial ID: " << port.serial_id << std::endl;
+            std::cout << "    Serial Port Name: " << port.serial_port_name << std::endl;
             std::cout << "    Motor Num: " << port.motor_num << std::endl;
             for (const auto &motorEntry : port.motors)
             {
@@ -151,6 +152,7 @@ RobotParams parseRobotParams(const std::string &filePath)
                         YAML::Node portNode = portIt->second;
                         CANPortParams port;
                         readConfigParam(portNode, "serial_id", port.serial_id);
+                        readConfigParam(portNode, "serial_port_name", port.serial_port_name, std::string(""));
                         readConfigParam(portNode, "motor_num", port.motor_num);
 
                         if (portNode["motor"])

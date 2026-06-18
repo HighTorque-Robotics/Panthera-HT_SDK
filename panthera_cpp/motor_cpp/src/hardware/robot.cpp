@@ -382,7 +382,7 @@ namespace hightorque_robot
 
         closedir(directory);
 
-        std::reverse(serial_ports.begin(), serial_ports.end());
+        std::sort(serial_ports.begin(), serial_ports.end());
 
         return serial_ports;
     }
@@ -408,15 +408,27 @@ namespace hightorque_robot
 
         for(auto board_params: robot_params.CANboards)
         {
-            auto cp_num = board_params.second.CANport_num;
-            std::vector<int> serial_id_old;
             for(auto port_params: board_params.second.CANports)
             {
                 int serial_id = port_params.second.serial_id;
+                std::string selected_port;
+                if (!port_params.second.serial_port_name.empty())
+                {
+                    selected_port = port_params.second.serial_port_name;
+                }
+                else
+                {
+                    if (serial_id <= 0 || serial_id > static_cast<int>(str.size()))
+                    {
+                        std::cerr << "\033[1;31mInvalid serial_id " << serial_id
+                                  << ", only " << str.size() << " serial ports detected.\033[0m" << std::endl;
+                        exit(-1);
+                    }
+                    selected_port = str[serial_id - 1];
+                }
 
-                serial_id_old.push_back(serial_id);
-
-                serial_driver *s = new serial_driver(&str[serial_id - 1], Seial_baudrate, canport_error_output_flag);
+                std::cout << "Bind " << port_params.first << " -> " << selected_port << std::endl;
+                serial_driver *s = new serial_driver(&selected_port, Seial_baudrate, canport_error_output_flag);
                 ser.push_back(s);
                 ser_recv_threads.push_back(std::thread(&serial_driver::recv_1for6_42, s));
             }

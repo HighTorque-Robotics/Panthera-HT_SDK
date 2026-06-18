@@ -1,5 +1,6 @@
 robot:
   name: "Panthera-HT"
+  robot_name: "Panthera-HT"
   param_file: "../robot_param/motor_param/6dof_Panthera_params_leader.yaml"
   joint_limits:
     lower: [-2.4, 0.0, 0.0, -1.6, -1.7, -2.5]

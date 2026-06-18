@@ -1,0 +1,3198 @@
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineSystem.cmake:12 (find_program)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_UNAME"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "uname"
+    candidate_directories:
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/opt/homebrew/"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/bin/"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/sbin/"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/"
+      - "/opt/miniconda3/condabin/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/System/Cryptexes/App/usr/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/"
+      - "/pkg/env/global/bin/"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/"
+    searched_directories:
+      - "/opt/homebrew/bin/uname"
+      - "/opt/homebrew/sbin/uname"
+      - "/opt/homebrew/uname"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/bin/uname"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/sbin/uname"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/uname"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/uname"
+      - "/opt/miniconda3/condabin/uname"
+      - "/opt/homebrew/bin/uname"
+      - "/opt/homebrew/sbin/uname"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/uname"
+      - "/usr/local/bin/uname"
+      - "/System/Cryptexes/App/usr/bin/uname"
+    found: "/usr/bin/uname"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineSystem.cmake:212 (message)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      The system is: Darwin - 25.5.0 - arm64
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeUnixFindMake.cmake:5 (find_program)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_MAKE_PROGRAM"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "gmake"
+      - "make"
+      - "smake"
+    candidate_directories:
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/opt/homebrew/"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/bin/"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/sbin/"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/"
+      - "/opt/miniconda3/condabin/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/System/Cryptexes/App/usr/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/"
+      - "/pkg/env/global/bin/"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/"
+    searched_directories:
+      - "/opt/homebrew/bin/gmake"
+      - "/opt/homebrew/sbin/gmake"
+      - "/opt/homebrew/gmake"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/bin/gmake"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/sbin/gmake"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/gmake"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/gmake"
+      - "/opt/miniconda3/condabin/gmake"
+      - "/opt/homebrew/bin/gmake"
+      - "/opt/homebrew/sbin/gmake"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/gmake"
+      - "/usr/local/bin/gmake"
+      - "/System/Cryptexes/App/usr/bin/gmake"
+      - "/usr/bin/gmake"
+      - "/bin/gmake"
+      - "/usr/sbin/gmake"
+      - "/sbin/gmake"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/gmake"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/gmake"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/gmake"
+      - "/pkg/env/global/bin/gmake"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/gmake"
+      - "/opt/homebrew/bin/make"
+      - "/opt/homebrew/sbin/make"
+      - "/opt/homebrew/make"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/bin/make"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/sbin/make"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/make"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/make"
+      - "/opt/miniconda3/condabin/make"
+      - "/opt/homebrew/bin/make"
+      - "/opt/homebrew/sbin/make"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/make"
+      - "/usr/local/bin/make"
+      - "/System/Cryptexes/App/usr/bin/make"
+    found: "/usr/bin/make"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompiler.cmake:73 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:64 (_cmake_find_compiler)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_C_COMPILER"
+    description: "C compiler"
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "cc"
+      - "gcc"
+      - "cl"
+      - "bcc"
+      - "xlc"
+      - "icx"
+      - "clang"
+    candidate_directories:
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/opt/homebrew/"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/bin/"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/sbin/"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/"
+      - "/opt/miniconda3/condabin/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/System/Cryptexes/App/usr/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/"
+      - "/pkg/env/global/bin/"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/"
+    searched_directories:
+      - "/opt/homebrew/bin/cc"
+      - "/opt/homebrew/sbin/cc"
+      - "/opt/homebrew/cc"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/bin/cc"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/sbin/cc"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/cc"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/cc"
+      - "/opt/miniconda3/condabin/cc"
+      - "/opt/homebrew/bin/cc"
+      - "/opt/homebrew/sbin/cc"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/cc"
+      - "/usr/local/bin/cc"
+      - "/System/Cryptexes/App/usr/bin/cc"
+    found: "/usr/bin/cc"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:468 (find_file)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:506 (CMAKE_DETERMINE_COMPILER_ID_WRITE)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:8 (CMAKE_DETERMINE_COMPILER_ID_BUILD)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:122 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "file"
+    variable: "src_in"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "CMakeCCompilerId.c.in"
+    candidate_directories:
+      - "/opt/homebrew/share/cmake/Modules/"
+    found: "/opt/homebrew/share/cmake/Modules/CMakeCCompilerId.c.in"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:122 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: /usr/bin/cc 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+      
+      The C compiler identification is AppleClang, found in:
+        /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/4.3.2/CompilerIdC/a.out
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:296 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:122 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Detecting C compiler apple sysroot: "/usr/bin/cc" "-E" "apple-sdk.c"
+        # 1 "apple-sdk.c"
+        # 1 "<built-in>" 1
+        # 1 "<built-in>" 3
+        # 482 "<built-in>" 3
+        # 1 "<command line>" 1
+        # 1 "<built-in>" 2
+        # 1 "apple-sdk.c" 2
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityMacros.h" 1 3 4
+        # 89 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityMacros.h" 3 4
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 1 3 4
+        # 90 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityMacros.h" 2 3 4
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/TargetConditionals.h" 1 3 4
+        # 91 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityMacros.h" 2 3 4
+        # 207 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityMacros.h" 3 4
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
+        # 196 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 1 3 4
+        # 197 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 2 3 4
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 1 3 4
+        # 33 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 3 4
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 1 3 4
+        # 34 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 2 3 4
+        # 198 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 2 3 4
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternalLegacy.h" 1 3 4
+        # 34 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternalLegacy.h" 3 4
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 1 3 4
+        # 35 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternalLegacy.h" 2 3 4
+        # 199 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 2 3 4
+        # 208 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityMacros.h" 2 3 4
+        # 2 "apple-sdk.c" 2
+        
+        
+      Found apple sysroot: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_AR"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "ar"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/"
+      - "/opt/miniconda3/condabin/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/System/Cryptexes/App/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/"
+      - "/pkg/env/global/bin/"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/"
+    found: "/usr/bin/ar"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_RANLIB"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "ranlib"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/"
+      - "/opt/miniconda3/condabin/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/System/Cryptexes/App/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/"
+      - "/pkg/env/global/bin/"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/"
+    found: "/usr/bin/ranlib"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_STRIP"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "strip"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/"
+      - "/opt/miniconda3/condabin/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/System/Cryptexes/App/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/"
+      - "/pkg/env/global/bin/"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/"
+    found: "/usr/bin/strip"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_LINKER"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "ld"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/"
+      - "/opt/miniconda3/condabin/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/System/Cryptexes/App/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/"
+      - "/pkg/env/global/bin/"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/"
+    found: "/usr/bin/ld"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_NM"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "nm"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/"
+      - "/opt/miniconda3/condabin/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/System/Cryptexes/App/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/"
+      - "/pkg/env/global/bin/"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/"
+    found: "/usr/bin/nm"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_OBJDUMP"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "objdump"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/"
+      - "/opt/miniconda3/condabin/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/System/Cryptexes/App/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/"
+      - "/pkg/env/global/bin/"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/"
+    found: "/usr/bin/objdump"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_OBJCOPY"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "objcopy"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/"
+      - "/opt/miniconda3/condabin/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/System/Cryptexes/App/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/"
+      - "/pkg/env/global/bin/"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/"
+    searched_directories:
+      - "/usr/bin/objcopy"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/objcopy"
+      - "/opt/miniconda3/condabin/objcopy"
+      - "/opt/homebrew/bin/objcopy"
+      - "/opt/homebrew/sbin/objcopy"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/objcopy"
+      - "/usr/local/bin/objcopy"
+      - "/System/Cryptexes/App/usr/bin/objcopy"
+      - "/bin/objcopy"
+      - "/usr/sbin/objcopy"
+      - "/sbin/objcopy"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/objcopy"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/objcopy"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/objcopy"
+      - "/pkg/env/global/bin/objcopy"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/objcopy"
+    found: false
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_READELF"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "readelf"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/"
+      - "/opt/miniconda3/condabin/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/System/Cryptexes/App/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/"
+      - "/pkg/env/global/bin/"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/"
+    searched_directories:
+      - "/usr/bin/readelf"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/readelf"
+      - "/opt/miniconda3/condabin/readelf"
+      - "/opt/homebrew/bin/readelf"
+      - "/opt/homebrew/sbin/readelf"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/readelf"
+      - "/usr/local/bin/readelf"
+      - "/System/Cryptexes/App/usr/bin/readelf"
+      - "/bin/readelf"
+      - "/usr/sbin/readelf"
+      - "/sbin/readelf"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/readelf"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/readelf"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/readelf"
+      - "/pkg/env/global/bin/readelf"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/readelf"
+    found: false
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_DLLTOOL"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "dlltool"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/"
+      - "/opt/miniconda3/condabin/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/System/Cryptexes/App/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/"
+      - "/pkg/env/global/bin/"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/"
+    searched_directories:
+      - "/usr/bin/dlltool"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/dlltool"
+      - "/opt/miniconda3/condabin/dlltool"
+      - "/opt/homebrew/bin/dlltool"
+      - "/opt/homebrew/sbin/dlltool"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/dlltool"
+      - "/usr/local/bin/dlltool"
+      - "/System/Cryptexes/App/usr/bin/dlltool"
+      - "/bin/dlltool"
+      - "/usr/sbin/dlltool"
+      - "/sbin/dlltool"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/dlltool"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/dlltool"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/dlltool"
+      - "/pkg/env/global/bin/dlltool"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/dlltool"
+    found: false
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_ADDR2LINE"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "addr2line"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/"
+      - "/opt/miniconda3/condabin/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/System/Cryptexes/App/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/"
+      - "/pkg/env/global/bin/"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/"
+    searched_directories:
+      - "/usr/bin/addr2line"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/addr2line"
+      - "/opt/miniconda3/condabin/addr2line"
+      - "/opt/homebrew/bin/addr2line"
+      - "/opt/homebrew/sbin/addr2line"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/addr2line"
+      - "/usr/local/bin/addr2line"
+      - "/System/Cryptexes/App/usr/bin/addr2line"
+      - "/bin/addr2line"
+      - "/usr/sbin/addr2line"
+      - "/sbin/addr2line"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/addr2line"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/addr2line"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/addr2line"
+      - "/pkg/env/global/bin/addr2line"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/addr2line"
+    found: false
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_TAPI"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "tapi"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/"
+      - "/opt/miniconda3/condabin/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/System/Cryptexes/App/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/"
+      - "/pkg/env/global/bin/"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/"
+    searched_directories:
+      - "/usr/bin/tapi"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/tapi"
+      - "/opt/miniconda3/condabin/tapi"
+      - "/opt/homebrew/bin/tapi"
+      - "/opt/homebrew/sbin/tapi"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/tapi"
+      - "/usr/local/bin/tapi"
+      - "/System/Cryptexes/App/usr/bin/tapi"
+      - "/bin/tapi"
+      - "/usr/sbin/tapi"
+      - "/sbin/tapi"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/tapi"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/tapi"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/tapi"
+      - "/pkg/env/global/bin/tapi"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/tapi"
+    found: false
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompiler.cmake:54 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:69 (_cmake_find_compiler)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_CXX_COMPILER"
+    description: "CXX compiler"
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "c++"
+      - "g++"
+      - "cl"
+      - "bcc"
+      - "icpx"
+      - "icx"
+      - "clang++"
+    candidate_directories:
+      - "/usr/bin/"
+    found: "/usr/bin/c++"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:468 (find_file)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:506 (CMAKE_DETERMINE_COMPILER_ID_WRITE)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:8 (CMAKE_DETERMINE_COMPILER_ID_BUILD)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "file"
+    variable: "src_in"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "CMakeCXXCompilerId.cpp.in"
+    candidate_directories:
+      - "/opt/homebrew/share/cmake/Modules/"
+    found: "/opt/homebrew/share/cmake/Modules/CMakeCXXCompilerId.cpp.in"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: /usr/bin/c++ 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+      
+      The CXX compiler identification is AppleClang, found in:
+        /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/4.3.2/CompilerIdCXX/a.out
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:296 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Detecting CXX compiler apple sysroot: "/usr/bin/c++" "-E" "apple-sdk.cpp"
+        # 1 "apple-sdk.cpp"
+        # 1 "<built-in>" 1
+        # 1 "<built-in>" 3
+        # 531 "<built-in>" 3
+        # 1 "<command line>" 1
+        # 1 "<built-in>" 2
+        # 1 "apple-sdk.cpp" 2
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityMacros.h" 1 3 4
+        # 89 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityMacros.h" 3 4
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 1 3 4
+        # 90 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityMacros.h" 2 3 4
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/TargetConditionals.h" 1 3 4
+        # 91 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityMacros.h" 2 3 4
+        # 207 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityMacros.h" 3 4
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 1 3 4
+        # 196 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 3 4
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 1 3 4
+        # 197 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 2 3 4
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 1 3 4
+        # 33 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 3 4
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h" 1 3 4
+        # 34 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 2 3 4
+        # 198 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 2 3 4
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternalLegacy.h" 1 3 4
+        # 34 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternalLegacy.h" 3 4
+        # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h" 1 3 4
+        # 35 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityInternalLegacy.h" 2 3 4
+        # 199 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h" 2 3 4
+        # 208 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/AvailabilityMacros.h" 2 3 4
+        # 2 "apple-sdk.cpp" 2
+        
+        
+      Found apple sysroot: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Platform/Darwin.cmake:66 (find_program)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeSystemSpecificInformation.cmake:32 (include)"
+      - "CMakeLists.txt:2 (project)"
+    mode: "program"
+    variable: "CMAKE_INSTALL_NAME_TOOL"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "install_name_tool"
+    candidate_directories:
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/opt/homebrew/"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/bin/"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/sbin/"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/"
+      - "/opt/miniconda3/condabin/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/System/Cryptexes/App/usr/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/"
+      - "/pkg/env/global/bin/"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/"
+    searched_directories:
+      - "/opt/homebrew/bin/install_name_tool"
+      - "/opt/homebrew/sbin/install_name_tool"
+      - "/opt/homebrew/install_name_tool"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/bin/install_name_tool"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/sbin/install_name_tool"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/install_name_tool"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/install_name_tool"
+      - "/opt/miniconda3/condabin/install_name_tool"
+      - "/opt/homebrew/bin/install_name_tool"
+      - "/opt/homebrew/sbin/install_name_tool"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/install_name_tool"
+      - "/usr/local/bin/install_name_tool"
+      - "/System/Cryptexes/App/usr/bin/install_name_tool"
+    found: "/usr/bin/install_name_tool"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:83 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-AH11nm"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-AH11nm"
+    cmakeVariables:
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-AH11nm'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_df7e5/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_df7e5.dir/build.make CMakeFiles/cmTC_df7e5.dir/build
+        Building C object CMakeFiles/cmTC_df7e5.dir/CMakeCCompilerABI.c.o
+        /usr/bin/cc   -v -Wl,-v -MD -MT CMakeFiles/cmTC_df7e5.dir/CMakeCCompilerABI.c.o -MF CMakeFiles/cmTC_df7e5.dir/CMakeCCompilerABI.c.o.d -o CMakeFiles/cmTC_df7e5.dir/CMakeCCompilerABI.c.o -c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c
+        Apple clang version 21.0.0 (clang-2100.1.1.101)
+        Target: arm64-apple-darwin25.5.0
+        Thread model: posix
+        InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+        clang: warning: -Wl,-v: 'linker' input unused [-Wunused-command-line-argument]
+         "/Library/Developer/CommandLineTools/usr/bin/clang" -cc1 -triple arm64-apple-macosx26.0.0 -Wundef-prefix=TARGET_OS_ -Wdeprecated-objc-isa-usage -Werror=deprecated-objc-isa-usage -Werror=implicit-function-declaration -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model pic -pic-level 2 -mframe-pointer=non-leaf -fno-strict-return -ffp-contract=on -fno-rounding-math -funwind-tables=1 -fobjc-msgsend-selector-stubs -fno-sized-deallocation -target-sdk-version=26.5 -fvisibility-inlines-hidden-static-local-var -fno-modulemap-allow-subdirectory-search -fdefine-target-os-macros -fno-assume-unique-vtables -fno-modulemap-allow-subdirectory-search -enable-tlsdesc -target-cpu apple-m1 -target-feature +v8.5a -target-feature +aes -target-feature +altnzcv -target-feature +ccdp -target-feature +ccpp -target-feature +complxnum -target-feature +crc -target-feature +dotprod -target-feature +flagm -target-feature +fp-armv8 -target-feature +fp16fml -target-feature +fptoint -target-feature +fullfp16 -target-feature +jsconv -target-feature +lse -target-feature +neon -target-feature +pauth -target-feature +perfmon -target-feature +predres -target-feature +ras -target-feature +rcpc -target-feature +rdm -target-feature +sb -target-feature +sha2 -target-feature +sha3 -target-feature +specrestrict -target-feature +ssbs -target-abi darwinpcs -debugger-tuning=lldb -fdebug-compilation-dir=/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-AH11nm -target-linker-version 1267 -v -fcoverage-compilation-dir=/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-AH11nm -resource-dir /Library/Developer/CommandLineTools/usr/lib/clang/21 -dependency-file CMakeFiles/cmTC_df7e5.dir/CMakeCCompilerABI.c.o.d -skip-unused-modulemap-deps -MT CMakeFiles/cmTC_df7e5.dir/CMakeCCompilerABI.c.o -sys-header-deps -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -internal-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/local/include -internal-isystem /Library/Developer/CommandLineTools/usr/lib/clang/21/include -internal-externc-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -internal-externc-isystem /Library/Developer/CommandLineTools/usr/include -internal-iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -internal-iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/SubFrameworks -internal-iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks -Wno-elaborated-enum-base -ferror-limit 19 -stack-protector 1 -fstack-check -mdarwin-stkchk-strong-link -fblocks -fencode-extended-block-signature -fregister-global-dtors-with-atexit -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -fmax-type-align=16 -fcommon -clang-vendor-feature=+disableNonDependentMemberExprInCurrentInstantiation -fno-odr-hash-protocols -clang-vendor-feature=+enableAggressiveVLAFolding -clang-vendor-feature=+revert09abecef7bbf -clang-vendor-feature=+thisNoAlignAttr -clang-vendor-feature=+thisNoNullAttr -clang-vendor-feature=+disableAtImportPrivateFrameworkInImplementationError -Wno-error=allocator-wrappers -fdwarf2-cfi-asm -o CMakeFiles/cmTC_df7e5.dir/CMakeCCompilerABI.c.o -x c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c
+        clang -cc1 version 21.0.0 (clang-2100.1.1.101) default target arm64-apple-darwin25.5.0
+        ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/local/include"
+        ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /usr/local/include
+         /Library/Developer/CommandLineTools/usr/lib/clang/21/include
+         /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include
+         /Library/Developer/CommandLineTools/usr/include
+         /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks (framework directory)
+         /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/SubFrameworks (framework directory)
+        End of search list.
+        Linking C executable cmTC_df7e5
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_df7e5.dir/link.txt --verbose=1
+        Apple clang version 21.0.0 (clang-2100.1.1.101)
+        Target: arm64-apple-darwin25.5.0
+        Thread model: posix
+        InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+         "/Library/Developer/CommandLineTools/usr/bin/ld" -demangle -lto_library /Library/Developer/CommandLineTools/usr/lib/libLTO.dylib -dynamic -arch arm64 -platform_version macos 26.0.0 26.5 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mllvm -enable-linkonceodr-outlining -o cmTC_df7e5 -L/usr/local/lib -v CMakeFiles/cmTC_df7e5.dir/CMakeCCompilerABI.c.o -lSystem /Library/Developer/CommandLineTools/usr/lib/clang/21/lib/darwin/libclang_rt.osx.a
+        @(#)PROGRAM:ld PROJECT:ld-1267
+        BUILD 18:30:29 Apr 22 2026
+        configured to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386 x86_64 x86_64h armv6m armv7k armv7m armv7em armv8m.main armv8.1m.main
+        will use ld-classic for: armv6 armv7 armv7s i386 armv6m armv7k armv7m armv7em
+        LTO support using: LLVM version 21.0.0 (static support for 30, runtime is 30)
+        TAPI support using: Apple TAPI version 21.0.0 (tapi-2100.0.2.6)
+        Library search paths:
+        	/usr/local/lib
+        	/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib
+        	/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/swift
+        Framework search paths:
+        	/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks
+        /usr/bin/cc  -v -Wl,-v CMakeFiles/cmTC_df7e5.dir/CMakeCCompilerABI.c.o -o cmTC_df7e5
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:122 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Effective list of requested architectures (possibly empty)  : ""
+      Effective list of architectures found in the ABI info binary: "arm64"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:217 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed C implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/usr/local/include]
+          add: [/Library/Developer/CommandLineTools/usr/lib/clang/21/include]
+          add: [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include]
+          add: [/Library/Developer/CommandLineTools/usr/include]
+        end of search list found
+        collapse include dir [/usr/local/include] ==> [/usr/local/include]
+        collapse include dir [/Library/Developer/CommandLineTools/usr/lib/clang/21/include] ==> [/Library/Developer/CommandLineTools/usr/lib/clang/21/include]
+        collapse include dir [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include]
+        collapse include dir [/Library/Developer/CommandLineTools/usr/include] ==> [/Library/Developer/CommandLineTools/usr/include]
+        implicit include dirs: [/usr/local/include;/Library/Developer/CommandLineTools/usr/lib/clang/21/include;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include;/Library/Developer/CommandLineTools/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:253 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|"|[0-9]+>[ 	-]*Build:[ 	0-9]+ ms[ 	]*)?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)))("|,| |$)]
+        ignore line: [Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-AH11nm']
+        ignore line: []
+        ignore line: [Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_df7e5/fast]
+        ignore line: [/Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_df7e5.dir/build.make CMakeFiles/cmTC_df7e5.dir/build]
+        ignore line: [Building C object CMakeFiles/cmTC_df7e5.dir/CMakeCCompilerABI.c.o]
+        ignore line: [/usr/bin/cc   -v -Wl -v -MD -MT CMakeFiles/cmTC_df7e5.dir/CMakeCCompilerABI.c.o -MF CMakeFiles/cmTC_df7e5.dir/CMakeCCompilerABI.c.o.d -o CMakeFiles/cmTC_df7e5.dir/CMakeCCompilerABI.c.o -c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c]
+        ignore line: [Apple clang version 21.0.0 (clang-2100.1.1.101)]
+        ignore line: [Target: arm64-apple-darwin25.5.0]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /Library/Developer/CommandLineTools/usr/bin]
+        ignore line: [clang: warning: -Wl -v: 'linker' input unused [-Wunused-command-line-argument]]
+        ignore line: [ "/Library/Developer/CommandLineTools/usr/bin/clang" -cc1 -triple arm64-apple-macosx26.0.0 -Wundef-prefix=TARGET_OS_ -Wdeprecated-objc-isa-usage -Werror=deprecated-objc-isa-usage -Werror=implicit-function-declaration -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model pic -pic-level 2 -mframe-pointer=non-leaf -fno-strict-return -ffp-contract=on -fno-rounding-math -funwind-tables=1 -fobjc-msgsend-selector-stubs -fno-sized-deallocation -target-sdk-version=26.5 -fvisibility-inlines-hidden-static-local-var -fno-modulemap-allow-subdirectory-search -fdefine-target-os-macros -fno-assume-unique-vtables -fno-modulemap-allow-subdirectory-search -enable-tlsdesc -target-cpu apple-m1 -target-feature +v8.5a -target-feature +aes -target-feature +altnzcv -target-feature +ccdp -target-feature +ccpp -target-feature +complxnum -target-feature +crc -target-feature +dotprod -target-feature +flagm -target-feature +fp-armv8 -target-feature +fp16fml -target-feature +fptoint -target-feature +fullfp16 -target-feature +jsconv -target-feature +lse -target-feature +neon -target-feature +pauth -target-feature +perfmon -target-feature +predres -target-feature +ras -target-feature +rcpc -target-feature +rdm -target-feature +sb -target-feature +sha2 -target-feature +sha3 -target-feature +specrestrict -target-feature +ssbs -target-abi darwinpcs -debugger-tuning=lldb -fdebug-compilation-dir=/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-AH11nm -target-linker-version 1267 -v -fcoverage-compilation-dir=/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-AH11nm -resource-dir /Library/Developer/CommandLineTools/usr/lib/clang/21 -dependency-file CMakeFiles/cmTC_df7e5.dir/CMakeCCompilerABI.c.o.d -skip-unused-modulemap-deps -MT CMakeFiles/cmTC_df7e5.dir/CMakeCCompilerABI.c.o -sys-header-deps -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -internal-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/local/include -internal-isystem /Library/Developer/CommandLineTools/usr/lib/clang/21/include -internal-externc-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -internal-externc-isystem /Library/Developer/CommandLineTools/usr/include -internal-iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -internal-iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/SubFrameworks -internal-iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks -Wno-elaborated-enum-base -ferror-limit 19 -stack-protector 1 -fstack-check -mdarwin-stkchk-strong-link -fblocks -fencode-extended-block-signature -fregister-global-dtors-with-atexit -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -fmax-type-align=16 -fcommon -clang-vendor-feature=+disableNonDependentMemberExprInCurrentInstantiation -fno-odr-hash-protocols -clang-vendor-feature=+enableAggressiveVLAFolding -clang-vendor-feature=+revert09abecef7bbf -clang-vendor-feature=+thisNoAlignAttr -clang-vendor-feature=+thisNoNullAttr -clang-vendor-feature=+disableAtImportPrivateFrameworkInImplementationError -Wno-error=allocator-wrappers -fdwarf2-cfi-asm -o CMakeFiles/cmTC_df7e5.dir/CMakeCCompilerABI.c.o -x c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c]
+        ignore line: [clang -cc1 version 21.0.0 (clang-2100.1.1.101) default target arm64-apple-darwin25.5.0]
+        ignore line: [ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/local/include"]
+        ignore line: [ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /Library/Developer/CommandLineTools/usr/lib/clang/21/include]
+        ignore line: [ /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include]
+        ignore line: [ /Library/Developer/CommandLineTools/usr/include]
+        ignore line: [ /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks (framework directory)]
+        ignore line: [ /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/SubFrameworks (framework directory)]
+        ignore line: [End of search list.]
+        ignore line: [Linking C executable cmTC_df7e5]
+        ignore line: [/opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_df7e5.dir/link.txt --verbose=1]
+        ignore line: [Apple clang version 21.0.0 (clang-2100.1.1.101)]
+        ignore line: [Target: arm64-apple-darwin25.5.0]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /Library/Developer/CommandLineTools/usr/bin]
+        link line: [ "/Library/Developer/CommandLineTools/usr/bin/ld" -demangle -lto_library /Library/Developer/CommandLineTools/usr/lib/libLTO.dylib -dynamic -arch arm64 -platform_version macos 26.0.0 26.5 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mllvm -enable-linkonceodr-outlining -o cmTC_df7e5 -L/usr/local/lib -v CMakeFiles/cmTC_df7e5.dir/CMakeCCompilerABI.c.o -lSystem /Library/Developer/CommandLineTools/usr/lib/clang/21/lib/darwin/libclang_rt.osx.a]
+          arg [/Library/Developer/CommandLineTools/usr/bin/ld] ==> ignore
+          arg [-demangle] ==> ignore
+          arg [-lto_library] ==> ignore, skip following value
+          arg [/Library/Developer/CommandLineTools/usr/lib/libLTO.dylib] ==> skip value of -lto_library
+          arg [-dynamic] ==> ignore
+          arg [-arch] ==> ignore
+          arg [arm64] ==> ignore
+          arg [-platform_version] ==> ignore
+          arg [macos] ==> ignore
+          arg [26.0.0] ==> ignore
+          arg [26.5] ==> ignore
+          arg [-syslibroot] ==> ignore
+          arg [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk] ==> ignore
+          arg [-mllvm] ==> ignore
+          arg [-enable-linkonceodr-outlining] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_df7e5] ==> ignore
+          arg [-L/usr/local/lib] ==> dir [/usr/local/lib]
+          arg [-v] ==> ignore
+          arg [CMakeFiles/cmTC_df7e5.dir/CMakeCCompilerABI.c.o] ==> ignore
+          arg [-lSystem] ==> lib [System]
+          arg [/Library/Developer/CommandLineTools/usr/lib/clang/21/lib/darwin/libclang_rt.osx.a] ==> lib [/Library/Developer/CommandLineTools/usr/lib/clang/21/lib/darwin/libclang_rt.osx.a]
+        linker tool for 'C': /Library/Developer/CommandLineTools/usr/bin/ld
+        Library search paths: [;/usr/local/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/swift]
+        Framework search paths: [;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks]
+        remove lib [System]
+        remove lib [/Library/Developer/CommandLineTools/usr/lib/clang/21/lib/darwin/libclang_rt.osx.a]
+        collapse library dir [/usr/local/lib] ==> [/usr/local/lib]
+        collapse library dir [/usr/local/lib] ==> [/usr/local/lib]
+        collapse library dir [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib]
+        collapse library dir [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/swift] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/swift]
+        collapse framework dir [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks]
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: [/usr/local/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/swift]
+        implicit fwks: [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CMakeDetermineLinkerId.cmake:38 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:299 (cmake_determine_linker_id)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Running the C compiler's linker: "/Library/Developer/CommandLineTools/usr/bin/ld" "-v"
+      @(#)PROGRAM:ld PROJECT:ld-1267
+      BUILD 18:30:29 Apr 22 2026
+      configured to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386 x86_64 x86_64h armv6m armv7k armv7m armv7em armv8m.main armv8.1m.main
+      will use ld-classic for: armv6 armv7 armv7s i386 armv6m armv7k armv7m armv7em
+      LTO support using: LLVM version 21.0.0 (static support for 30, runtime is 30)
+      TAPI support using: Apple TAPI version 21.0.0 (tapi-2100.0.2.6)
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:83 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-sFh4AC"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-sFh4AC"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_CXX_SCAN_FOR_MODULES: "OFF"
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-sFh4AC'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_a0905/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_a0905.dir/build.make CMakeFiles/cmTC_a0905.dir/build
+        Building CXX object CMakeFiles/cmTC_a0905.dir/CMakeCXXCompilerABI.cpp.o
+        /usr/bin/c++   -v -Wl,-v -MD -MT CMakeFiles/cmTC_a0905.dir/CMakeCXXCompilerABI.cpp.o -MF CMakeFiles/cmTC_a0905.dir/CMakeCXXCompilerABI.cpp.o.d -o CMakeFiles/cmTC_a0905.dir/CMakeCXXCompilerABI.cpp.o -c /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp
+        Apple clang version 21.0.0 (clang-2100.1.1.101)
+        Target: arm64-apple-darwin25.5.0
+        Thread model: posix
+        InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+        clang++: warning: -Wl,-v: 'linker' input unused [-Wunused-command-line-argument]
+        ignoring nonexistent directory "/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"
+         "/Library/Developer/CommandLineTools/usr/bin/clang" -cc1 -triple arm64-apple-macosx26.0.0 -Wundef-prefix=TARGET_OS_ -Wdeprecated-objc-isa-usage -Werror=deprecated-objc-isa-usage -Werror=implicit-function-declaration -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model pic -pic-level 2 -mframe-pointer=non-leaf -fno-strict-return -ffp-contract=on -fno-rounding-math -funwind-tables=1 -fobjc-msgsend-selector-stubs -fno-sized-deallocation -target-sdk-version=26.5 -fvisibility-inlines-hidden-static-local-var -fno-modulemap-allow-subdirectory-search -fdefine-target-os-macros -fno-assume-unique-vtables -fno-modulemap-allow-subdirectory-search -enable-tlsdesc -target-cpu apple-m1 -target-feature +v8.5a -target-feature +aes -target-feature +altnzcv -target-feature +ccdp -target-feature +ccpp -target-feature +complxnum -target-feature +crc -target-feature +dotprod -target-feature +flagm -target-feature +fp-armv8 -target-feature +fp16fml -target-feature +fptoint -target-feature +fullfp16 -target-feature +jsconv -target-feature +lse -target-feature +neon -target-feature +pauth -target-feature +perfmon -target-feature +predres -target-feature +ras -target-feature +rcpc -target-feature +rdm -target-feature +sb -target-feature +sha2 -target-feature +sha3 -target-feature +specrestrict -target-feature +ssbs -target-abi darwinpcs -debugger-tuning=lldb -fdebug-compilation-dir=/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-sFh4AC -target-linker-version 1267 -v -fcoverage-compilation-dir=/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-sFh4AC -resource-dir /Library/Developer/CommandLineTools/usr/lib/clang/21 -dependency-file CMakeFiles/cmTC_a0905.dir/CMakeCXXCompilerABI.cpp.o.d -skip-unused-modulemap-deps -MT CMakeFiles/cmTC_a0905.dir/CMakeCXXCompilerABI.cpp.o -sys-header-deps -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -internal-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -internal-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/local/include -internal-isystem /Library/Developer/CommandLineTools/usr/lib/clang/21/include -internal-externc-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -internal-externc-isystem /Library/Developer/CommandLineTools/usr/include -internal-iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -internal-iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/SubFrameworks -internal-iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks -Wno-elaborated-enum-base -fdeprecated-macro -ferror-limit 19 -stack-protector 1 -fstack-check -mdarwin-stkchk-strong-link -fblocks -fencode-extended-block-signature -fregister-global-dtors-with-atexit -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -fcxx-exceptions -fexceptions -fmax-type-align=16 -fcommon -clang-vendor-feature=+disableNonDependentMemberExprInCurrentInstantiation -fno-odr-hash-protocols -clang-vendor-feature=+enableAggressiveVLAFolding -clang-vendor-feature=+revert09abecef7bbf -clang-vendor-feature=+thisNoAlignAttr -clang-vendor-feature=+thisNoNullAttr -clang-vendor-feature=+disableAtImportPrivateFrameworkInImplementationError -Wno-error=allocator-wrappers -fdwarf2-cfi-asm -o CMakeFiles/cmTC_a0905.dir/CMakeCXXCompilerABI.cpp.o -x c++ /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp
+        clang -cc1 version 21.0.0 (clang-2100.1.1.101) default target arm64-apple-darwin25.5.0
+        ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/local/include"
+        ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /usr/local/include
+         /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1
+         /Library/Developer/CommandLineTools/usr/lib/clang/21/include
+         /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include
+         /Library/Developer/CommandLineTools/usr/include
+         /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks (framework directory)
+         /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/SubFrameworks (framework directory)
+        End of search list.
+        Linking CXX executable cmTC_a0905
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a0905.dir/link.txt --verbose=1
+        Apple clang version 21.0.0 (clang-2100.1.1.101)
+        Target: arm64-apple-darwin25.5.0
+        Thread model: posix
+        InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+         "/Library/Developer/CommandLineTools/usr/bin/ld" -demangle -lto_library /Library/Developer/CommandLineTools/usr/lib/libLTO.dylib -dynamic -arch arm64 -platform_version macos 26.0.0 26.5 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mllvm -enable-linkonceodr-outlining -o cmTC_a0905 -L/usr/local/lib -v CMakeFiles/cmTC_a0905.dir/CMakeCXXCompilerABI.cpp.o -lc++ -lSystem /Library/Developer/CommandLineTools/usr/lib/clang/21/lib/darwin/libclang_rt.osx.a
+        @(#)PROGRAM:ld PROJECT:ld-1267
+        BUILD 18:30:29 Apr 22 2026
+        configured to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386 x86_64 x86_64h armv6m armv7k armv7m armv7em armv8m.main armv8.1m.main
+        will use ld-classic for: armv6 armv7 armv7s i386 armv6m armv7k armv7m armv7em
+        LTO support using: LLVM version 21.0.0 (static support for 30, runtime is 30)
+        TAPI support using: Apple TAPI version 21.0.0 (tapi-2100.0.2.6)
+        Library search paths:
+        	/usr/local/lib
+        	/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib
+        	/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/swift
+        Framework search paths:
+        	/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks
+        /usr/bin/c++  -v -Wl,-v CMakeFiles/cmTC_a0905.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_a0905
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:122 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Effective list of requested architectures (possibly empty)  : ""
+      Effective list of architectures found in the ABI info binary: "arm64"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:217 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/usr/local/include]
+          add: [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1]
+          add: [/Library/Developer/CommandLineTools/usr/lib/clang/21/include]
+          add: [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include]
+          add: [/Library/Developer/CommandLineTools/usr/include]
+        end of search list found
+        collapse include dir [/usr/local/include] ==> [/usr/local/include]
+        collapse include dir [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1]
+        collapse include dir [/Library/Developer/CommandLineTools/usr/lib/clang/21/include] ==> [/Library/Developer/CommandLineTools/usr/lib/clang/21/include]
+        collapse include dir [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include]
+        collapse include dir [/Library/Developer/CommandLineTools/usr/include] ==> [/Library/Developer/CommandLineTools/usr/include]
+        implicit include dirs: [/usr/local/include;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1;/Library/Developer/CommandLineTools/usr/lib/clang/21/include;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include;/Library/Developer/CommandLineTools/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:253 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|"|[0-9]+>[ 	-]*Build:[ 	0-9]+ ms[ 	]*)?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)))("|,| |$)]
+        ignore line: [Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-sFh4AC']
+        ignore line: []
+        ignore line: [Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_a0905/fast]
+        ignore line: [/Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_a0905.dir/build.make CMakeFiles/cmTC_a0905.dir/build]
+        ignore line: [Building CXX object CMakeFiles/cmTC_a0905.dir/CMakeCXXCompilerABI.cpp.o]
+        ignore line: [/usr/bin/c++   -v -Wl -v -MD -MT CMakeFiles/cmTC_a0905.dir/CMakeCXXCompilerABI.cpp.o -MF CMakeFiles/cmTC_a0905.dir/CMakeCXXCompilerABI.cpp.o.d -o CMakeFiles/cmTC_a0905.dir/CMakeCXXCompilerABI.cpp.o -c /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [Apple clang version 21.0.0 (clang-2100.1.1.101)]
+        ignore line: [Target: arm64-apple-darwin25.5.0]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /Library/Developer/CommandLineTools/usr/bin]
+        ignore line: [clang++: warning: -Wl -v: 'linker' input unused [-Wunused-command-line-argument]]
+        ignore line: [ignoring nonexistent directory "/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"]
+        ignore line: [ "/Library/Developer/CommandLineTools/usr/bin/clang" -cc1 -triple arm64-apple-macosx26.0.0 -Wundef-prefix=TARGET_OS_ -Wdeprecated-objc-isa-usage -Werror=deprecated-objc-isa-usage -Werror=implicit-function-declaration -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model pic -pic-level 2 -mframe-pointer=non-leaf -fno-strict-return -ffp-contract=on -fno-rounding-math -funwind-tables=1 -fobjc-msgsend-selector-stubs -fno-sized-deallocation -target-sdk-version=26.5 -fvisibility-inlines-hidden-static-local-var -fno-modulemap-allow-subdirectory-search -fdefine-target-os-macros -fno-assume-unique-vtables -fno-modulemap-allow-subdirectory-search -enable-tlsdesc -target-cpu apple-m1 -target-feature +v8.5a -target-feature +aes -target-feature +altnzcv -target-feature +ccdp -target-feature +ccpp -target-feature +complxnum -target-feature +crc -target-feature +dotprod -target-feature +flagm -target-feature +fp-armv8 -target-feature +fp16fml -target-feature +fptoint -target-feature +fullfp16 -target-feature +jsconv -target-feature +lse -target-feature +neon -target-feature +pauth -target-feature +perfmon -target-feature +predres -target-feature +ras -target-feature +rcpc -target-feature +rdm -target-feature +sb -target-feature +sha2 -target-feature +sha3 -target-feature +specrestrict -target-feature +ssbs -target-abi darwinpcs -debugger-tuning=lldb -fdebug-compilation-dir=/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-sFh4AC -target-linker-version 1267 -v -fcoverage-compilation-dir=/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-sFh4AC -resource-dir /Library/Developer/CommandLineTools/usr/lib/clang/21 -dependency-file CMakeFiles/cmTC_a0905.dir/CMakeCXXCompilerABI.cpp.o.d -skip-unused-modulemap-deps -MT CMakeFiles/cmTC_a0905.dir/CMakeCXXCompilerABI.cpp.o -sys-header-deps -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -I/usr/local/include -internal-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -internal-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/local/include -internal-isystem /Library/Developer/CommandLineTools/usr/lib/clang/21/include -internal-externc-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -internal-externc-isystem /Library/Developer/CommandLineTools/usr/include -internal-iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -internal-iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/SubFrameworks -internal-iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks -Wno-elaborated-enum-base -fdeprecated-macro -ferror-limit 19 -stack-protector 1 -fstack-check -mdarwin-stkchk-strong-link -fblocks -fencode-extended-block-signature -fregister-global-dtors-with-atexit -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -fcxx-exceptions -fexceptions -fmax-type-align=16 -fcommon -clang-vendor-feature=+disableNonDependentMemberExprInCurrentInstantiation -fno-odr-hash-protocols -clang-vendor-feature=+enableAggressiveVLAFolding -clang-vendor-feature=+revert09abecef7bbf -clang-vendor-feature=+thisNoAlignAttr -clang-vendor-feature=+thisNoNullAttr -clang-vendor-feature=+disableAtImportPrivateFrameworkInImplementationError -Wno-error=allocator-wrappers -fdwarf2-cfi-asm -o CMakeFiles/cmTC_a0905.dir/CMakeCXXCompilerABI.cpp.o -x c++ /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [clang -cc1 version 21.0.0 (clang-2100.1.1.101) default target arm64-apple-darwin25.5.0]
+        ignore line: [ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/local/include"]
+        ignore line: [ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1]
+        ignore line: [ /Library/Developer/CommandLineTools/usr/lib/clang/21/include]
+        ignore line: [ /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include]
+        ignore line: [ /Library/Developer/CommandLineTools/usr/include]
+        ignore line: [ /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks (framework directory)]
+        ignore line: [ /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/SubFrameworks (framework directory)]
+        ignore line: [End of search list.]
+        ignore line: [Linking CXX executable cmTC_a0905]
+        ignore line: [/opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a0905.dir/link.txt --verbose=1]
+        ignore line: [Apple clang version 21.0.0 (clang-2100.1.1.101)]
+        ignore line: [Target: arm64-apple-darwin25.5.0]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /Library/Developer/CommandLineTools/usr/bin]
+        link line: [ "/Library/Developer/CommandLineTools/usr/bin/ld" -demangle -lto_library /Library/Developer/CommandLineTools/usr/lib/libLTO.dylib -dynamic -arch arm64 -platform_version macos 26.0.0 26.5 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mllvm -enable-linkonceodr-outlining -o cmTC_a0905 -L/usr/local/lib -v CMakeFiles/cmTC_a0905.dir/CMakeCXXCompilerABI.cpp.o -lc++ -lSystem /Library/Developer/CommandLineTools/usr/lib/clang/21/lib/darwin/libclang_rt.osx.a]
+          arg [/Library/Developer/CommandLineTools/usr/bin/ld] ==> ignore
+          arg [-demangle] ==> ignore
+          arg [-lto_library] ==> ignore, skip following value
+          arg [/Library/Developer/CommandLineTools/usr/lib/libLTO.dylib] ==> skip value of -lto_library
+          arg [-dynamic] ==> ignore
+          arg [-arch] ==> ignore
+          arg [arm64] ==> ignore
+          arg [-platform_version] ==> ignore
+          arg [macos] ==> ignore
+          arg [26.0.0] ==> ignore
+          arg [26.5] ==> ignore
+          arg [-syslibroot] ==> ignore
+          arg [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk] ==> ignore
+          arg [-mllvm] ==> ignore
+          arg [-enable-linkonceodr-outlining] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_a0905] ==> ignore
+          arg [-L/usr/local/lib] ==> dir [/usr/local/lib]
+          arg [-v] ==> ignore
+          arg [CMakeFiles/cmTC_a0905.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+          arg [-lc++] ==> lib [c++]
+          arg [-lSystem] ==> lib [System]
+          arg [/Library/Developer/CommandLineTools/usr/lib/clang/21/lib/darwin/libclang_rt.osx.a] ==> lib [/Library/Developer/CommandLineTools/usr/lib/clang/21/lib/darwin/libclang_rt.osx.a]
+        linker tool for 'CXX': /Library/Developer/CommandLineTools/usr/bin/ld
+        Library search paths: [;/usr/local/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/swift]
+        Framework search paths: [;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks]
+        remove lib [System]
+        remove lib [/Library/Developer/CommandLineTools/usr/lib/clang/21/lib/darwin/libclang_rt.osx.a]
+        collapse library dir [/usr/local/lib] ==> [/usr/local/lib]
+        collapse library dir [/usr/local/lib] ==> [/usr/local/lib]
+        collapse library dir [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib]
+        collapse library dir [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/swift] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/swift]
+        collapse framework dir [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks]
+        implicit libs: [c++]
+        implicit objs: []
+        implicit dirs: [/usr/local/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/swift]
+        implicit fwks: [/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CMakeDetermineLinkerId.cmake:38 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:299 (cmake_determine_linker_id)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Running the CXX compiler's linker: "/Library/Developer/CommandLineTools/usr/bin/ld" "-v"
+      @(#)PROGRAM:ld PROJECT:ld-1267
+      BUILD 18:30:29 Apr 22 2026
+      configured to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386 x86_64 x86_64h armv6m armv7k armv7m armv7em armv8m.main armv8.1m.main
+      will use ld-classic for: armv6 armv7 armv7s i386 armv6m armv7k armv7m armv7em
+      LTO support using: LLVM version 21.0.0 (static support for 30, runtime is 30)
+      TAPI support using: Apple TAPI version 21.0.0 (tapi-2100.0.2.6)
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:517 (find_program)"
+      - "third_part/lcm/cmake/FindGLib2.cmake:73 (find_package)"
+      - "third_part/lcm/CMakeLists.txt:27 (find_package)"
+    mode: "program"
+    variable: "PKG_CONFIG_EXECUTABLE"
+    description: "pkg-config executable"
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "pkg-config"
+      - "pkgconf"
+    candidate_directories:
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/opt/homebrew/"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/bin/"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/sbin/"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/"
+      - "/opt/miniconda3/condabin/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/System/Cryptexes/App/usr/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/"
+      - "/pkg/env/global/bin/"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/bin/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/sbin/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/usr/"
+      - "/bin/"
+      - "/sbin/"
+      - "/usr/X11R6/bin/"
+      - "/usr/X11R6/sbin/"
+      - "/usr/X11R6/"
+      - "/usr/pkg/bin/"
+      - "/usr/pkg/sbin/"
+      - "/usr/pkg/"
+      - "/opt/bin/"
+      - "/opt/sbin/"
+      - "/opt/"
+      - "/sw/bin/"
+      - "/sw/sbin/"
+      - "/sw/"
+      - "/opt/local/bin/"
+      - "/opt/local/sbin/"
+      - "/opt/local/"
+      - "/Users/ky/Applications/"
+      - "/Applications/"
+    found: "/opt/homebrew/bin/pkg-config"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+        - "/sw"
+        - "/opt/local"
+      CMAKE_SYSTEM_APPBUNDLE_PATH:
+        - "/Users/ky/Applications"
+        - "/Applications"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:761 (find_library)"
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:811 (_pkg_find_libs)"
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:1149 (_pkg_recalculate)"
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:1166 (_pkg_check_modules_internal)"
+      - "third_part/lcm/cmake/FindGLib2.cmake:77 (pkg_check_modules)"
+      - "third_part/lcm/CMakeLists.txt:27 (find_package)"
+    mode: "library"
+    variable: "pkgcfg_lib_GLIB_glib-2.0"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "glib-2.0"
+    candidate_directories:
+      - "/opt/homebrew/Cellar/glib/2.88.0/lib/"
+    found: "/opt/homebrew/Cellar/glib/2.88.0/lib/libglib-2.0.dylib"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+        - "/sw"
+        - "/opt/local"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+      CMAKE_SYSTEM_FRAMEWORK_PATH:
+        - "~/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Network/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Frameworks"
+        - "/Network/Library/Frameworks"
+        - "/System/Library/Frameworks"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:761 (find_library)"
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:811 (_pkg_find_libs)"
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:1149 (_pkg_recalculate)"
+      - "/opt/homebrew/share/cmake/Modules/FindPkgConfig.cmake:1166 (_pkg_check_modules_internal)"
+      - "third_part/lcm/cmake/FindGLib2.cmake:77 (pkg_check_modules)"
+      - "third_part/lcm/CMakeLists.txt:27 (find_package)"
+    mode: "library"
+    variable: "pkgcfg_lib_GLIB_intl"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "intl"
+    candidate_directories:
+      - "/opt/homebrew/Cellar/glib/2.88.0/lib/"
+      - "/opt/homebrew/opt/gettext/lib/"
+    searched_directories:
+      - "/opt/homebrew/Cellar/glib/2.88.0/lib/"
+    found: "/opt/homebrew/opt/gettext/lib/libintl.dylib"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+        - "/sw"
+        - "/opt/local"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+      CMAKE_SYSTEM_FRAMEWORK_PATH:
+        - "~/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Network/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Frameworks"
+        - "/Network/Library/Frameworks"
+        - "/System/Library/Frameworks"
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCCompilerFlag.cmake:105 (cmake_check_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:12 (check_c_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:61 (lcm_add_c_flags)"
+      - "third_part/lcm/CMakeLists.txt:30 (include)"
+    checks:
+      - "Performing Test CMAKE_C_COMPILER_SUPPORTS__std_gnu99"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-dYAABu"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-dYAABu"
+    cmakeVariables:
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_C_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/ky/code/Panthera-HT_SDK/panthera_cpp/motor_cpp/third_part/lcm/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "CMAKE_C_COMPILER_SUPPORTS__std_gnu99"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-dYAABu'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_0e84d/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_0e84d.dir/build.make CMakeFiles/cmTC_0e84d.dir/build
+        Building C object CMakeFiles/cmTC_0e84d.dir/src.c.o
+        /usr/bin/cc -DCMAKE_C_COMPILER_SUPPORTS__std_gnu99  -std=gnu99 -MD -MT CMakeFiles/cmTC_0e84d.dir/src.c.o -MF CMakeFiles/cmTC_0e84d.dir/src.c.o.d -o CMakeFiles/cmTC_0e84d.dir/src.c.o -c /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-dYAABu/src.c
+        Linking C executable cmTC_0e84d
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0e84d.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_0e84d.dir/src.c.o -o cmTC_0e84d
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCCompilerFlag.cmake:105 (cmake_check_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:12 (check_c_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:39 (lcm_add_c_flags)"
+      - "third_part/lcm/lcm-cmake/config.cmake:62 (lcm_add_c_and_cxx_flags)"
+      - "third_part/lcm/CMakeLists.txt:30 (include)"
+    checks:
+      - "Performing Test CMAKE_C_COMPILER_SUPPORTS__Wall"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-pcoo3q"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-pcoo3q"
+    cmakeVariables:
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_C_FLAGS: " -std=gnu99"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/ky/code/Panthera-HT_SDK/panthera_cpp/motor_cpp/third_part/lcm/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "CMAKE_C_COMPILER_SUPPORTS__Wall"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-pcoo3q'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_9f994/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_9f994.dir/build.make CMakeFiles/cmTC_9f994.dir/build
+        Building C object CMakeFiles/cmTC_9f994.dir/src.c.o
+        /usr/bin/cc -DCMAKE_C_COMPILER_SUPPORTS__Wall  -std=gnu99    -Wall -MD -MT CMakeFiles/cmTC_9f994.dir/src.c.o -MF CMakeFiles/cmTC_9f994.dir/src.c.o.d -o CMakeFiles/cmTC_9f994.dir/src.c.o -c /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-pcoo3q/src.c
+        Linking C executable cmTC_9f994
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9f994.dir/link.txt --verbose=1
+        /usr/bin/cc  -std=gnu99  CMakeFiles/cmTC_9f994.dir/src.c.o -o cmTC_9f994
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCCompilerFlag.cmake:105 (cmake_check_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:12 (check_c_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:39 (lcm_add_c_flags)"
+      - "third_part/lcm/lcm-cmake/config.cmake:62 (lcm_add_c_and_cxx_flags)"
+      - "third_part/lcm/CMakeLists.txt:30 (include)"
+    checks:
+      - "Performing Test CMAKE_C_COMPILER_SUPPORTS__Wshadow"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-P0H8Ri"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-P0H8Ri"
+    cmakeVariables:
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_C_FLAGS: " -std=gnu99 -Wall"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/ky/code/Panthera-HT_SDK/panthera_cpp/motor_cpp/third_part/lcm/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "CMAKE_C_COMPILER_SUPPORTS__Wshadow"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-P0H8Ri'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_e0cf6/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_e0cf6.dir/build.make CMakeFiles/cmTC_e0cf6.dir/build
+        Building C object CMakeFiles/cmTC_e0cf6.dir/src.c.o
+        /usr/bin/cc -DCMAKE_C_COMPILER_SUPPORTS__Wshadow  -std=gnu99 -Wall    -Wshadow -MD -MT CMakeFiles/cmTC_e0cf6.dir/src.c.o -MF CMakeFiles/cmTC_e0cf6.dir/src.c.o.d -o CMakeFiles/cmTC_e0cf6.dir/src.c.o -c /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-P0H8Ri/src.c
+        Linking C executable cmTC_e0cf6
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e0cf6.dir/link.txt --verbose=1
+        /usr/bin/cc  -std=gnu99 -Wall  CMakeFiles/cmTC_e0cf6.dir/src.c.o -o cmTC_e0cf6
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCCompilerFlag.cmake:105 (cmake_check_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:12 (check_c_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:39 (lcm_add_c_flags)"
+      - "third_part/lcm/lcm-cmake/config.cmake:62 (lcm_add_c_and_cxx_flags)"
+      - "third_part/lcm/CMakeLists.txt:30 (include)"
+    checks:
+      - "Performing Test CMAKE_C_COMPILER_SUPPORTS__Wuninitialized"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-o6hltE"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-o6hltE"
+    cmakeVariables:
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_C_FLAGS: " -std=gnu99 -Wall -Wshadow"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/ky/code/Panthera-HT_SDK/panthera_cpp/motor_cpp/third_part/lcm/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "CMAKE_C_COMPILER_SUPPORTS__Wuninitialized"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-o6hltE'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_b5764/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_b5764.dir/build.make CMakeFiles/cmTC_b5764.dir/build
+        Building C object CMakeFiles/cmTC_b5764.dir/src.c.o
+        /usr/bin/cc -DCMAKE_C_COMPILER_SUPPORTS__Wuninitialized  -std=gnu99 -Wall -Wshadow    -Wuninitialized -MD -MT CMakeFiles/cmTC_b5764.dir/src.c.o -MF CMakeFiles/cmTC_b5764.dir/src.c.o.d -o CMakeFiles/cmTC_b5764.dir/src.c.o -c /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-o6hltE/src.c
+        Linking C executable cmTC_b5764
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b5764.dir/link.txt --verbose=1
+        /usr/bin/cc  -std=gnu99 -Wall -Wshadow  CMakeFiles/cmTC_b5764.dir/src.c.o -o cmTC_b5764
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCCompilerFlag.cmake:105 (cmake_check_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:12 (check_c_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:39 (lcm_add_c_flags)"
+      - "third_part/lcm/lcm-cmake/config.cmake:62 (lcm_add_c_and_cxx_flags)"
+      - "third_part/lcm/CMakeLists.txt:30 (include)"
+    checks:
+      - "Performing Test CMAKE_C_COMPILER_SUPPORTS__Wunused_variable"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-KR9Mib"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-KR9Mib"
+    cmakeVariables:
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_C_FLAGS: " -std=gnu99 -Wall -Wshadow -Wuninitialized"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/ky/code/Panthera-HT_SDK/panthera_cpp/motor_cpp/third_part/lcm/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "CMAKE_C_COMPILER_SUPPORTS__Wunused_variable"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-KR9Mib'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_2d953/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_2d953.dir/build.make CMakeFiles/cmTC_2d953.dir/build
+        Building C object CMakeFiles/cmTC_2d953.dir/src.c.o
+        /usr/bin/cc -DCMAKE_C_COMPILER_SUPPORTS__Wunused_variable  -std=gnu99 -Wall -Wshadow -Wuninitialized    -Wunused-variable -MD -MT CMakeFiles/cmTC_2d953.dir/src.c.o -MF CMakeFiles/cmTC_2d953.dir/src.c.o.d -o CMakeFiles/cmTC_2d953.dir/src.c.o -c /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-KR9Mib/src.c
+        Linking C executable cmTC_2d953
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2d953.dir/link.txt --verbose=1
+        /usr/bin/cc  -std=gnu99 -Wall -Wshadow -Wuninitialized  CMakeFiles/cmTC_2d953.dir/src.c.o -o cmTC_2d953
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCCompilerFlag.cmake:105 (cmake_check_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:12 (check_c_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:39 (lcm_add_c_flags)"
+      - "third_part/lcm/lcm-cmake/config.cmake:62 (lcm_add_c_and_cxx_flags)"
+      - "third_part/lcm/CMakeLists.txt:30 (include)"
+    checks:
+      - "Performing Test CMAKE_C_COMPILER_SUPPORTS__Werror_return_type"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-wYJynD"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-wYJynD"
+    cmakeVariables:
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_C_FLAGS: " -std=gnu99 -Wall -Wshadow -Wuninitialized -Wunused-variable"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/ky/code/Panthera-HT_SDK/panthera_cpp/motor_cpp/third_part/lcm/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "CMAKE_C_COMPILER_SUPPORTS__Werror_return_type"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-wYJynD'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_ce80b/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_ce80b.dir/build.make CMakeFiles/cmTC_ce80b.dir/build
+        Building C object CMakeFiles/cmTC_ce80b.dir/src.c.o
+        /usr/bin/cc -DCMAKE_C_COMPILER_SUPPORTS__Werror_return_type  -std=gnu99 -Wall -Wshadow -Wuninitialized -Wunused-variable    -Werror=return-type -MD -MT CMakeFiles/cmTC_ce80b.dir/src.c.o -MF CMakeFiles/cmTC_ce80b.dir/src.c.o.d -o CMakeFiles/cmTC_ce80b.dir/src.c.o -c /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-wYJynD/src.c
+        Linking C executable cmTC_ce80b
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ce80b.dir/link.txt --verbose=1
+        /usr/bin/cc  -std=gnu99 -Wall -Wshadow -Wuninitialized -Wunused-variable  CMakeFiles/cmTC_ce80b.dir/src.c.o -o cmTC_ce80b
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCCompilerFlag.cmake:105 (cmake_check_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:12 (check_c_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:39 (lcm_add_c_flags)"
+      - "third_part/lcm/lcm-cmake/config.cmake:62 (lcm_add_c_and_cxx_flags)"
+      - "third_part/lcm/CMakeLists.txt:30 (include)"
+    checks:
+      - "Performing Test CMAKE_C_COMPILER_SUPPORTS__Wno_unused_parameter"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-jDo3P2"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-jDo3P2"
+    cmakeVariables:
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_C_FLAGS: " -std=gnu99 -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/ky/code/Panthera-HT_SDK/panthera_cpp/motor_cpp/third_part/lcm/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "CMAKE_C_COMPILER_SUPPORTS__Wno_unused_parameter"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-jDo3P2'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_e0cd6/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_e0cd6.dir/build.make CMakeFiles/cmTC_e0cd6.dir/build
+        Building C object CMakeFiles/cmTC_e0cd6.dir/src.c.o
+        /usr/bin/cc -DCMAKE_C_COMPILER_SUPPORTS__Wno_unused_parameter  -std=gnu99 -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type    -Wno-unused-parameter -MD -MT CMakeFiles/cmTC_e0cd6.dir/src.c.o -MF CMakeFiles/cmTC_e0cd6.dir/src.c.o.d -o CMakeFiles/cmTC_e0cd6.dir/src.c.o -c /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-jDo3P2/src.c
+        Linking C executable cmTC_e0cd6
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e0cd6.dir/link.txt --verbose=1
+        /usr/bin/cc  -std=gnu99 -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type  CMakeFiles/cmTC_e0cd6.dir/src.c.o -o cmTC_e0cd6
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCCompilerFlag.cmake:105 (cmake_check_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:12 (check_c_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:39 (lcm_add_c_flags)"
+      - "third_part/lcm/lcm-cmake/config.cmake:62 (lcm_add_c_and_cxx_flags)"
+      - "third_part/lcm/CMakeLists.txt:30 (include)"
+    checks:
+      - "Performing Test CMAKE_C_COMPILER_SUPPORTS__Wno_format_zero_length"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-Apx4kB"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-Apx4kB"
+    cmakeVariables:
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_C_FLAGS: " -std=gnu99 -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/ky/code/Panthera-HT_SDK/panthera_cpp/motor_cpp/third_part/lcm/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "CMAKE_C_COMPILER_SUPPORTS__Wno_format_zero_length"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-Apx4kB'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_9d1f6/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_9d1f6.dir/build.make CMakeFiles/cmTC_9d1f6.dir/build
+        Building C object CMakeFiles/cmTC_9d1f6.dir/src.c.o
+        /usr/bin/cc -DCMAKE_C_COMPILER_SUPPORTS__Wno_format_zero_length  -std=gnu99 -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter    -Wno-format-zero-length -MD -MT CMakeFiles/cmTC_9d1f6.dir/src.c.o -MF CMakeFiles/cmTC_9d1f6.dir/src.c.o.d -o CMakeFiles/cmTC_9d1f6.dir/src.c.o -c /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-Apx4kB/src.c
+        Linking C executable cmTC_9d1f6
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9d1f6.dir/link.txt --verbose=1
+        /usr/bin/cc  -std=gnu99 -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter  CMakeFiles/cmTC_9d1f6.dir/src.c.o -o cmTC_9d1f6
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCCompilerFlag.cmake:105 (cmake_check_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:12 (check_c_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:39 (lcm_add_c_flags)"
+      - "third_part/lcm/lcm-cmake/config.cmake:62 (lcm_add_c_and_cxx_flags)"
+      - "third_part/lcm/CMakeLists.txt:30 (include)"
+    checks:
+      - "Performing Test CMAKE_C_COMPILER_SUPPORTS__Wno_stringop_truncation"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-FOrNY9"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-FOrNY9"
+    cmakeVariables:
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_C_FLAGS: " -std=gnu99 -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter -Wno-format-zero-length"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/ky/code/Panthera-HT_SDK/panthera_cpp/motor_cpp/third_part/lcm/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "CMAKE_C_COMPILER_SUPPORTS__Wno_stringop_truncation"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-FOrNY9'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_d9e2c/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_d9e2c.dir/build.make CMakeFiles/cmTC_d9e2c.dir/build
+        Building C object CMakeFiles/cmTC_d9e2c.dir/src.c.o
+        /usr/bin/cc -DCMAKE_C_COMPILER_SUPPORTS__Wno_stringop_truncation  -std=gnu99 -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter -Wno-format-zero-length    -Wno-stringop-truncation -MD -MT CMakeFiles/cmTC_d9e2c.dir/src.c.o -MF CMakeFiles/cmTC_d9e2c.dir/src.c.o.d -o CMakeFiles/cmTC_d9e2c.dir/src.c.o -c /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-FOrNY9/src.c
+        warning: unknown warning option '-Wno-stringop-truncation'; did you mean '-Wno-format-truncation'? [-Wunknown-warning-option]
+        1 warning generated.
+        Linking C executable cmTC_d9e2c
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d9e2c.dir/link.txt --verbose=1
+        /usr/bin/cc  -std=gnu99 -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter -Wno-format-zero-length  CMakeFiles/cmTC_d9e2c.dir/src.c.o -o cmTC_d9e2c
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCXXCompilerFlag.cmake:103 (cmake_check_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:28 (check_cxx_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:40 (lcm_add_cxx_flags)"
+      - "third_part/lcm/lcm-cmake/config.cmake:62 (lcm_add_c_and_cxx_flags)"
+      - "third_part/lcm/CMakeLists.txt:30 (include)"
+    checks:
+      - "Performing Test CMAKE_CXX_COMPILER_SUPPORTS__Wall"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-7sbxYJ"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-7sbxYJ"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/ky/code/Panthera-HT_SDK/panthera_cpp/motor_cpp/third_part/lcm/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "CMAKE_CXX_COMPILER_SUPPORTS__Wall"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-7sbxYJ'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_5598b/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_5598b.dir/build.make CMakeFiles/cmTC_5598b.dir/build
+        Building CXX object CMakeFiles/cmTC_5598b.dir/src.cxx.o
+        /usr/bin/c++ -DCMAKE_CXX_COMPILER_SUPPORTS__Wall  -Wall -MD -MT CMakeFiles/cmTC_5598b.dir/src.cxx.o -MF CMakeFiles/cmTC_5598b.dir/src.cxx.o.d -o CMakeFiles/cmTC_5598b.dir/src.cxx.o -c /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-7sbxYJ/src.cxx
+        Linking CXX executable cmTC_5598b
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5598b.dir/link.txt --verbose=1
+        /usr/bin/c++ CMakeFiles/cmTC_5598b.dir/src.cxx.o -o cmTC_5598b
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCXXCompilerFlag.cmake:103 (cmake_check_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:28 (check_cxx_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:40 (lcm_add_cxx_flags)"
+      - "third_part/lcm/lcm-cmake/config.cmake:62 (lcm_add_c_and_cxx_flags)"
+      - "third_part/lcm/CMakeLists.txt:30 (include)"
+    checks:
+      - "Performing Test CMAKE_CXX_COMPILER_SUPPORTS__Wshadow"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-2q5371"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-2q5371"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall"
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/ky/code/Panthera-HT_SDK/panthera_cpp/motor_cpp/third_part/lcm/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "CMAKE_CXX_COMPILER_SUPPORTS__Wshadow"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-2q5371'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_4603c/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_4603c.dir/build.make CMakeFiles/cmTC_4603c.dir/build
+        Building CXX object CMakeFiles/cmTC_4603c.dir/src.cxx.o
+        /usr/bin/c++ -DCMAKE_CXX_COMPILER_SUPPORTS__Wshadow  -Wall    -Wshadow -MD -MT CMakeFiles/cmTC_4603c.dir/src.cxx.o -MF CMakeFiles/cmTC_4603c.dir/src.cxx.o.d -o CMakeFiles/cmTC_4603c.dir/src.cxx.o -c /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-2q5371/src.cxx
+        Linking CXX executable cmTC_4603c
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4603c.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall  CMakeFiles/cmTC_4603c.dir/src.cxx.o -o cmTC_4603c
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCXXCompilerFlag.cmake:103 (cmake_check_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:28 (check_cxx_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:40 (lcm_add_cxx_flags)"
+      - "third_part/lcm/lcm-cmake/config.cmake:62 (lcm_add_c_and_cxx_flags)"
+      - "third_part/lcm/CMakeLists.txt:30 (include)"
+    checks:
+      - "Performing Test CMAKE_CXX_COMPILER_SUPPORTS__Wuninitialized"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-JDV8GL"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-JDV8GL"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wshadow"
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/ky/code/Panthera-HT_SDK/panthera_cpp/motor_cpp/third_part/lcm/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "CMAKE_CXX_COMPILER_SUPPORTS__Wuninitialized"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-JDV8GL'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_58178/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_58178.dir/build.make CMakeFiles/cmTC_58178.dir/build
+        Building CXX object CMakeFiles/cmTC_58178.dir/src.cxx.o
+        /usr/bin/c++ -DCMAKE_CXX_COMPILER_SUPPORTS__Wuninitialized  -Wall -Wshadow    -Wuninitialized -MD -MT CMakeFiles/cmTC_58178.dir/src.cxx.o -MF CMakeFiles/cmTC_58178.dir/src.cxx.o.d -o CMakeFiles/cmTC_58178.dir/src.cxx.o -c /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-JDV8GL/src.cxx
+        Linking CXX executable cmTC_58178
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_58178.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -Wshadow  CMakeFiles/cmTC_58178.dir/src.cxx.o -o cmTC_58178
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCXXCompilerFlag.cmake:103 (cmake_check_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:28 (check_cxx_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:40 (lcm_add_cxx_flags)"
+      - "third_part/lcm/lcm-cmake/config.cmake:62 (lcm_add_c_and_cxx_flags)"
+      - "third_part/lcm/CMakeLists.txt:30 (include)"
+    checks:
+      - "Performing Test CMAKE_CXX_COMPILER_SUPPORTS__Wunused_variable"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-Eil7o3"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-Eil7o3"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wshadow -Wuninitialized"
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/ky/code/Panthera-HT_SDK/panthera_cpp/motor_cpp/third_part/lcm/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "CMAKE_CXX_COMPILER_SUPPORTS__Wunused_variable"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-Eil7o3'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_00321/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_00321.dir/build.make CMakeFiles/cmTC_00321.dir/build
+        Building CXX object CMakeFiles/cmTC_00321.dir/src.cxx.o
+        /usr/bin/c++ -DCMAKE_CXX_COMPILER_SUPPORTS__Wunused_variable  -Wall -Wshadow -Wuninitialized    -Wunused-variable -MD -MT CMakeFiles/cmTC_00321.dir/src.cxx.o -MF CMakeFiles/cmTC_00321.dir/src.cxx.o.d -o CMakeFiles/cmTC_00321.dir/src.cxx.o -c /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-Eil7o3/src.cxx
+        Linking CXX executable cmTC_00321
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_00321.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -Wshadow -Wuninitialized  CMakeFiles/cmTC_00321.dir/src.cxx.o -o cmTC_00321
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCXXCompilerFlag.cmake:103 (cmake_check_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:28 (check_cxx_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:40 (lcm_add_cxx_flags)"
+      - "third_part/lcm/lcm-cmake/config.cmake:62 (lcm_add_c_and_cxx_flags)"
+      - "third_part/lcm/CMakeLists.txt:30 (include)"
+    checks:
+      - "Performing Test CMAKE_CXX_COMPILER_SUPPORTS__Werror_return_type"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-wSI2Ov"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-wSI2Ov"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wshadow -Wuninitialized -Wunused-variable"
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/ky/code/Panthera-HT_SDK/panthera_cpp/motor_cpp/third_part/lcm/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "CMAKE_CXX_COMPILER_SUPPORTS__Werror_return_type"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-wSI2Ov'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_31003/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_31003.dir/build.make CMakeFiles/cmTC_31003.dir/build
+        Building CXX object CMakeFiles/cmTC_31003.dir/src.cxx.o
+        /usr/bin/c++ -DCMAKE_CXX_COMPILER_SUPPORTS__Werror_return_type  -Wall -Wshadow -Wuninitialized -Wunused-variable    -Werror=return-type -MD -MT CMakeFiles/cmTC_31003.dir/src.cxx.o -MF CMakeFiles/cmTC_31003.dir/src.cxx.o.d -o CMakeFiles/cmTC_31003.dir/src.cxx.o -c /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-wSI2Ov/src.cxx
+        Linking CXX executable cmTC_31003
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_31003.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -Wshadow -Wuninitialized -Wunused-variable  CMakeFiles/cmTC_31003.dir/src.cxx.o -o cmTC_31003
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCXXCompilerFlag.cmake:103 (cmake_check_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:28 (check_cxx_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:40 (lcm_add_cxx_flags)"
+      - "third_part/lcm/lcm-cmake/config.cmake:62 (lcm_add_c_and_cxx_flags)"
+      - "third_part/lcm/CMakeLists.txt:30 (include)"
+    checks:
+      - "Performing Test CMAKE_CXX_COMPILER_SUPPORTS__Wno_unused_parameter"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-xMCe4V"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-xMCe4V"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type"
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/ky/code/Panthera-HT_SDK/panthera_cpp/motor_cpp/third_part/lcm/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "CMAKE_CXX_COMPILER_SUPPORTS__Wno_unused_parameter"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-xMCe4V'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_10219/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_10219.dir/build.make CMakeFiles/cmTC_10219.dir/build
+        Building CXX object CMakeFiles/cmTC_10219.dir/src.cxx.o
+        /usr/bin/c++ -DCMAKE_CXX_COMPILER_SUPPORTS__Wno_unused_parameter  -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type    -Wno-unused-parameter -MD -MT CMakeFiles/cmTC_10219.dir/src.cxx.o -MF CMakeFiles/cmTC_10219.dir/src.cxx.o.d -o CMakeFiles/cmTC_10219.dir/src.cxx.o -c /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-xMCe4V/src.cxx
+        Linking CXX executable cmTC_10219
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_10219.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type  CMakeFiles/cmTC_10219.dir/src.cxx.o -o cmTC_10219
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCXXCompilerFlag.cmake:103 (cmake_check_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:28 (check_cxx_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:40 (lcm_add_cxx_flags)"
+      - "third_part/lcm/lcm-cmake/config.cmake:62 (lcm_add_c_and_cxx_flags)"
+      - "third_part/lcm/CMakeLists.txt:30 (include)"
+    checks:
+      - "Performing Test CMAKE_CXX_COMPILER_SUPPORTS__Wno_format_zero_length"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-s6wlBa"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-s6wlBa"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter"
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/ky/code/Panthera-HT_SDK/panthera_cpp/motor_cpp/third_part/lcm/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "CMAKE_CXX_COMPILER_SUPPORTS__Wno_format_zero_length"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-s6wlBa'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_061ba/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_061ba.dir/build.make CMakeFiles/cmTC_061ba.dir/build
+        Building CXX object CMakeFiles/cmTC_061ba.dir/src.cxx.o
+        /usr/bin/c++ -DCMAKE_CXX_COMPILER_SUPPORTS__Wno_format_zero_length  -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter    -Wno-format-zero-length -MD -MT CMakeFiles/cmTC_061ba.dir/src.cxx.o -MF CMakeFiles/cmTC_061ba.dir/src.cxx.o.d -o CMakeFiles/cmTC_061ba.dir/src.cxx.o -c /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-s6wlBa/src.cxx
+        Linking CXX executable cmTC_061ba
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_061ba.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter  CMakeFiles/cmTC_061ba.dir/src.cxx.o -o cmTC_061ba
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCXXCompilerFlag.cmake:103 (cmake_check_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:28 (check_cxx_compiler_flag)"
+      - "third_part/lcm/lcm-cmake/config.cmake:40 (lcm_add_cxx_flags)"
+      - "third_part/lcm/lcm-cmake/config.cmake:62 (lcm_add_c_and_cxx_flags)"
+      - "third_part/lcm/CMakeLists.txt:30 (include)"
+    checks:
+      - "Performing Test CMAKE_CXX_COMPILER_SUPPORTS__Wno_stringop_truncation"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-KCHvYs"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-KCHvYs"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter -Wno-format-zero-length"
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/ky/code/Panthera-HT_SDK/panthera_cpp/motor_cpp/third_part/lcm/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "CMAKE_CXX_COMPILER_SUPPORTS__Wno_stringop_truncation"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-KCHvYs'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_f8ad8/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_f8ad8.dir/build.make CMakeFiles/cmTC_f8ad8.dir/build
+        Building CXX object CMakeFiles/cmTC_f8ad8.dir/src.cxx.o
+        /usr/bin/c++ -DCMAKE_CXX_COMPILER_SUPPORTS__Wno_stringop_truncation  -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter -Wno-format-zero-length    -Wno-stringop-truncation -MD -MT CMakeFiles/cmTC_f8ad8.dir/src.cxx.o -MF CMakeFiles/cmTC_f8ad8.dir/src.cxx.o.d -o CMakeFiles/cmTC_f8ad8.dir/src.cxx.o -c /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-KCHvYs/src.cxx
+        warning: unknown warning option '-Wno-stringop-truncation'; did you mean '-Wno-format-truncation'? [-Wunknown-warning-option]
+        1 warning generated.
+        Linking CXX executable cmTC_f8ad8
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f8ad8.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter -Wno-format-zero-length  CMakeFiles/cmTC_f8ad8.dir/src.cxx.o -o cmTC_f8ad8
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCSourceCompiles.cmake:103 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/FindThreads.cmake:160 (check_c_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/FindThreads.cmake:226 (_threads_check_libc)"
+      - "third_part/lcm/lcm/CMakeLists.txt:2 (find_package)"
+    checks:
+      - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-E0uIqf"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-E0uIqf"
+    cmakeVariables:
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_C_FLAGS: " -std=gnu99 -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter -Wno-format-zero-length"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/ky/code/Panthera-HT_SDK/panthera_cpp/motor_cpp/third_part/lcm/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+    buildResult:
+      variable: "CMAKE_HAVE_LIBC_PTHREAD"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-E0uIqf'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_b94c0/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_b94c0.dir/build.make CMakeFiles/cmTC_b94c0.dir/build
+        Building C object CMakeFiles/cmTC_b94c0.dir/src.c.o
+        /usr/bin/cc -DCMAKE_HAVE_LIBC_PTHREAD  -std=gnu99 -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter -Wno-format-zero-length  -MD -MT CMakeFiles/cmTC_b94c0.dir/src.c.o -MF CMakeFiles/cmTC_b94c0.dir/src.c.o.d -o CMakeFiles/cmTC_b94c0.dir/src.c.o -c /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-E0uIqf/src.c
+        Linking C executable cmTC_b94c0
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b94c0.dir/link.txt --verbose=1
+        /usr/bin/cc  -std=gnu99 -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter -Wno-format-zero-length  CMakeFiles/cmTC_b94c0.dir/src.c.o -o cmTC_b94c0
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCompilerFlag.cmake:124 (cmake_check_compiler_flag)"
+      - "/opt/homebrew/share/cmake/Modules/GenerateExportHeader.cmake:513 (check_compiler_flag)"
+      - "/opt/homebrew/share/cmake/Modules/GenerateExportHeader.cmake:691 (_test_compiler_hidden_visibility)"
+      - "third_part/lcm/lcm/CMakeLists.txt:80 (generate_export_header)"
+    checks:
+      - "Performing Test COMPILER_HAS_HIDDEN_VISIBILITY"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-d2mRSL"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-d2mRSL"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter -Wno-format-zero-length"
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/ky/code/Panthera-HT_SDK/panthera_cpp/motor_cpp/third_part/lcm/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "COMPILER_HAS_HIDDEN_VISIBILITY"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-d2mRSL'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_31f82/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_31f82.dir/build.make CMakeFiles/cmTC_31f82.dir/build
+        Building CXX object CMakeFiles/cmTC_31f82.dir/src.cxx.o
+        /usr/bin/c++ -DCOMPILER_HAS_HIDDEN_VISIBILITY  -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter -Wno-format-zero-length  -fPIE   -fvisibility=hidden -MD -MT CMakeFiles/cmTC_31f82.dir/src.cxx.o -MF CMakeFiles/cmTC_31f82.dir/src.cxx.o.d -o CMakeFiles/cmTC_31f82.dir/src.cxx.o -c /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-d2mRSL/src.cxx
+        Linking CXX executable cmTC_31f82
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_31f82.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter -Wno-format-zero-length  CMakeFiles/cmTC_31f82.dir/src.cxx.o -o cmTC_31f82
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCompilerFlag.cmake:124 (cmake_check_compiler_flag)"
+      - "/opt/homebrew/share/cmake/Modules/GenerateExportHeader.cmake:514 (check_compiler_flag)"
+      - "/opt/homebrew/share/cmake/Modules/GenerateExportHeader.cmake:691 (_test_compiler_hidden_visibility)"
+      - "third_part/lcm/lcm/CMakeLists.txt:80 (generate_export_header)"
+    checks:
+      - "Performing Test COMPILER_HAS_HIDDEN_INLINE_VISIBILITY"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-7suXRV"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-7suXRV"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter -Wno-format-zero-length"
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/ky/code/Panthera-HT_SDK/panthera_cpp/motor_cpp/third_part/lcm/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "COMPILER_HAS_HIDDEN_INLINE_VISIBILITY"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-7suXRV'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_5993a/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_5993a.dir/build.make CMakeFiles/cmTC_5993a.dir/build
+        Building CXX object CMakeFiles/cmTC_5993a.dir/src.cxx.o
+        /usr/bin/c++ -DCOMPILER_HAS_HIDDEN_INLINE_VISIBILITY  -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter -Wno-format-zero-length  -fPIE   -fvisibility-inlines-hidden -MD -MT CMakeFiles/cmTC_5993a.dir/src.cxx.o -MF CMakeFiles/cmTC_5993a.dir/src.cxx.o.d -o CMakeFiles/cmTC_5993a.dir/src.cxx.o -c /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-7suXRV/src.cxx
+        Linking CXX executable cmTC_5993a
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5993a.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter -Wno-format-zero-length  CMakeFiles/cmTC_5993a.dir/src.cxx.o -o cmTC_5993a
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/CheckSourceCompiles.cmake:205 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/GenerateExportHeader.cmake:479 (check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/GenerateExportHeader.cmake:538 (_check_cxx_compiler_attribute)"
+      - "/opt/homebrew/share/cmake/Modules/GenerateExportHeader.cmake:692 (_test_compiler_has_deprecated)"
+      - "third_part/lcm/lcm/CMakeLists.txt:80 (generate_export_header)"
+    checks:
+      - "Performing Test COMPILER_HAS_DEPRECATED_ATTR"
+    directories:
+      source: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-31jD5c"
+      binary: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-31jD5c"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter -Wno-format-zero-length"
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/ky/code/Panthera-HT_SDK/panthera_cpp/motor_cpp/third_part/lcm/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "COMPILER_HAS_DEPRECATED_ATTR"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-31jD5c'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_fb04f/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_fb04f.dir/build.make CMakeFiles/cmTC_fb04f.dir/build
+        Building CXX object CMakeFiles/cmTC_fb04f.dir/src.cxx.o
+        /usr/bin/c++ -DCOMPILER_HAS_DEPRECATED_ATTR  -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter -Wno-format-zero-length  -fPIE -MD -MT CMakeFiles/cmTC_fb04f.dir/src.cxx.o -MF CMakeFiles/cmTC_fb04f.dir/src.cxx.o.d -o CMakeFiles/cmTC_fb04f.dir/src.cxx.o -c /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-31jD5c/src.cxx
+        /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-31jD5c/src.cxx:2:25: warning: 'somefunc' is deprecated [-Wdeprecated-declarations]
+            2 |     int main() { return somefunc();}
+              |                         ^
+        /Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/CMakeScratch/TryCompile-31jD5c/src.cxx:1:16: note: 'somefunc' has been explicitly marked deprecated here
+            1 | __attribute__((__deprecated__)) int somefunc() { return 0; }
+              |                ^
+        1 warning generated.
+        Linking CXX executable cmTC_fb04f
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fb04f.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter -Wno-format-zero-length  CMakeFiles/cmTC_fb04f.dir/src.cxx.o -o cmTC_fb04f
+        
+      exitCode: 0
+  -
+    kind: "find-v1"
+    backtrace:
+      - "third_part/lcm/docs/CMakeLists.txt:3 (find_program)"
+    mode: "program"
+    variable: "DOXYGEN_EXECUTABLE"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "doxygen"
+    candidate_directories:
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/opt/homebrew/"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/bin/"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/sbin/"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/"
+      - "/opt/miniconda3/condabin/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/System/Cryptexes/App/usr/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/"
+      - "/pkg/env/global/bin/"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/bin/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/sbin/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/usr/"
+      - "/bin/"
+      - "/sbin/"
+      - "/usr/X11R6/bin/"
+      - "/usr/X11R6/sbin/"
+      - "/usr/X11R6/"
+      - "/usr/pkg/bin/"
+      - "/usr/pkg/sbin/"
+      - "/usr/pkg/"
+      - "/opt/bin/"
+      - "/opt/sbin/"
+      - "/opt/"
+      - "/sw/bin/"
+      - "/sw/sbin/"
+      - "/sw/"
+      - "/opt/local/bin/"
+      - "/opt/local/sbin/"
+      - "/opt/local/"
+      - "/Users/ky/Applications/"
+      - "/Applications/"
+    searched_directories:
+      - "/opt/homebrew/bin/doxygen"
+      - "/opt/homebrew/sbin/doxygen"
+      - "/opt/homebrew/doxygen"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/bin/doxygen"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/sbin/doxygen"
+      - "/Users/ky/code/Panthera-HT_SDK/.local_sdk/doxygen"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/doxygen"
+      - "/opt/miniconda3/condabin/doxygen"
+      - "/opt/homebrew/bin/doxygen"
+      - "/opt/homebrew/sbin/doxygen"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/doxygen"
+      - "/usr/local/bin/doxygen"
+      - "/System/Cryptexes/App/usr/bin/doxygen"
+      - "/usr/bin/doxygen"
+      - "/bin/doxygen"
+      - "/usr/sbin/doxygen"
+      - "/sbin/doxygen"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/doxygen"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/doxygen"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/doxygen"
+      - "/pkg/env/global/bin/doxygen"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/doxygen"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/bin/doxygen"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/sbin/doxygen"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/doxygen"
+      - "/usr/local/bin/doxygen"
+      - "/usr/local/sbin/doxygen"
+      - "/usr/local/doxygen"
+      - "/usr/bin/doxygen"
+      - "/usr/sbin/doxygen"
+      - "/usr/doxygen"
+      - "/bin/doxygen"
+      - "/sbin/doxygen"
+      - "/usr/X11R6/bin/doxygen"
+      - "/usr/X11R6/sbin/doxygen"
+      - "/usr/X11R6/doxygen"
+      - "/usr/pkg/bin/doxygen"
+      - "/usr/pkg/sbin/doxygen"
+      - "/usr/pkg/doxygen"
+      - "/opt/bin/doxygen"
+      - "/opt/sbin/doxygen"
+      - "/opt/doxygen"
+      - "/sw/bin/doxygen"
+      - "/sw/sbin/doxygen"
+      - "/sw/doxygen"
+      - "/opt/local/bin/doxygen"
+      - "/opt/local/sbin/doxygen"
+      - "/opt/local/doxygen"
+      - "/Users/ky/Applications/doxygen"
+      - "/Applications/doxygen"
+    found: false
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+        - "/sw"
+        - "/opt/local"
+      CMAKE_SYSTEM_APPBUNDLE_PATH:
+        - "/Users/ky/Applications"
+        - "/Applications"
+  -
+    kind: "find_package-v1"
+    backtrace:
+      - "CMakeLists.txt:17 (find_package)"
+    name: "yaml-cpp"
+    configs:
+      -
+        filename: "yaml-cpp.cps"
+        kind: "cps"
+      -
+        filename: "yaml-cppConfig.cmake"
+        kind: "cmake"
+      -
+        filename: "yaml-cpp-config.cmake"
+        kind: "cmake"
+    version_request:
+      exact: false
+    settings:
+      required: "required_explicit"
+      quiet: false
+      global: false
+      policy_scope: true
+      bypass_provider: false
+      names:
+        - "yaml-cpp"
+      path_suffixes:
+        - ""
+      paths:
+        CMAKE_FIND_USE_CMAKE_PATH: true
+        CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+        CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+        CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+        CMAKE_FIND_USE_INSTALL_PREFIX: true
+        CMAKE_FIND_USE_PACKAGE_ROOT_PATH: true
+        CMAKE_FIND_USE_CMAKE_PACKAGE_REGISTRY: true
+        CMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY: true
+        CMAKE_FIND_ROOT_PATH_MODE: "BOTH"
+    candidates:
+      -
+        path: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/pkgRedirects/yaml-cppConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/pkgRedirects/yaml-cpp-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/pkgRedirects/lib64/cps/yaml-cpp.cps"
+        mode: "cps"
+        reason: "no_exist"
+      -
+        path: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/pkgRedirects/lib/cps/yaml-cpp.cps"
+        mode: "cps"
+        reason: "no_exist"
+      -
+        path: "/Users/ky/code/Panthera-HT_SDK/.build/panthera_motor/CMakeFiles/pkgRedirects/share/cps/yaml-cpp.cps"
+        mode: "cps"
+        reason: "no_exist"
+      -
+        path: "/opt/homebrew/yaml-cppConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/opt/homebrew/yaml-cpp-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/opt/homebrew/lib64/cps/yaml-cpp.cps"
+        mode: "cps"
+        reason: "no_exist"
+      -
+        path: "/opt/homebrew/lib/cps/yaml-cpp.cps"
+        mode: "cps"
+        reason: "no_exist"
+      -
+        path: "/opt/homebrew/share/cps/yaml-cpp.cps"
+        mode: "cps"
+        reason: "no_exist"
+      -
+        path: "/opt/homebrew/lib/cmake/yaml-cpp/yaml-cppConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+    found:
+      path: "/opt/homebrew/lib/cmake/yaml-cpp/yaml-cpp-config.cmake"
+      mode: "config"
+      version: "0.9.0"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+        - "/sw"
+        - "/opt/local"
+      CMAKE_SYSTEM_FRAMEWORK_PATH:
+        - "~/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Network/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Frameworks"
+        - "/Network/Library/Frameworks"
+        - "/System/Library/Frameworks"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "CMakeLists.txt:19 (find_library)"
+    mode: "library"
+    variable: "SERIALPORT_LIBRARY"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "serialport"
+    candidate_directories:
+      - "/opt/homebrew/lib/"
+      - "/opt/homebrew/"
+      - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO/"
+      - "/opt/miniconda3/condabin/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/Library/Frameworks/Python.framework/Versions/3.14/bin/"
+      - "/usr/local/bin/"
+      - "/System/Cryptexes/App/usr/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/"
+      - "/usr/local/lib/"
+      - "/usr/local/"
+      - "/usr/lib/"
+      - "/usr/"
+      - "/opt/"
+      - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/"
+      - "/Library/Developer/CommandLineTools/Library/Frameworks/"
+      - "/Library/Frameworks/"
+      - "/System/Library/Frameworks/"
+    found: "/opt/homebrew/lib/libserialport.dylib"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      ENV{PATH}:
+        - "/Users/ky/.codex/tmp/arg0/codex-arg0EdovcO"
+        - "/opt/miniconda3/condabin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/Library/Frameworks/Python.framework/Versions/3.14/bin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/pkg/env/global/bin"
+        - "/Users/ky/.vscode/extensions/openai.chatgpt-26.519.32039-darwin-arm64/bin/macos-aarch64"
+      CMAKE_INSTALL_PREFIX: "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/opt/homebrew"
+        - "/Users/ky/code/Panthera-HT_SDK/.local_sdk"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+        - "/sw"
+        - "/opt/local"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+      CMAKE_SYSTEM_FRAMEWORK_PATH:
+        - "~/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/Network/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Developer/CommandLineTools/Library/Frameworks"
+        - "/Library/Frameworks"
+        - "/Network/Library/Frameworks"
+        - "/System/Library/Frameworks"
+...

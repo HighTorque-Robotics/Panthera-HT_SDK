@@ -91,6 +91,7 @@ PYBIND11_MODULE(_hightorque_robot, m) {
     py::class_<CANPortParams>(m, "CANPortParams")
         .def(py::init<>())
         .def_readwrite("serial_id", &CANPortParams::serial_id)
+        .def_readwrite("serial_port_name", &CANPortParams::serial_port_name)
         .def_readwrite("motor_num", &CANPortParams::motor_num)
         .def_readwrite("motors", &CANPortParams::motors);
 

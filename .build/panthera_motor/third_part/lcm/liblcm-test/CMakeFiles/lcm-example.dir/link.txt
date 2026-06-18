@@ -1,0 +1,1 @@
+/usr/bin/cc  -std=gnu99 -Wall -Wshadow -Wuninitialized -Wunused-variable -Werror=return-type -Wno-unused-parameter -Wno-format-zero-length -O3 -DNDEBUG -Wl,-search_paths_first -Wl,-headerpad_max_install_names "CMakeFiles/lcm-example.dir/lcm-example.c.o" -o lcm-example  ../lcm/liblcm.a /opt/homebrew/Cellar/glib/2.88.0/lib/libglib-2.0.dylib

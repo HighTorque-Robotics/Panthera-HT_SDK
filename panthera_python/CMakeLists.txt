@@ -35,18 +35,15 @@ include_directories(
 
 # 查找依赖库
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(LCM REQUIRED lcm)
-pkg_check_modules(YAML_CPP REQUIRED yaml-cpp)
+pkg_check_modules(LCM REQUIRED IMPORTED_TARGET lcm)
 
 # 创建pybind11模块
 pybind11_add_module(_hightorque_robot src/bindings.cpp)
 
 # 链接库
 target_link_libraries(_hightorque_robot PRIVATE
-    hightorque_motor
-    ${LCM_LIBRARIES}
-    ${YAML_CPP_LIBRARIES}
-    pthread
+    hightorque_motor::hightorque_motor
+    PkgConfig::LCM
 )
 
 # 设置输出目录

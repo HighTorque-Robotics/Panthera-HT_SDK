@@ -1,0 +1,12 @@
+prefix=/Users/ky/code/Panthera-HT_SDK/.local_sdk
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: lcm
+Description: lcm
+Requires:  glib-2.0
+Version: 1.5.1
+Libs: -L${libdir} -llcm
+Cflags: -I${includedir}
+classpath=
