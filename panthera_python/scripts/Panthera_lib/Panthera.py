@@ -1320,7 +1320,7 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
 
     def _execute_trajectory(self, joint_trajectory, timestamps, velocities, max_tqu=None):
         """
-        执行轨迹（使用 Joint_Pos_Vel 模式）
+        执行轨迹（使用 MIT 模式 + 重力补偿）
         """
         # 获取最大力矩限制
         if max_tqu is None:
@@ -1328,6 +1328,9 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
                 max_tqu = self.max_torque
             else:
                 max_tqu = np.array([21.0, 36.0, 36.0, 21.0, 10.0, 10.0])
+
+        kp = [30.0, 50.0, 60.0, 25.0, 15.0, 10.0]
+        kd = [3.0, 5.0, 6.0, 2.5, 1.5, 1.0]
 
         start_time = time.perf_counter()
 
@@ -1341,12 +1344,23 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
             while (time.perf_counter() - start_time) < target_time:
                 time.sleep(0.0001)
 
-            # 使用 Joint_Pos_Vel 模式发送控制指令
-            success = self.Joint_Pos_Vel(
+            # # 使用 Joint_Pos_Vel 模式发送控制指令
+            # success = self.Joint_Pos_Vel(
+            #     pos=joint_trajectory[i],
+            #     vel=velocities[i],
+            #     max_tqu=max_tqu,
+            #     iswait=False
+            # )
+
+            # 使用 MIT 模式发送控制指令
+            tqe = np.asarray(self.get_Gravity(joint_trajectory[i]))
+            tqe = np.clip(tqe, -np.asarray(max_tqu), np.asarray(max_tqu))
+            success = self.pos_vel_tqe_kp_kd(
                 pos=joint_trajectory[i],
                 vel=velocities[i],
-                max_tqu=max_tqu,
-                iswait=False
+                tqe=tqe,
+                kp=kp,
+                kd=kd
             )
 
             if not success:

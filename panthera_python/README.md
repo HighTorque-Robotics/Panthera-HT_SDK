@@ -392,6 +392,7 @@ panthera_python/
 │   │
 │   ├── 7_keyboard_cartesian_pos_control.py  # 键盘控制笛卡尔空间位姿（IK求解）
 │   ├── 7_keyboard_cartesian_vel_control.py  # 键盘控制末端速度（雅可比矩阵）
+│   ├── 7_vr_cartesian_control.py            # Quest VR手柄笛卡尔空间控制
 │   │
 │   └── motor_example/          # 底层电机控制示例
 │       ├── 01_motor_get_status.py
@@ -413,6 +414,53 @@ panthera_python/
 └── README.md                   # 本文档
 ```
 
+## Quest VR 手柄数据转发
+
+`scripts/7_vr_cartesian_control.py` 依赖外部 Quest 手柄数据流服务。该脚本会在本机监听 `UDP 5005`，因此在启动机械臂控制前，需要先启动 `Quest_controller_stream` 工程，将 Quest 手柄位姿和按键数据转发到本机。
+
+`Quest_controller_stream` 仓库：
+
+[https://github.com/HighTorque-Robotics/Quest_controller_stream](https://github.com/HighTorque-Robotics/Quest_controller_stream)
+
+> 建议直接使用仓库主页进行克隆和查看说明，不需要进入 GitHub 的 `settings` 页面。
+
+### 1. 先启动外部数据转发服务
+
+先进入 `Quest_controller_stream` 工程目录并启动手柄数据转发服务：
+
+```bash
+cd Quest_controller_stream
+python3 quest_stream_ui.py
+```
+
+或使用命令行方式启动：
+
+```bash
+cd Quest_controller_stream
+python3 start_stream_server.py --udp-ip 127.0.0.1 --udp-port 5005
+```
+
+确保该工程最终将 Quest 手柄数据转发到本机 `127.0.0.1:5005`。
+
+### 2. 启动 VR 笛卡尔控制脚本
+
+在 Quest 手柄数据转发服务启动后，再打开另一个终端运行：
+
+```bash
+cd Panthera-HT_SDK/panthera_python/scripts
+python3 7_vr_cartesian_control.py
+```
+
+程序启动后会等待 Quest 手柄连接，并从 `UDP 5005` 接收左右手柄数据。
+
+### 3. 使用说明
+
+- 按下右手柄 `Squeeze`：激活机械臂控制
+- 移动手柄位置：控制机械臂末端位置
+- 旋转手柄姿态：控制机械臂末端姿态
+- 按住 `Squeeze` 再按 `Trigger`：控制夹爪开合
+- 松开 `Squeeze`：机械臂停止运动并保持当前位置
+
 ## 故障排除
 
 ### URDF加载失败
@@ -424,6 +472,17 @@ panthera_python/
 ### 电机无法连接
 检查板子开关情况，电机电源按钮亮绿灯则为上电
 若依旧无法连接请检查电机之间连接线情况
+
+### 7_vr_cartesian_control.py 无法收到手柄数据
+
+检查 `Quest_controller_stream` 是否已经启动，并确认以下项目一致：
+
+- `Quest_controller_stream` 的 `UDP IP` 为 `127.0.0.1`
+- `Quest_controller_stream` 的 `UDP Port` 为 `5005`
+- `7_vr_cartesian_control.py` 正在本机运行
+- Quest Browser 页面中已经点击 `Start XR Stream`
+- 若使用 USB 模式，`adb devices` 能看到 Quest 设备
+- 若使用 WiFi 模式，Quest 与电脑处于同一局域网，且已接受 HTTPS 证书警告
 
 
 ## 小技巧
