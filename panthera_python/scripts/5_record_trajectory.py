@@ -8,8 +8,12 @@ import numpy as np
 from Panthera_lib import Panthera, TrajectoryRecorder
 
 # ---------------- 参数区 ----------------
-DO_RECORD = True          # True=记录  False=不记录
-REC_FILE  = None          # None=自动生成文件名
+DO_RECORD = True                 # True=记录  False=不记录
+REC_FILE = None                  # None=自动生成文件名
+USE_FRICTION_COMPENSATION = False
+CONTROL_DT = 0.002
+RECORD_DT = 0.01
+PRINT_INTERVAL = 0.1
 # ---------------------------------------
 
 def main():
@@ -22,28 +26,33 @@ def main():
     gripper_vel = Leader.get_current_vel_gripper()
 
     # 计算重力补偿力矩
-    Leader_gra = Leader.get_Gravity()
+    Leader_gra = Leader.get_Gravity(Leader_positions)
 
-    # 添加摩擦补偿
-    Leader_tor = np.array(Leader_gra) + Leader.get_friction_compensation(Leader_velocity, Fc, Fv, vel_threshold)
+    Leader_tor = np.array(Leader_gra)
+    if USE_FRICTION_COMPENSATION:
+        Leader_tor += Leader.get_friction_compensation(Leader_velocity, Fc, Fv, vel_threshold)
 
     # 力矩限幅（基于电机规格）
     tau_limit = np.array([15.0, 30.0, 30.0, 15.0, 5.0, 5.0])
     Leader_tor = np.clip(Leader_tor, -tau_limit, tau_limit)
 
-    # 零刚度零阻尼控制（纯重力补偿模式，可自由拖动）
+    # 零刚度零阻尼控制（重力补偿模式，可自由拖动）
     Leader.pos_vel_tqe_kp_kd(zero_pos, zero_vel, Leader_tor, zero_kp, zero_kd)
 
     # 夹爪零刚度零阻尼控制（可自由拖动）
     Leader.gripper_control_MIT(0.0, 0.0, 0.0, 0.0, 0.0)
 
-    # 打印6个关节信息 + 夹爪
-    print("\r", end="")
-    for i in range(Leader.motor_count):
-        print(f"J{i+1}: {Leader_positions[i]:6.3f}rad {Leader_velocity[i]:6.3f}rad/s | ", end="")
-    print(f"夹爪: {gripper_pos:6.3f}rad {gripper_vel:6.3f}rad/s   ", end="", flush=True)
+    # 限频打印，避免终端输出拖慢控制循环
+    global last_print_time
+    now = time.perf_counter()
+    if now - last_print_time >= PRINT_INTERVAL:
+        print("\r", end="")
+        for i in range(Leader.motor_count):
+            print(f"J{i+1}: {Leader_positions[i]:6.3f}rad {Leader_velocity[i]:6.3f}rad/s | ", end="")
+        print(f"夹爪: {gripper_pos:6.3f}rad {gripper_vel:6.3f}rad/s   ", end="", flush=True)
+        last_print_time = now
 
-    time.sleep(0.001)
+    return Leader_positions, Leader_velocity, gripper_pos, gripper_vel
 
 if __name__ == "__main__":
     # 创建机器人实例
@@ -56,6 +65,7 @@ if __name__ == "__main__":
     zero_vel = [0.0] * Leader.motor_count
     zero_kp = [0.0] * Leader.motor_count
     zero_kd = [0.0] * Leader.motor_count
+    last_print_time = 0.0
 
     # 摩擦补偿参数
     Fc = np.array([0.15, 0.12, 0.12, 0.12, 0.04, 0.04])
@@ -72,16 +82,21 @@ if __name__ == "__main__":
         for i in range(10):
             Leader.send_get_motor_state_cmd()
             time.sleep(0.1)
+        next_time = time.perf_counter()
+        next_record_time = next_time
         while True:
-            main()                            # 重力补偿控制循环
-            if DO_RECORD:
+            state = main()                    # 重力补偿控制循环
+            now = time.perf_counter()
+            if DO_RECORD and now >= next_record_time:
                 # 记录关节位置速度 + 夹爪位置速度
-                rec.log(
-                    Leader.get_current_pos(),
-                    Leader.get_current_vel(),
-                    Leader.get_current_pos_gripper(),
-                    Leader.get_current_vel_gripper()
-                )
+                rec.log(*state)
+                next_record_time += RECORD_DT
+            next_time += CONTROL_DT
+            sleep_time = next_time - time.perf_counter()
+            if sleep_time > 0:
+                time.sleep(sleep_time)
+            else:
+                next_time = time.perf_counter()
     except KeyboardInterrupt:
         if DO_RECORD:
             rec.close()

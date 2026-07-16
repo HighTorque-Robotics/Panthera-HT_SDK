@@ -49,7 +49,7 @@ def main():
     # 使用逆运动学求解
     joint_pos = robot.inverse_kinematics(target_pos, target_rot, robot.get_current_pos())
     if joint_pos is not None:
-        robot.moveJ(joint_pos, duration=3.0, iswait=True)
+        robot.moveJ(joint_pos, duration=1.50, iswait=True)
         time.sleep(1)
     else:
         print("初始位置逆解失败！")
