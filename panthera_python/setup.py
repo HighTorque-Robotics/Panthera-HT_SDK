@@ -25,7 +25,7 @@ class CMakeBuild(build_ext):
 
         cmake_args = [
             f'-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={extdir}',
-            f'-DPYTHON_EXECUTABLE={sys.executable}',
+            f'-DPython3_EXECUTABLE={sys.executable}',
         ]
 
         cfg = 'Debug' if self.debug else 'Release'
@@ -51,6 +51,8 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=find_packages(),
+    package_data={"hightorque_robot": ["*.so", "*.so.*"]},
+    include_package_data=True,
     ext_modules=[CMakeExtension('hightorque_robot._hightorque_robot')],
     cmdclass=dict(build_ext=CMakeBuild),
     zip_safe=False,

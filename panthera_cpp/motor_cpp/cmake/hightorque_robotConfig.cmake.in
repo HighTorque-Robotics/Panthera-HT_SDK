@@ -8,6 +8,9 @@ find_dependency(lcm REQUIRED)
 find_dependency(serial_cmake REQUIRED)  
 find_dependency(yaml-cpp REQUIRED)
 
+# Backward-compatible config for older consumers that still call
+# find_package(hightorque_robot). New code should use hightorque_motor.
+
 # 查找libserialport库
 find_library(SERIALPORT_LIBRARY serialport)
 if(NOT SERIALPORT_LIBRARY)
@@ -18,13 +21,18 @@ if(NOT SERIALPORT_LIBRARY)
     return()
 endif()
 
+if(TARGET serial::serial_cmake AND NOT TARGET serial_cmake)
+    add_library(serial_cmake INTERFACE IMPORTED)
+    target_link_libraries(serial_cmake INTERFACE serial::serial_cmake)
+endif()
+
 # 包含导出的目标
-include("${CMAKE_CURRENT_LIST_DIR}/hightorque_robotTargets.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/hightorque_motorTargets.cmake")
 
 # 设置配置文件路径变量（供用户使用）
 get_filename_component(HIGHTORQUE_ROBOT_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}" DIRECTORY)
 get_filename_component(HIGHTORQUE_ROBOT_CMAKE_DIR "${HIGHTORQUE_ROBOT_CMAKE_DIR}" DIRECTORY)
 get_filename_component(HIGHTORQUE_ROBOT_CMAKE_DIR "${HIGHTORQUE_ROBOT_CMAKE_DIR}" DIRECTORY)
-set(HIGHTORQUE_ROBOT_CONFIG_DIR "${HIGHTORQUE_ROBOT_CMAKE_DIR}/share/hightorque_robot/robot_param")
+set(HIGHTORQUE_ROBOT_CONFIG_DIR "${HIGHTORQUE_ROBOT_CMAKE_DIR}/share/hightorque_motor/robot_param")
 
 check_required_components(hightorque_robot)

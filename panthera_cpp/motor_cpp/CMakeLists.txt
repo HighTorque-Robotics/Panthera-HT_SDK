@@ -41,6 +41,7 @@ set(motor_SRCS
 )
 
 add_library(hightorque_motor SHARED ${motor_SRCS})
+add_library(hightorque_motor::hightorque_motor ALIAS hightorque_motor)
 
 target_include_directories(hightorque_motor PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -68,6 +69,8 @@ target_link_libraries(hightorque_motor
 set_target_properties(hightorque_motor PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION ${VERSION_MAJOR}
+    BUILD_RPATH "$ORIGIN"
+    INSTALL_RPATH "$ORIGIN"
     PUBLIC_HEADER "include/hardware/robot.hpp;include/hardware/motor.hpp;include/hardware/canport.hpp;include/hardware/canboard.hpp;include/parse_robot_params.hpp;include/serial_struct.hpp;include/serial_driver.hpp;include/crc/crc8.hpp;include/crc/crc16.hpp;msg/motor_msg/motor_msg.hpp"
 )
 
@@ -97,7 +100,7 @@ install(EXPORT hightorque_motorTargets
 # CMake 配置文件
 include(CMakePackageConfigHelpers)
 configure_package_config_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/hightorque_robotConfig.cmake.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/hightorque_motorConfig.cmake.in
     ${CMAKE_CURRENT_BINARY_DIR}/hightorque_motorConfig.cmake
     INSTALL_DESTINATION lib/cmake/hightorque_motor
 )

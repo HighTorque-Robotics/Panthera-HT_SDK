@@ -46,7 +46,7 @@ target_include_directories(panthera_robot PUBLIC
 # 链接库
 target_link_libraries(panthera_robot
     PUBLIC
-        hightorque_motor
+        hightorque_motor::hightorque_motor
         yaml-cpp
         pinocchio::pinocchio
 )
@@ -82,6 +82,12 @@ install(EXPORT panthera_robotTargets
 # CMake 配置文件
 include(CMakePackageConfigHelpers)
 
+configure_package_config_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/panthera_robotConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/panthera_robotConfig.cmake
+    INSTALL_DESTINATION lib/cmake/panthera_robot
+)
+
 write_basic_package_version_file(
     ${CMAKE_CURRENT_BINARY_DIR}/panthera_robotConfigVersion.cmake
     VERSION 1.0.0
@@ -89,6 +95,7 @@ write_basic_package_version_file(
 )
 
 install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/panthera_robotConfig.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/panthera_robotConfigVersion.cmake
     DESTINATION lib/cmake/panthera_robot
 )
@@ -96,7 +103,7 @@ install(FILES
 # 安装配置文件和URDF
 install(DIRECTORY robot_param/ DESTINATION share/panthera_robot/robot_param
     FILES_MATCHING PATTERN "*.yaml")
-install(DIRECTORY urdf/ DESTINATION share/panthera_robot/urdf
+install(DIRECTORY Panthera-HT_description/urdf/ DESTINATION share/panthera_robot/urdf
     FILES_MATCHING PATTERN "*.urdf")
 
 # ==================== 机械臂控制示例程序 ====================
