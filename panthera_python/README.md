@@ -360,6 +360,7 @@ panthera_python/
 │   │   ├── recorder.py         # 轨迹记录工具
 │   │   └── __init__.py         # 模块初始化
 │   │
+│   ├── 0_feetech_get_joint_positions.py # GELLO 七个飞特舵机位置读取与通信检查
 │   ├── 0_robot_get_state.py    # 状态查看
 │   ├── 0_robot_set_zero.py     # 设置零位
 │   │
@@ -384,6 +385,7 @@ panthera_python/
 │   ├── 4_impedance_trajectory_control_with_gra_pd.py  # 基于轨迹的阻抗控制
 │   │
 │   ├── 5_teleop_control.py     # 主从臂遥操作
+│   ├── 5_gello_follower_teleop.py # GELLO 遥操作 Panthera 从臂（MIT位置跟随）
 │   ├── 5_record_trajectory.py  # 轨迹记录
 │   ├── 5_replay_trajectory.py  # 轨迹回放
 │   │
@@ -392,7 +394,8 @@ panthera_python/
 │   │
 │   ├── 7_keyboard_cartesian_pos_control.py  # 键盘控制笛卡尔空间位姿（IK求解）
 │   ├── 7_keyboard_cartesian_vel_control.py  # 键盘控制末端速度（雅可比矩阵）
-│   ├── 7_vr_cartesian_control.py            # Quest VR手柄笛卡尔空间控制
+│   ├── 7_vr_cartesian_control.py            # Quest VR单臂笛卡尔空间遥操作
+│   ├── 7_vr_dual_cartesian_control.py       # Quest VR双臂笛卡尔空间遥操作
 │   │
 │   └── motor_example/          # 底层电机控制示例
 │       ├── 01_motor_get_status.py
@@ -416,7 +419,7 @@ panthera_python/
 
 ## Quest VR 手柄数据转发
 
-`scripts/7_vr_cartesian_control.py` 依赖外部 Quest 手柄数据流服务。该脚本会在本机监听 `UDP 5005`，因此在启动机械臂控制前，需要先启动 `Quest_controller_stream` 工程，将 Quest 手柄位姿和按键数据转发到本机。
+`scripts/7_vr_cartesian_control.py`（单臂）和 `scripts/7_vr_dual_cartesian_control.py`（双臂）均依赖外部 Quest 手柄数据流服务。两个脚本都会在本机监听 `UDP 5005`，因此在启动机械臂控制前，需要先启动 `Quest_controller_stream` 工程，将 Quest 手柄位姿和按键数据转发到本机。
 
 `Quest_controller_stream` 仓库：
 
@@ -448,7 +451,11 @@ python3 start_stream_server.py --udp-ip 127.0.0.1 --udp-port 5005
 
 ```bash
 cd Panthera-HT_SDK/panthera_python/scripts
+# 单臂：右手柄控制一台机械臂
 python3 7_vr_cartesian_control.py
+
+# 双臂：左手柄控制 Leader，右手柄控制 Follower
+python3 7_vr_dual_cartesian_control.py
 ```
 
 程序启动后会等待 Quest 手柄连接，并从 `UDP 5005` 接收左右手柄数据。
