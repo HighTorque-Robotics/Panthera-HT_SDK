@@ -194,6 +194,22 @@ python 5_replay_trajectory.py
 python 5_teleop_control.py
 ```
 即可看到遥操效果
+
+### GELLO 遥操
+
+进入 `scripts` 目录，并指定 GELLO 串口启动遥操程序：
+
+```bash
+cd Panthera-HT_SDK/panthera_python/scripts
+python 7_gello_teleop.py --gello-port /dev/ttyACM1
+```
+
+如需先检查 GELLO 关节读取和映射而不连接 Panthera 从臂，可运行：
+
+```bash
+python 7_gello_teleop.py --gello-port /dev/ttyACM1 --dry-run
+```
+
 ## 使用示例
 
 ### 基础控制示例
@@ -385,13 +401,13 @@ panthera_python/
 │   ├── 4_impedance_trajectory_control_with_gra_pd.py  # 基于轨迹的阻抗控制
 │   │
 │   ├── 5_teleop_control.py     # 主从臂遥操作
-│   ├── 5_gello_follower_teleop.py # GELLO 遥操作 Panthera 从臂（MIT位置跟随）
 │   ├── 5_record_trajectory.py  # 轨迹记录
 │   ├── 5_replay_trajectory.py  # 轨迹回放
 │   │
 │   ├── 6_moveL_pos_control.py  # 笛卡尔空间直线运动控制
 │   ├── 6_moveL_rotate_control.py # 笛卡尔空间旋转运动控制
 │   │
+│   ├── 7_gello_teleop.py                    # GELLO 遥操作 Panthera 从臂（MIT位置跟随）
 │   ├── 7_keyboard_cartesian_pos_control.py  # 键盘控制笛卡尔空间位姿（IK求解）
 │   ├── 7_keyboard_cartesian_vel_control.py  # 键盘控制末端速度（雅可比矩阵）
 │   ├── 7_vr_cartesian_control.py            # Quest VR单臂笛卡尔空间遥操作
