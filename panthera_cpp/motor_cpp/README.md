@@ -81,6 +81,8 @@ motor_cpp/
 ### 库和命名空间
 
 - **库名称**: `hightorque_motor`
+- **CMake 包名称**: `hightorque_motor`
+- **导出目标**: `hightorque_motor::hightorque_motor`
 - **命名空间**: `hightorque_robot`
 - **主要类**:
   - `hightorque_robot::motor` - 单个电机控制类
@@ -100,7 +102,7 @@ chmod 777 Interface_cpp_setup.sh
 
 ### 依赖库
 
-* CMake >= 3.0.2
+* CMake >= 3.5
 * C++11 编译器
 * libserialport（串口通信）
 * yaml-cpp（YAML配置文件解析）
@@ -120,23 +122,36 @@ sudo apt-get install libyaml-cpp-dev
 ## 三、编译
 
 1. 获取代码
-```
-git clone http://git.clicki.cn/livelybot/hightorque_robot.git
+```bash
+git clone https://github.com/HighTorque-Robotics/Panthera-HT_SDK.git
 ```
 
 2. 编译
-```
-cd hightorque_robot
-mkdir build
-cd build
-cmake ..
-make -j8
+```bash
+cd Panthera-HT_SDK/panthera_cpp/motor_cpp
+cmake -S . -B build
+cmake --build build -j$(nproc)
 ```
 
 3. 安装
+```bash
+sudo cmake --install build
+sudo ldconfig
 ```
-sudo make install
+
+> `motor_cpp` 要求 CMake 3.5 或更高版本。请使用独立的 `build` 目录，
+> 不要在源码目录中运行 `cmake .`。
+
+安装后，外部 CMake 项目应按以下方式链接：
+
+```cmake
+find_package(hightorque_motor CONFIG REQUIRED)
+target_link_libraries(your_target PRIVATE
+    hightorque_motor::hightorque_motor
+)
 ```
+
+注意：`hightorque_robot` 是源码中的 C++ 命名空间，不是 CMake 包名称。
 
 4. 补充
 当外部项目调用当前库的时候，可能会出现找不到liblivelybot_serial.so.*的情况，这个时候需要申明安装位置

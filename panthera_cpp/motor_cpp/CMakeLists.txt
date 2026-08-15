@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.5)
 project(hightorque_motor)
 
 if(NOT CMAKE_INSTALL_PREFIX)
@@ -97,7 +97,7 @@ install(EXPORT hightorque_motorTargets
 # CMake 配置文件
 include(CMakePackageConfigHelpers)
 configure_package_config_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/hightorque_robotConfig.cmake.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/hightorque_motorConfig.cmake.in
     ${CMAKE_CURRENT_BINARY_DIR}/hightorque_motorConfig.cmake
     INSTALL_DESTINATION lib/cmake/hightorque_motor
 )

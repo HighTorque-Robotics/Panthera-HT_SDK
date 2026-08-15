@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 查找Python
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
-find_package(hightorque_robot REQUIRED)
+find_package(hightorque_motor CONFIG REQUIRED)
 
 # 查找pybind11 - 优先使用 Python 环境中的版本
 execute_process(
@@ -25,35 +25,22 @@ endif()
 
 find_package(pybind11 CONFIG REQUIRED)
 
-# 添加C++项目的头文件路径
-include_directories(
-    ${HIGHTORQUE_ROBOT_DIR}/include
-    ${HIGHTORQUE_ROBOT_DIR}/include/hardware
-    ${HIGHTORQUE_ROBOT_DIR}/include/crc
-    ${HIGHTORQUE_ROBOT_DIR}/msg/motor_msg
-)
-
-# 查找依赖库
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(LCM REQUIRED lcm)
-pkg_check_modules(YAML_CPP REQUIRED yaml-cpp)
-
 # 创建pybind11模块
 pybind11_add_module(_hightorque_robot src/bindings.cpp)
 
 # 链接库
 target_link_libraries(_hightorque_robot PRIVATE
-    ${HIGHTORQUE_ROBOT_LIB}
-    ${LCM_LIBRARIES}
-    ${YAML_CPP_LIBRARIES}
-    pthread
-    rt
-    hightorque_robot
+    hightorque_motor::hightorque_motor
 )
 
-# 设置输出目录
+# setup.py 构建 wheel 时会传入输出目录；直接运行 CMake 时输出到源码包目录。
+if(NOT CMAKE_LIBRARY_OUTPUT_DIRECTORY)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY
+        ${CMAKE_CURRENT_SOURCE_DIR}/hightorque_robot)
+endif()
+
 set_target_properties(_hightorque_robot PROPERTIES
-    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/hightorque_robot
+    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
 )
 
 # 安装规则
