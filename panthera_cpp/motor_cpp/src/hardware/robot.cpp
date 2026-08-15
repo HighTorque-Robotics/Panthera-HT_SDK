@@ -5,6 +5,7 @@
 #include <yaml-cpp/yaml.h>
 #include <iostream>
 #include <iomanip>
+#include <stdexcept>
 
 namespace hightorque_robot
 {
@@ -293,10 +294,13 @@ namespace hightorque_robot
     {
         int pid, vid;
         int r = 0;
-        struct sp_port *port;
+        struct sp_port *port = nullptr;
         try
         {
-            sp_get_port_by_name(name, &port);
+            if (sp_get_port_by_name(name, &port) != SP_OK || port == nullptr)
+            {
+                return -3;
+            }
             if (sp_get_port_usb_vid_pid(port, &vid, &pid) != SP_OK) 
             {
                 r = -1;
@@ -344,8 +348,10 @@ namespace hightorque_robot
         {
             std::cerr << e.what() << '\n';
             r = -3;
-            sp_close(port);
-            sp_free_port(port);
+            if (port) {
+                sp_close(port);
+                sp_free_port(port);
+            }
         }
 
         return r;
@@ -400,6 +406,14 @@ namespace hightorque_robot
                 std::cout << "Serial Port" << str.size() << " = " << port << std::endl;
                 str.push_back(port);
             }
+        }
+
+        if (str.empty())
+        {
+            std::string msg = "No compatible serial ports found. "
+                "Connect the arm and ensure USB VID is 0xCAF1 or 0xCAE1 (PID 0xFFFF).";
+            std::cerr << "\033[1;31m" << msg << "\033[0m" << std::endl;
+            throw std::runtime_error(msg);
         }
 
         for(auto board_params: robot_params.CANboards)
