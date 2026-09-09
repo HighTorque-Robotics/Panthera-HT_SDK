@@ -7,12 +7,13 @@
 #include "motor.hpp"
 #include <unordered_set>
 #include <map>
+#include <atomic>
 
 class serial_driver
 {
 private:
     serial::Serial _ser;
-    bool init_flag;
+    std::atomic<bool> init_flag;
     std::map<int, motor *> Map_Motors_p;
     uint16_t *p_port_version = NULL;
     std::unordered_set<int> *p_motor_id = NULL;
@@ -25,7 +26,7 @@ public:
     serial_driver(std::string *port, uint32_t baudrate, bool _canport_error_output_flag);
     ~serial_driver();
 
-    bool error_flag;
+    std::atomic<bool> error_flag;
     void send_2(cdc_tr_message_s *cdc_tr_message);
     uint16_t return_data_len(uint8_t cmd_id);
     void recv_1for6_42();

@@ -108,28 +108,53 @@ namespace hightorque_robot
 
     robot::~robot()
     {
-        if (robot_params.exit_motor_brake_flag)
+        // 先停止会访问串口和电机容器的后台线程，避免析构时重连。
         {
-            set_brake();
-            set_brake();
-            set_brake();
-            printf("motor brake\n");
+            std::lock_guard<std::mutex> lock(error_check_mutex);
+            error_check_flag = false;
         }
-        else
+        error_check_cv.notify_all();
+        if (error_check_thread_.joinable())
         {
-            set_stop();
-            set_stop();
-            set_reset();
-            printf("motor stop\n");
+            error_check_thread_.join();
         }
 
+        this->lcm_en = false;
+        if (pub_thread_.joinable())
+        {
+            pub_thread_.join();
+        }
 
+        // 串口仍打开时发送退出命令。析构函数不得让异常逃逸。
+        try
+        {
+            if (robot_params.exit_motor_brake_flag)
+            {
+                set_brake();
+                set_brake();
+                set_brake();
+                printf("motor brake\n");
+            }
+            else
+            {
+                set_stop();
+                set_stop();
+                set_reset();
+                printf("motor stop\n");
+            }
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << "Failed to send motor shutdown command: " << e.what() << std::endl;
+        }
+
+        // 先让接收循环退出并 join，最后关闭串口。
+        // 原顺序先 close 再 join，会使阻塞在 read/pselect 的线程收到 EBADF。
         for (serial_driver *s : ser)
         {
-            if (s) 
+            if (s)
             {
                 s->set_run_flag(false);
-                s->close();
             }
         }
 
@@ -139,16 +164,12 @@ namespace hightorque_robot
                 thread.join();
         }
 
-        this->lcm_en = false;
-        if(pub_thread_.joinable())
+        for (serial_driver *s : ser)
         {
-            pub_thread_.join(); 
-        }
-
-        error_check_flag = false;
-        if(error_check_thread_.joinable())
-        {
-            error_check_thread_.join(); 
+            if (s)
+            {
+                s->close();
+            }
         }
     }
 

@@ -34,10 +34,18 @@ serial_driver::serial_driver(std::string *port, uint32_t baudrate, bool _canport
 
 serial_driver::~serial_driver()
 {
-    if(_ser.isOpen())
+    init_flag = false;
+    try
     {
-        _ser.close();
-        init_flag = false;
+        if(_ser.isOpen())
+        {
+            _ser.close();
+        }
+    }
+    catch(const std::exception& e)
+    {
+        // 析构函数不能向外抛异常，否则 C++ 会直接 std::terminate。
+        std::cerr << e.what() << '\n';
     }
 }
 
@@ -228,7 +236,15 @@ void serial_driver::recv_1for6_42()
         catch(const std::exception& e)
         {
             std::cerr << "\033[1;31m" << e.what() << "\033[0m" << '\n';
-            _ser.close();
+            try
+            {
+                _ser.close();
+            }
+            catch(const std::exception& close_error)
+            {
+                std::cerr << "\033[1;31m" << close_error.what() << "\033[0m" << '\n';
+            }
+            init_flag = false;
             error_flag = true;
             break;
         }
@@ -291,7 +307,15 @@ void serial_driver::send_2(cdc_tr_message_s *cdc_tr_message)
     catch(const std::exception& e)
     {
         std::cerr << e.what() << '\n';
-        _ser.close();
+        try
+        {
+            _ser.close();
+        }
+        catch(const std::exception& close_error)
+        {
+            std::cerr << close_error.what() << '\n';
+        }
+        init_flag = false;
         error_flag = true;
     }
 }

@@ -113,7 +113,7 @@ make
 
 ---
 
-**步骤2（方式1继续）/ 步骤5（方式2继续）：安装高层库依赖（使用 Panthera_lib 时需要）**
+#### 安装高层库依赖（使用 Panthera_lib 时需要）
 
 ```bash
 # 方法1：使用 requirements.txt（推荐）
@@ -131,7 +131,7 @@ pip install "scipy>=1.9.0"
 - ✅ PyYAML 需要 6.0+ 版本才能支持 Python 3.12+
 - ✅ 在 conda 环境中使用 `pip`，不要用 `pip3`
 
-**步骤3（方式1）/ 步骤6（方式2）：验证安装**
+### 验证安装
 
 手动验证：
 ```bash
