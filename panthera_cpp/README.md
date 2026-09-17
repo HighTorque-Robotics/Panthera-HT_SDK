@@ -9,6 +9,18 @@ Panthera C++ SDK 分为两个层级：
 - **motor_cpp**: 电机底层驱动 SDK - 提供单个电机的基础控制功能
 - **robot_cpp**: 机械臂高级控制 SDK - 基于 motor_cpp 构建的机械臂级别控制库
 
+### 名称对照
+
+| 层级 | 目录 | CMake 包/库 | 代码命名空间 | 用途 |
+|------|------|-------------|--------------|------|
+| 电机底层 | `motor_cpp` | `hightorque_motor` | `hightorque_robot` | 串口、CAN、电机和底层 robot 类 |
+| C++ 机械臂高层 | `robot_cpp` | `panthera_robot` | `panthera` | 运动学、动力学和轨迹控制 |
+
+`hightorque_robot` 是底层 C++ 命名空间，也是 Python 导入包名，但不是
+motor SDK 的 CMake 包名。外部 CMake 项目应使用
+`find_package(hightorque_motor CONFIG REQUIRED)` 和
+`hightorque_motor::hightorque_motor`。
+
 ### SDK 架构关系
 
 ```
@@ -82,25 +94,36 @@ sudo apt install pinocchio
 
 ### 编译
 
-#### 编译 motor_cpp（电机底层 SDK）
+#### 仅编译 motor_cpp（电机底层 SDK 或 Python 绑定需要）
 
 ```bash
 cd motor_cpp
-mkdir build && cd build
-cmake ..
-make -j$(nproc)
+cmake -S . -B build
+cmake --build build -j$(nproc)
+sudo cmake --install build
+sudo ldconfig
 ```
 
 #### 编译 robot_cpp（机械臂高级 SDK）
 
 ```bash
-cd robot_cpp
-mkdir build && cd build
-cmake ..
-make -j$(nproc)
+cd ../robot_cpp
+cmake -S . -B build
+cmake --build build -j$(nproc)
 ```
 
-> **注意**: robot_cpp 会自动链接 motor_cpp，无需单独编译 motor_cpp。
+> `robot_cpp` 当前通过 `add_subdirectory(../motor_cpp)` 直接编译同仓库中的
+> motor SDK，因此只构建 C++ 高层库时无需提前安装 `motor_cpp`。Python
+> 绑定使用已安装的 `hightorque_motor` CMake 包，必须先执行上面的
+> `motor_cpp` 安装步骤。
+
+### 当前构建边界
+
+- `motor_cpp` 已导出完整的 `hightorque_motor` CMake 包，可供 Python
+  绑定和外部 CMake 项目使用。
+- `robot_cpp` 当前仍与同仓库的 `motor_cpp` 源码绑定。
+- `robot_cpp` 尚未生成完整的 `panthera_robotConfig.cmake`，安装后暂不应
+  依赖 `find_package(panthera_robot)`；这是后续需要完善的打包项。
 
 ## 项目结构
 

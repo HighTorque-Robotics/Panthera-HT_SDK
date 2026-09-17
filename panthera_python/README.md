@@ -33,6 +33,24 @@
 
 ## 环境安装
 
+### 包与依赖关系
+
+Python SDK 的导入名称是 `hightorque_robot`，但它绑定的是 C++ 底层库
+`hightorque_motor`：
+
+```text
+Panthera_lib（纯 Python 高层机械臂控制）
+    -> hightorque_robot（Python/pybind11 模块）
+        -> hightorque_motor（motor_cpp CMake 包和动态库）
+```
+
+它不链接 C++ 高层库 `panthera_robot`。名称相近但用途不同：
+
+- `hightorque_motor`：CMake 包和 `libhightorque_motor.so`
+- `hightorque_robot`：C++ 命名空间及 Python 导入包
+- `panthera_robot`：`robot_cpp` 生成的 C++ 高层机械臂库
+- `Panthera_lib`：基于 `hightorque_robot` 的纯 Python 高层封装
+
 ### 推荐：使用独立的 conda 环境
 
 为避免与系统环境（如 ROS）冲突，强烈建议创建独立的 conda 环境：
@@ -95,21 +113,36 @@ pip install pybind11
 
 ```bash
 cd ../panthera_cpp/motor_cpp
-mkdir -p build && cd build
-cmake ..
-make
+cmake -S . -B build
+cmake --build build -j$(nproc)
 ```
 
-**步骤4：编译 Python 绑定**
+Python 绑定需要使用安装后的 CMake 包，因此必须安装：
+
+```bash
+sudo cmake --install build
+sudo ldconfig
+```
+**步骤4：安装 Python 绑定**
 
 ```bash
 cd ../../panthera_python
-mkdir -p build && cd build
-cmake ..
-make
+python -m pip install -e . --no-build-isolation --no-deps -v
 ```
 
-编译成功后会显示 `Build target _hightorque_robot`。
+该命令会使用当前 Python 环境构建扩展，并将 `hightorque_robot` 安装到
+当前环境的 `site-packages`。新终端中激活同一个环境后仍可导入。
+
+
+在任意目录验证底层 Python 扩展：
+
+```bash
+cd /tmp
+python -c "import hightorque_robot; print('电机 SDK 安装成功')"
+```
+
+仅执行 `cmake -S . -B build && cmake --build build` 只是生成扩展文件，
+不会把 Python 包安装进当前环境，因此换到其他目录或新终端后可能无法导入。
 
 ---
 
@@ -135,15 +168,20 @@ pip install "scipy>=1.9.0"
 
 手动验证：
 ```bash
-python -c "import hightorque_robot; print('✓ 电机 SDK 安装成功')"
-python -c "import pinocchio as pin; print('✓ pin 安装成功')"
-python -c "import yaml; print('✓ pyyaml 安装成功')"
+python -c "from hightorque_robot import _hightorque_robot; print('电机 SDK 安装成功')"
+python -c "import pinocchio as pin; print('pin 安装成功')"
+python -c "import yaml; print('pyyaml 安装成功')"
 ```
 
 安装成功后，在 `scripts` 目录下运行例程：
-```python
-# 注意：Panthera_lib 作为源码提供，需要在 scripts 目录下使用
+```bash
 cd scripts
+python -c "from Panthera_lib import Panthera; print('Panthera_lib 导入成功')"
+```
+
+Python 代码中使用：
+
+```python
 from Panthera_lib import Panthera
 ```
 
@@ -556,18 +594,14 @@ git clone https://github.com/jbeder/yaml-cpp.git
 cd yaml-cpp
 git checkout yaml-cpp-0.6.1
 
-创建干净的构建目录
-mkdir build
-cd build
-
 配置编译选项
-cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON
 
 编译
-make -j$(nproc)
+cmake --build build -j$(nproc)
 
 安装
-sudo make install
+sudo cmake --install build
 
 更新库缓存
 sudo ldconfig

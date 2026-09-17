@@ -21,15 +21,39 @@ namespace hightorque_robot
     void robot::init_robot(const std::string& config_path)
     {
         auto config = YAML::LoadFile(config_path);
-        std::cout << "robot_config: " << config["robot"]["robot_name"].as<std::string>() << std::endl;
-        auto param_file = config_path;
-        if (config["robot"]["param_file"])
+        const auto robot_config = config["robot"];
+        if (!robot_config || !robot_config.IsMap())
         {
-            param_file = config["robot"]["param_file"].as<std::string>();
+            throw std::runtime_error(
+                "Invalid robot config '" + config_path +
+                "': missing 'robot' mapping");
         }
-        
+
+        std::string config_name;
+        if (robot_config["robot_name"])
+        {
+            config_name = robot_config["robot_name"].as<std::string>();
+        }
+        else if (robot_config["name"])
+        {
+            config_name = robot_config["name"].as<std::string>();
+        }
+        else
+        {
+            throw std::runtime_error(
+                "Invalid robot config '" + config_path +
+                "': missing 'robot.robot_name' or 'robot.name'");
+        }
+        std::cout << "robot_config: " << config_name << std::endl;
+
+        auto param_file = config_path;
+        if (robot_config["param_file"])
+        {
+            param_file = robot_config["param_file"].as<std::string>();
+        }
+
         // 如果param_file是相对路径，则相对于config_path的目录
-        if (param_file[0] != '/') {
+        if (!param_file.empty() && param_file[0] != '/') {
             size_t last_slash = config_path.find_last_of('/');
             if (last_slash != std::string::npos) {
                 std::string config_dir = config_path.substr(0, last_slash + 1);
@@ -411,6 +435,16 @@ namespace hightorque_robot
                 int serial_id = port_params.second.serial_id;
 
                 serial_id_old.push_back(serial_id);
+                if (serial_id <= 0 ||
+                    static_cast<size_t>(serial_id) > str.size())
+                {
+                    throw std::runtime_error(
+                        "Serial device configuration requires serial_id " +
+                        std::to_string(serial_id) + ", but only " +
+                        std::to_string(str.size()) +
+                        " matching port(s) were found for prefix '" +
+                        Serial_Type + "'. Check USB connection and device permissions.");
+                }
 
                 serial_driver *s = new serial_driver(&str[serial_id - 1], Seial_baudrate, canport_error_output_flag);
                 ser.push_back(s);
