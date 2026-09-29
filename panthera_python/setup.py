@@ -25,8 +25,24 @@ class CMakeBuild(build_ext):
 
         cmake_args = [
             f'-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={extdir}',
-            f'-DPYTHON_EXECUTABLE={sys.executable}',
+            # CMakeLists.txt uses FindPython3, so pass the active Conda Python
+            # through the matching variable name.
+            f'-DPython3_EXECUTABLE={sys.executable}',
         ]
+
+        # Allow the caller to keep the C++ SDK in the active Conda environment
+        # instead of installing it globally under /usr/local.
+        cmake_prefix_path = os.environ.get('CMAKE_PREFIX_PATH')
+        if cmake_prefix_path:
+            cmake_args.append(f'-DCMAKE_PREFIX_PATH={cmake_prefix_path}')
+            prefix_paths = [p for p in cmake_prefix_path.split(os.pathsep) if p]
+            lib_paths = [os.path.join(p, 'lib') for p in prefix_paths]
+            if lib_paths:
+                rpath = ';'.join(lib_paths)
+                cmake_args += [
+                    f'-DCMAKE_BUILD_RPATH={rpath}',
+                    f'-DCMAKE_INSTALL_RPATH={rpath}',
+                ]
 
         cfg = 'Debug' if self.debug else 'Release'
         build_args = ['--config', cfg]

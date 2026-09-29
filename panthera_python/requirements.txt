@@ -8,6 +8,7 @@
 #   pip install -r requirements.txt
 
 # 必需依赖
+numpy>=1.19.0,<2.0       # hightorque_robot 当前不兼容 NumPy 2.x
 pyyaml>=6.0,<7.0      # YAML 配置文件解析（6.0+ 支持 Python 3.12+）
 pin>=2.6.0            # 机器人动力学库（注意：是 'pin'，不是 'pinocchio'）
 scipy>=1.9.0          # 科学计算库（用于旋转插值等）

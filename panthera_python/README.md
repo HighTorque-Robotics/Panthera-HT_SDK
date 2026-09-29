@@ -73,43 +73,48 @@ pip install motor_whl/hightorque_robot-1.2.0-cp312-cp312-linux_x86_64.whl
 
 #### 方式2：从源码编译（Ubuntu 20 或其他系统）
 
+以下命令均从 SDK 根目录执行，并且必须先激活目标 Conda 环境。
+
 **步骤1：安装系统依赖**
 
 ```bash
+sudo apt-get update
 sudo apt-get install -y \
+    build-essential \
     cmake \
-    python3-dev \
-    python3-pip \
-    liblcm-dev \
+    pkg-config \
+    libglib2.0-dev \
     libyaml-cpp-dev \
     libserialport-dev
 ```
 
+源码中已经包含 LCM 和串口库源码，因此不需要另外安装系统版 `liblcm-dev`；Python 编译使用当前已激活的 Conda 环境，不使用系统的 `python3-dev` 和 `python3-pip`。
+
 **步骤2：安装 Python 编译依赖**
 
 ```bash
-pip install pybind11
+python -m pip install -U pip setuptools wheel pybind11
 ```
 
-**步骤3：编译电机 SDK C++ 项目**
+**步骤3：编译并安装电机 SDK C++ 项目（仅当前 Conda 环境）**
 
 ```bash
-cd ../panthera_cpp/motor_cpp
-mkdir -p build && cd build
-cmake ..
-make
+cmake -S panthera_cpp/motor_cpp -B panthera_cpp/motor_cpp/build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX="$CONDA_PREFIX"
+cmake --build panthera_cpp/motor_cpp/build -j"$(nproc)"
+cmake --install panthera_cpp/motor_cpp/build
 ```
 
-**步骤4：编译 Python 绑定**
+**步骤4：编译并安装 Python 绑定到当前 Conda 环境**
 
 ```bash
-cd ../../panthera_python
-mkdir -p build && cd build
-cmake ..
-make
+CMAKE_PREFIX_PATH="$CONDA_PREFIX" \
+python -m pip install -e ./panthera_python --no-build-isolation --no-deps
 ```
 
-编译成功后会显示 `Build target _hightorque_robot`。
+这一步会调用 CMake 编译 `_hightorque_robot`，并将 `hightorque_robot` 以 editable package 安装到当前 Conda 环境。
+不会修改 `/usr/local`，也不会影响其他虚拟环境中的 whl 安装。
 
 ---
 
@@ -117,12 +122,15 @@ make
 
 ```bash
 # 方法1：使用 requirements.txt（推荐）
-pip install -r requirements.txt
+cd panthera_python
+python -m pip install -r requirements.txt
+cd ..
 
 # 方法2：手动安装
-pip install "pyyaml>=6.0"
-pip install "pin>=2.6.0"
-pip install "scipy>=1.9.0"
+python -m pip install "numpy>=1.19.0,<2.0"
+python -m pip install "pyyaml>=6.0"
+python -m pip install "pin>=2.6.0"
+python -m pip install "scipy>=1.9.0"
 ```
 
 **重要提示：**

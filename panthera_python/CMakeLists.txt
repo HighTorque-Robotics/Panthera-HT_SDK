@@ -25,36 +25,28 @@ endif()
 
 find_package(pybind11 CONFIG REQUIRED)
 
-# 添加C++项目的头文件路径
-include_directories(
-    ${HIGHTORQUE_ROBOT_DIR}/include
-    ${HIGHTORQUE_ROBOT_DIR}/include/hardware
-    ${HIGHTORQUE_ROBOT_DIR}/include/crc
-    ${HIGHTORQUE_ROBOT_DIR}/msg/motor_msg
-)
-
-# 查找依赖库
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(LCM REQUIRED lcm)
-pkg_check_modules(YAML_CPP REQUIRED yaml-cpp)
-
 # 创建pybind11模块
 pybind11_add_module(_hightorque_robot src/bindings.cpp)
 
-# 链接库
+# hightorque_robot::hightorque_robot 是 motor_cpp 导出的 CMake 目标，
+# 同时携带 SDK 的头文件路径和传递依赖。
 target_link_libraries(_hightorque_robot PRIVATE
-    ${HIGHTORQUE_ROBOT_LIB}
-    ${LCM_LIBRARIES}
-    ${YAML_CPP_LIBRARIES}
-    pthread
-    rt
-    hightorque_robot
+    hightorque_robot::hightorque_robot
 )
 
 # 设置输出目录
 set_target_properties(_hightorque_robot PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/hightorque_robot
 )
+
+# Keep a Conda-local C++ SDK discoverable at runtime when the package is
+# built with CMAKE_PREFIX_PATH pointing at the active environment.
+if(CMAKE_BUILD_RPATH)
+    set_property(TARGET _hightorque_robot APPEND PROPERTY BUILD_RPATH "${CMAKE_BUILD_RPATH}")
+endif()
+if(CMAKE_INSTALL_RPATH)
+    set_property(TARGET _hightorque_robot APPEND PROPERTY INSTALL_RPATH "${CMAKE_INSTALL_RPATH}")
+endif()
 
 # 安装规则
 install(TARGETS _hightorque_robot

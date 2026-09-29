@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.5)
 project(hightorque_motor)
 
 if(NOT CMAKE_INSTALL_PREFIX)
@@ -68,6 +68,10 @@ target_link_libraries(hightorque_motor
 set_target_properties(hightorque_motor PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION ${VERSION_MAJOR}
+    EXPORT_NAME hightorque_robot
+    # Keep the C++ SDK self-contained when it is installed into a Conda
+    # environment: lcm and serial_cmake are installed beside this library.
+    INSTALL_RPATH "$ORIGIN"
     PUBLIC_HEADER "include/hardware/robot.hpp;include/hardware/motor.hpp;include/hardware/canport.hpp;include/hardware/canboard.hpp;include/parse_robot_params.hpp;include/serial_struct.hpp;include/serial_driver.hpp;include/crc/crc8.hpp;include/crc/crc16.hpp;msg/motor_msg/motor_msg.hpp"
 )
 
@@ -85,33 +89,33 @@ install(DIRECTORY include/ DESTINATION include
     FILES_MATCHING PATTERN "*.hpp" PATTERN "*.h")
 install(DIRECTORY msg/motor_msg/ DESTINATION include/motor_msg
     FILES_MATCHING PATTERN "*.hpp" PATTERN "*.h")
-install(DIRECTORY robot_param/ DESTINATION share/hightorque_motor/robot_param
+install(DIRECTORY robot_param/ DESTINATION share/hightorque_robot/robot_param
     FILES_MATCHING PATTERN "*.yaml")
 
 install(EXPORT hightorque_motorTargets
-    FILE hightorque_motorTargets.cmake
-    NAMESPACE hightorque_motor::
-    DESTINATION lib/cmake/hightorque_motor
+    FILE hightorque_robotTargets.cmake
+    NAMESPACE hightorque_robot::
+    DESTINATION lib/cmake/hightorque_robot
 )
 
 # CMake 配置文件
 include(CMakePackageConfigHelpers)
 configure_package_config_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/hightorque_robotConfig.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/hightorque_motorConfig.cmake
-    INSTALL_DESTINATION lib/cmake/hightorque_motor
+    ${CMAKE_CURRENT_BINARY_DIR}/hightorque_robotConfig.cmake
+    INSTALL_DESTINATION lib/cmake/hightorque_robot
 )
 
 write_basic_package_version_file(
-    ${CMAKE_CURRENT_BINARY_DIR}/hightorque_motorConfigVersion.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/hightorque_robotConfigVersion.cmake
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY AnyNewerVersion
 )
 
 install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/hightorque_motorConfig.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/hightorque_motorConfigVersion.cmake
-    DESTINATION lib/cmake/hightorque_motor
+    ${CMAKE_CURRENT_BINARY_DIR}/hightorque_robotConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/hightorque_robotConfigVersion.cmake
+    DESTINATION lib/cmake/hightorque_robot
 )
 
 # ==================== 电机控制示例程序 ====================

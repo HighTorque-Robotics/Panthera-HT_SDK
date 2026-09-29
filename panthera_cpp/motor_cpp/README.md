@@ -100,7 +100,7 @@ chmod 777 Interface_cpp_setup.sh
 
 ### 依赖库
 
-* CMake >= 3.0.2
+* CMake >= 3.5
 * C++11 编译器
 * libserialport（串口通信）
 * yaml-cpp（YAML配置文件解析）
