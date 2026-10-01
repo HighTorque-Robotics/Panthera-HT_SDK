@@ -176,6 +176,8 @@ int main(int argc, char** argv)
             // 获取当前状态
             vector<double> positions = robot.getCurrentPos();
             vector<double> velocities = robot.getCurrentVel();
+            double gripper_pos = robot.getCurrentPosGripper();
+            double gripper_vel = robot.getCurrentVelGripper();
 
             // 计算重力补偿力矩（使用 Panthera 类的方法）
             vector<double> gravity_torque = robot.getGravity(positions);
@@ -195,9 +197,12 @@ int main(int argc, char** argv)
             // 零刚度零阻尼控制（纯重力补偿模式，可自由拖动）
             robot.posVelTorqueKpKd(zero_pos, zero_vel, total_torque, zero_kp, zero_kd);
 
-            // 记录关节位置速度 + 夹爪（暂时用0代替）
+            // Gripper compliance (freely draggable during recording)
+            robot.gripperControlMIT(0, 0, 0, 0, 0);
+
+            // Record joint position, velocity + gripper
             if (DO_RECORD && rec && rec->isOpen()) {
-                rec->log(positions, velocities, 0.0, 0.0);
+                rec->log(positions, velocities, gripper_pos, gripper_vel);
             }
 
             // 打印状态（每0.1秒）
@@ -211,7 +216,9 @@ int main(int argc, char** argv)
                               << setw(6) << positions[i] << "rad "
                               << setw(6) << velocities[i] << "rad/s | ";
                 }
-                cout << "夹爪: 0.000rad 0.000rad/s   " << flush;
+                cout << "Gripper: " << fixed << setprecision(3)
+                     << setw(6) << gripper_pos << "rad "
+                     << setw(6) << gripper_vel << "rad/s   " << flush;
                 last_print_time = current_time;
             }
 

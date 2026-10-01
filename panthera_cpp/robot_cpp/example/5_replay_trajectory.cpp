@@ -53,6 +53,7 @@ std::vector<TrajectoryPoint> loadTrajectory(const std::string& filepath) {
         return trajectory;
     }
 
+    // TODO XXX FIXME HACK: This hand-coded json-parser should be replaced with a library
     std::string line;
     while (std::getline(file, line)) {
         if (line.empty()) continue;
@@ -103,10 +104,10 @@ std::vector<TrajectoryPoint> loadTrajectory(const std::string& filepath) {
             }
         }
 
-        // 提取夹爪位置 "gripper_pos"
+        // Extract gripper position "gripper_pos" (14 chars)
         pos = line.find("\"gripper_pos\":");
         if (pos != std::string::npos) {
-            size_t start = pos + 15;
+            size_t start = pos + 14;
             size_t end = line.find(",", start);
             if (end == std::string::npos) {
                 end = line.find("}", start);
@@ -114,11 +115,14 @@ std::vector<TrajectoryPoint> loadTrajectory(const std::string& filepath) {
             point.gripper_position = std::stod(line.substr(start, end - start));
         }
 
-        // 提取夹爪速度 "gripper_vel"
+        // Extract gripper velocity "gripper_vel" (14 chars)
         pos = line.find("\"gripper_vel\":");
         if (pos != std::string::npos) {
-            size_t start = pos + 15;
-            size_t end = line.find("}", start);
+            size_t start = pos + 14;
+            size_t end = line.find(",", start);
+            if (end == std::string::npos) {
+                end = line.find("}", start);
+            }
             point.gripper_velocity = std::stod(line.substr(start, end - start));
         }
 
@@ -235,8 +239,13 @@ int main(int argc, char** argv)
         robot.posVelMaxTorque(start_pos, move_vel, max_torque, true);
         std::this_thread::sleep_for(std::chrono::seconds(2));
 
-        std::cout << "[Player] 已到达起点，开始回放..." << std::endl;
-        std::cout << "\n按 Ctrl+C 停止" << std::endl;
+        // Move gripper slowly to initial state (0.3 rad/s, max torque 0.5 Nm)
+        std::cout << "[Player] Moving gripper to start position..." << std::endl;
+        robot.gripperControl(first_frame.gripper_position, 0.3, 0.5);
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+
+        std::cout << "[Player] Reached start, beginning replay..." << std::endl;
+        std::cout << "\nPress Ctrl+C to stop" << std::endl;
         std::cout << std::string(60, '=') << "\n" << std::endl;
 
         auto start_time = std::chrono::steady_clock::now();
@@ -285,10 +294,8 @@ int main(int argc, char** argv)
             // 反馈力矩 = PD 控制（用于轨迹跟踪）
             robot.posVelTorqueKpKd(point.positions, point.velocities, total_torque, kp_play, kd_play);
 
-            // 夹爪控制（如果有夹爪数据）
-            if (point.gripper_position != 0.0 || point.gripper_velocity != 0.0) {
-                robot.gripperControlMIT(point.gripper_position, point.gripper_velocity, 0.0, gripper_kp, gripper_kd);
-            }
+            // Gripper control (always follow log)
+            robot.gripperControlMIT(point.gripper_position, point.gripper_velocity, 0.0, gripper_kp, gripper_kd);
 
             // 打印进度（每10个点）
             if (i % 10 == 0) {
