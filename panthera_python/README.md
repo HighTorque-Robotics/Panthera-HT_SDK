@@ -471,6 +471,14 @@ python3 start_stream_server.py --udp-ip 127.0.0.1 --udp-port 5005
 
 ### 2. 启动 VR 笛卡尔控制脚本
 
+两个 VR 入口均使用 `Panthera_lib/qp_ik.py` 的速度级 QP（OSQP），积分生成关节位置目标，再通过 MIT 模式下发；MIT 目标速度仍为零。双臂各自维护 QP 速度历史和手柄目标，新 UDP 序号到达时才累计位姿增量。
+
+请先安装 `requirements.txt` 中的 OSQP 依赖。单臂退出时会保存跟踪 CSV；安装 `matplotlib` 后还可绘制诊断曲线。
+
+本版本沿用参考脚本的 VR 参数：关节速度上限 `[3, 3, 3, 3, 4, 4] rad/s`，覆盖 YAML 速度限制；关节加速度和末端线／角速度不裁剪，关节位置限位仍生效。参数位于两个脚本顶部的 `VR_MAX_*`。
+
+单臂控制默认 `Follower.yaml`；双臂为左手柄 `Leader.yaml`、右手柄 `Follower.yaml`。启动会移动到预设姿态，退出流程会尝试回零。离线验证不代表实机跟踪性能已验证。
+
 在 Quest 手柄数据转发服务启动后，再打开另一个终端运行：
 
 ```bash

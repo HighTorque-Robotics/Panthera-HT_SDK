@@ -8,7 +8,7 @@ import numpy as np
 from Panthera_lib import Panthera, TrajectoryRecorder
 
 # ---------------- 参数区 ----------------
-TRAJECTORY_FILE = "trajectory_test_1.jsonl"  # ← 改成实际记录生成的文件名
+TRAJECTORY_FILE = "trajectory_test_1.jsonl"  # scripts/trajectory 文件夹中的轨迹文件名
 
 # 关节PD增益
 kp_play = [30.0, 40.0, 55.0, 15.0, 7.0, 5.0]        # 回放时刚度（可微调）
@@ -28,23 +28,24 @@ tau_limit = [15.0, 30.0, 30.0, 15.0, 5.0, 5.0]
 # ---------------------------------------
 
 if __name__ == "__main__":
-    if not os.path.isfile(TRAJECTORY_FILE):
-        print(f"文件不存在：{TRAJECTORY_FILE}")
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    trajectory_path = os.path.join(script_dir, "trajectory", TRAJECTORY_FILE)
+    if not os.path.isfile(trajectory_path):
+        print(f"文件不存在：{trajectory_path}")
         sys.exit(1)
 
     # 创建机器人（用与记录时相同的 config）
-    script_dir = os.path.dirname(os.path.abspath(__file__))
     config_path = os.path.join(script_dir, "../robot_param/Follower.yaml")
     robot = Panthera(config_path)
 
-    print(f"开始回放: {TRAJECTORY_FILE}")
+    print(f"开始回放: {trajectory_path}")
     print("数据格式: 自动检测（支持位置+速度+夹爪）")
 
     try:
         # 一键回放（按记录时真实时间间隔发位置+速度+夹爪）
         TrajectoryRecorder.play(
             robot=robot,
-            filepath=TRAJECTORY_FILE,
+            filepath=trajectory_path,
             kp=kp_play,
             kd=kd_play,
             fc=Fc,

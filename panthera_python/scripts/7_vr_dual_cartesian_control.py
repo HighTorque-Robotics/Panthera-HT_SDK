@@ -25,6 +25,7 @@ import numpy as np
 from scipy.spatial.transform import Rotation as R
 
 from Panthera_lib import Panthera
+from Panthera_lib.qp_ik import PinocchioOSQPIK
 
 
 PORT = 5005
@@ -56,6 +57,17 @@ gripper_vel = 0.0
 gripper_kp = 3.0
 gripper_kd = 0.30
 
+# 与当前单臂 VR QP 脚本保持一致。每个机械臂会创建独立求解器，
+# previous_velocity、关节命令轨迹和手柄速度前馈不会在双臂之间共享。
+VR_MAX_JOINT_VELOCITY = np.array(
+    [3.0, 3.0, 3.0, 3.0, 4.0, 4.0], dtype=np.float64
+)
+VR_MAX_JOINT_ACCELERATION = np.full(6, np.inf, dtype=np.float64)
+VR_MAX_LINEAR_VELOCITY = float("inf")
+VR_MAX_ANGULAR_VELOCITY = float("inf")
+VR_HAND_VELOCITY_TIMEOUT = 0.05
+VR_HAND_TWIST_FILTER_ALPHA = 1.0
+
 
 def fmt_hand(name, vals):
     return {
@@ -63,8 +75,9 @@ def fmt_hand(name, vals):
         "seq": int(vals[0]),
         "hand_id": int(vals[1]),
         "pose_valid": int(vals[2]),
-        "pos": tuple(round(x, 4) for x in vals[3:6]),
-        "rot": tuple(round(x, 4) for x in vals[6:10]),
+        # QP速度前馈需要用连续样本做差分，不能先舍入位姿。
+        "pos": tuple(float(x) for x in vals[3:6]),
+        "rot": tuple(float(x) for x in vals[6:10]),
         "thumbstick": tuple(round(x, 4) for x in vals[10:12]),
         "trigger": round(vals[12], 4),
         "squeeze": round(vals[13], 4),
@@ -144,8 +157,11 @@ def udp_receiver_thread():
                 continue
 
             vals = struct.unpack(FMT, data)
+            received_at = time.perf_counter()
             left_info = fmt_hand("LEFT", vals[:20])
             right_info = fmt_hand("RIGHT", vals[20:])
+            left_info["received_at"] = received_at
+            right_info["received_at"] = received_at
 
             with data_lock:
                 left_hand_data = left_info
@@ -265,6 +281,15 @@ def move_arms_to_safe_position(arm_entries):
 def create_arm_state(robot, label):
     current_joint_pos = robot.get_current_pos()
     current_fk = robot.forward_kinematics(current_joint_pos)
+    qp_solver = PinocchioOSQPIK(
+        robot,
+        max_linear_velocity=VR_MAX_LINEAR_VELOCITY,
+        max_angular_velocity=VR_MAX_ANGULAR_VELOCITY,
+    )
+    # 单臂VR试验使用的独立软限制，不修改Leader/Follower全局配置。
+    qp_solver.velocity_limit = VR_MAX_JOINT_VELOCITY.copy()
+    qp_solver.acceleration_limit = VR_MAX_JOINT_ACCELERATION.copy()
+    qp_solver.reset()
     return {
         "label": label,
         "robot": robot,
@@ -278,6 +303,16 @@ def create_arm_state(robot, label):
         "last_primary_pressed": 0,
         "last_gripper_pos": gripper_open_pos,
         "current_hand_pos_robot": None,
+        "qp_solver": qp_solver,
+        "last_hand_sequence": None,
+        "last_hand_sample_time": None,
+        "latest_hand_twist": np.zeros(6, dtype=np.float64),
+        "last_qp_step_time": None,
+        "last_qp_ms": 0.0,
+        "last_qp_failure_print": 0.0,
+        "last_command_joint_velocity": np.zeros(
+            robot.motor_count, dtype=np.float64
+        ),
     }
 
 
@@ -286,9 +321,16 @@ def sync_targets_to_current_state(arm_state):
     current_fk = arm_state["robot"].forward_kinematics(current_joint_pos)
     arm_state["target_position"] = current_fk["position"].copy()
     arm_state["target_rotation"] = current_fk["rotation"].copy()
+    arm_state["last_valid_joint_pos"] = current_joint_pos.copy()
     arm_state["control_activated"] = False
     arm_state["last_hand_pos"] = None
     arm_state["last_hand_rot"] = None
+    arm_state["last_hand_sequence"] = None
+    arm_state["last_hand_sample_time"] = None
+    arm_state["latest_hand_twist"].fill(0.0)
+    arm_state["last_qp_step_time"] = None
+    arm_state["last_command_joint_velocity"].fill(0.0)
+    arm_state["qp_solver"].reset()
     return current_joint_pos
 
 
@@ -421,17 +463,13 @@ def process_arm_control(arm_state, hand_info):
 
     if hand_info is None:
         arm_state["current_hand_pos_robot"] = None
-        arm_state["control_activated"] = False
-        arm_state["last_hand_pos"] = None
-        arm_state["last_hand_rot"] = None
+        sync_targets_to_current_state(arm_state)
         arm_state["last_primary_pressed"] = 0
         return
 
     if is_hand_data_all_zero(hand_info) or not is_hand_data_valid(hand_info):
         arm_state["current_hand_pos_robot"] = None
-        arm_state["control_activated"] = False
-        arm_state["last_hand_pos"] = None
-        arm_state["last_hand_rot"] = None
+        sync_targets_to_current_state(arm_state)
         robot.gripper_control_MIT(
             arm_state["last_gripper_pos"],
             gripper_vel,
@@ -445,6 +483,15 @@ def process_arm_control(arm_state, hand_info):
     squeeze_value = hand_info["squeeze"]
     trigger_value = hand_info["trigger"]
     primary_pressed = hand_info["primary"]
+    qp_now = time.perf_counter()
+    qp_dt = control_rate
+    if arm_state["last_qp_step_time"] is not None:
+        qp_dt = float(np.clip(
+            qp_now - arm_state["last_qp_step_time"],
+            0.5 * control_rate,
+            2.0 * control_rate,
+        ))
+    arm_state["last_qp_step_time"] = qp_now
 
     hand_pos_robot, hand_rot_robot = transform_hand_to_robot_coords(
         np.array(hand_info["pos"]),
@@ -472,55 +519,133 @@ def process_arm_control(arm_state, hand_info):
         time.sleep(0.05)
         return
 
+    target_feedforward_twist = arm_state["latest_hand_twist"].copy()
+    if (
+        not arm_state["control_activated"]
+        or arm_state["last_hand_sample_time"] is None
+        or qp_now - arm_state["last_hand_sample_time"]
+        > VR_HAND_VELOCITY_TIMEOUT
+    ):
+        target_feedforward_twist.fill(0.0)
+        arm_state["latest_hand_twist"].fill(0.0)
+
     if squeeze_value > squeeze_threshold:
         if not arm_state["control_activated"]:
+            # 每次重新按下Squeeze都从编码器反馈起步，避免旧命令跳变。
+            sync_targets_to_current_state(arm_state)
             arm_state["last_hand_pos"] = hand_pos_robot.copy()
             arm_state["last_hand_rot"] = hand_rot_robot.copy()
+            arm_state["last_hand_sequence"] = int(hand_info["seq"])
+            arm_state["last_hand_sample_time"] = hand_info.get(
+                "received_at", qp_now
+            )
             arm_state["control_activated"] = True
             print(f"\n{arm_state['label']} 控制已激活")
 
-        delta_hand_pos = hand_pos_robot - arm_state["last_hand_pos"]
-        delta_hand_rot = hand_rot_robot @ arm_state["last_hand_rot"].T
-        delta_rotvec = R.from_matrix(delta_hand_rot).as_rotvec()
-        scaled_delta_rot = R.from_rotvec(delta_rotvec * rot_scale).as_matrix()
+        # 控制线程可能快于UDP，只在新序号到达时累计一次手柄增量。
+        if int(hand_info["seq"]) != arm_state["last_hand_sequence"]:
+            hand_received_at = hand_info.get("received_at", qp_now)
+            hand_sample_dt = qp_dt
+            if arm_state["last_hand_sample_time"] is not None:
+                measured_sample_dt = (
+                    hand_received_at - arm_state["last_hand_sample_time"]
+                )
+                if measured_sample_dt > 1e-6:
+                    hand_sample_dt = measured_sample_dt
 
-        arm_state["target_position"] = arm_state["target_position"] + delta_hand_pos * position_scale
-        arm_state["target_rotation"] = scaled_delta_rot @ arm_state["target_rotation"]
+            delta_hand_pos = hand_pos_robot - arm_state["last_hand_pos"]
+            delta_hand_rot = hand_rot_robot @ arm_state["last_hand_rot"].T
+            scaled_delta_rot = R.from_rotvec(
+                R.from_matrix(delta_hand_rot).as_rotvec() * rot_scale
+            ).as_matrix()
+            target_delta_position = delta_hand_pos * position_scale
+            arm_state["target_position"] = (
+                arm_state["target_position"] + target_delta_position
+            )
+            arm_state["target_rotation"] = (
+                scaled_delta_rot @ arm_state["target_rotation"]
+            )
 
-        arm_state["last_hand_pos"] = hand_pos_robot.copy()
-        arm_state["last_hand_rot"] = hand_rot_robot.copy()
+            target_feedforward_twist[:3] = (
+                target_delta_position / hand_sample_dt
+            )
+            target_feedforward_twist[3:] = (
+                R.from_matrix(scaled_delta_rot).as_rotvec()
+                / hand_sample_dt
+            )
+            arm_state["latest_hand_twist"] = (
+                (1.0 - VR_HAND_TWIST_FILTER_ALPHA)
+                * arm_state["latest_hand_twist"]
+                + VR_HAND_TWIST_FILTER_ALPHA
+                * target_feedforward_twist
+            )
+            target_feedforward_twist = (
+                arm_state["latest_hand_twist"].copy()
+            )
+            arm_state["last_hand_pos"] = hand_pos_robot.copy()
+            arm_state["last_hand_rot"] = hand_rot_robot.copy()
+            arm_state["last_hand_sequence"] = int(hand_info["seq"])
+            arm_state["last_hand_sample_time"] = hand_received_at
     else:
+        if arm_state["control_activated"]:
+            sync_targets_to_current_state(arm_state)
         arm_state["control_activated"] = False
         arm_state["last_hand_pos"] = None
         arm_state["last_hand_rot"] = None
+        target_feedforward_twist.fill(0.0)
+        arm_state["latest_hand_twist"].fill(0.0)
 
-    joint_pos = robot.inverse_kinematics(
-        target_position=arm_state["target_position"],
-        target_rotation=arm_state["target_rotation"],
-        init_q=arm_state["last_valid_joint_pos"],
-        max_iter=100,
-        eps=1e-3,
-        damping=1e-2,
-        adaptive_damping=True,
-        multi_init=False,
+    # 每个机械臂使用自己的持久QP状态，在连续命令轨迹上积分qdot。
+    target_transform = np.eye(4, dtype=np.float64)
+    target_transform[:3, :3] = np.asarray(
+        arm_state["target_rotation"], dtype=np.float64
     )
+    target_transform[:3, 3] = np.asarray(
+        arm_state["target_position"], dtype=np.float64
+    )
+    actual_joint_pos = np.asarray(robot.get_current_pos(), dtype=np.float64)
+    qp_result = None
+    qp_start = time.perf_counter()
+    try:
+        qp_result = arm_state["qp_solver"].step(
+            np.asarray(
+                arm_state["last_valid_joint_pos"], dtype=np.float64
+            ),
+            target_transform,
+            qp_dt,
+            feedforward_twist=target_feedforward_twist,
+        )
+    except (RuntimeError, ValueError) as exc:
+        now = time.perf_counter()
+        if now - arm_state["last_qp_failure_print"] >= 1.0:
+            print(f"\n{arm_state['label']} 速度级QP失败，保持上一命令: {exc}")
+            arm_state["last_qp_failure_print"] = now
+        arm_state["qp_solver"].reset()
+    arm_state["last_qp_ms"] = (
+        time.perf_counter() - qp_start
+    ) * 1000.0
 
-    if joint_pos is not None:
+    if qp_result is not None:
         current_joint_vel = robot.get_current_vel()
-        gravity_torque = robot.get_Gravity(joint_pos)
+        gravity_torque = robot.get_Gravity(actual_joint_pos)
         friction_torque = robot.get_friction_compensation(current_joint_vel, Fc, Fv, vel_threshold)
         feedforward_torque = np.clip(gravity_torque + friction_torque, -tau_limit, tau_limit)
         target_vel = np.zeros(robot.motor_count)
 
         success = robot.pos_vel_tqe_kp_kd(
-            pos=joint_pos.tolist(),
+            pos=qp_result.joint_position.tolist(),
             vel=target_vel.tolist(),
             tqe=feedforward_torque.tolist(),
             kp=kp,
             kd=kd,
         )
         if success:
-            arm_state["last_valid_joint_pos"] = joint_pos.copy()
+            arm_state["last_valid_joint_pos"] = (
+                qp_result.joint_position.copy()
+            )
+            arm_state["last_command_joint_velocity"] = (
+                qp_result.joint_velocity.copy()
+            )
 
     arm_state["last_primary_pressed"] = primary_pressed
 
@@ -552,7 +677,8 @@ def format_arm_status(arm_state, hand_info):
         f"S:{squeeze_value:.2f} T:{trigger_value:.2f} "
         f"手柄({h_pos[0]:.2f},{h_pos[1]:.2f},{h_pos[2]:.2f}) "
         f"目标[{arm_state['target_position'][0]:.3f},{arm_state['target_position'][1]:.3f},{arm_state['target_position'][2]:.3f}] "
-        f"当前[{current_pos[0]:.3f},{current_pos[1]:.3f},{current_pos[2]:.3f}]"
+        f"当前[{current_pos[0]:.3f},{current_pos[1]:.3f},{current_pos[2]:.3f}] "
+        f"QP:{arm_state['last_qp_ms']:.2f}ms"
     )
 
 
@@ -599,6 +725,10 @@ def main():
     print("  Ctrl+C 退出")
     print(f"  位置缩放因子: {position_scale}")
     print(f"  姿态缩放因子: {rot_scale}")
+    print(
+        "  双臂独立速度级QP限制: "
+        f"{VR_MAX_JOINT_VELOCITY.tolist()} rad/s"
+    )
     print("\n开始控制，请注意安全。\n")
 
     print_count = 0

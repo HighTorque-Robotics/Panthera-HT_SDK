@@ -18,3 +18,6 @@ scipy>=1.9.0          # 科学计算库（用于旋转插值等）
 # 2. 如果不使用 Panthera_lib，只需安装 whl 包即可
 # 3. 建议在 conda 环境中安装，Python 版本 3.9-3.12
 # 4. 避免与 ROS 环境冲突，建议使用独立的 conda 环境
+
+# VR 速度级 QP 逆运动学（使用 OSQP 1.x API）
+osqp>=1.1.0,<2.0

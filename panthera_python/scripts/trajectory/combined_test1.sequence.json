@@ -1,0 +1,71 @@
+{
+  "version": 2,
+  "modules": [
+    {
+      "kind": "start",
+      "duration": 2.0
+    },
+    {
+      "kind": "trajectory",
+      "file": "trajectory_test1.jsonl"
+    },
+    {
+      "kind": "transition",
+      "duration": 1.0
+    },
+    {
+      "kind": "trajectory",
+      "file": "trajectory_20261021_181500_345658.jsonl"
+    },
+    {
+      "kind": "zero",
+      "duration": 2.0
+    },
+    {
+      "kind": "transition",
+      "duration": 1.0
+    },
+    {
+      "kind": "trajectory",
+      "file": "trajectory_test1.jsonl"
+    }
+  ],
+  "stages": [
+    {
+      "start": 0.0,
+      "end": 19.72206551599811,
+      "kind": "trajectory",
+      "label": "1 · trajectory_test1"
+    },
+    {
+      "start": 19.72206551599811,
+      "end": 21.911184448634394,
+      "kind": "transition",
+      "label": "过渡 → 2"
+    },
+    {
+      "start": 21.911184448634394,
+      "end": 32.92018676962669,
+      "kind": "trajectory",
+      "label": "2 · trajectory_20261021_181500_345658"
+    },
+    {
+      "start": 32.92018676962669,
+      "end": 34.92018676962669,
+      "kind": "zero",
+      "label": "回零位"
+    },
+    {
+      "start": 34.92018676962669,
+      "end": 35.92018676962669,
+      "kind": "transition",
+      "label": "过渡 → 3"
+    },
+    {
+      "start": 35.92018676962669,
+      "end": 55.6422522856248,
+      "kind": "trajectory",
+      "label": "3 · trajectory_test1"
+    }
+  ]
+}

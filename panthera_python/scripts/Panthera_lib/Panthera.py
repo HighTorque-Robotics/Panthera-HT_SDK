@@ -477,6 +477,19 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
         # 调用单关节位置速度控制
         return self.Joint_Pos_Vel(pos, vel, max_tqu, iswait, tolerance, timeout)
 
+    def set_brake(self):
+        """所有电机进入固件阻尼模式，兼容未绑定 Robot.set_brake 的 SDK。"""
+        # Motor.brake 只写入发送缓存；全部设置完成后统一提交，包括夹爪。
+        motors = self.Motors
+        if not motors or any(not callable(getattr(motor, "brake", None)) for motor in motors):
+            raise RuntimeError("当前 SDK 未提供全部电机的 brake() 接口")
+        for motor in motors:
+            if motor.brake() is False:
+                raise RuntimeError("电机拒绝阻尼指令，本次未发送")
+        if self.motor_send_cmd() is False:
+            raise RuntimeError("发送阻尼指令失败")
+        return True
+
     def pos_vel_tqe_kp_kd(self, pos, vel, tqe, kp, kd):
         """关节五参数MIT控制模式"""
         # 检查关节数量（除了夹爪电机）
@@ -538,8 +551,11 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
         self.motor_send_cmd()
         return True
 
-    def gripper_control_MIT(self, pos, vel, tqe, kp, kd):
-        """夹爪控制（5参数MIT模式）"""
+    def gripper_control_MIT(self, pos, vel, tqe, kp, kd, send=True):
+        """夹爪控制（5参数MIT模式）。
+
+        ``send=False`` 仅缓存夹爪命令，供同周期机械臂命令统一发送。
+        """
         # 检查夹爪位置是否在限位范围内
         if self.gripper_limits is not None:
             lower = self.gripper_limits['lower']
@@ -556,8 +572,11 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
                 print("="*60 + "\n")
                 return False
 
-        self.Motors[self.gripper_id-1].pos_vel_tqe_kp_kd(pos, vel, tqe, kp, kd)
-        self.motor_send_cmd()
+        self.Motors[self.gripper_id-1].pos_vel_tqe_kp_kd(
+            pos, vel, tqe, kp, kd
+        )
+        if send:
+            self.motor_send_cmd()
         return True
     
     def gripper_open(self, pos=1.6, vel=0.5, max_tqu=0.5):

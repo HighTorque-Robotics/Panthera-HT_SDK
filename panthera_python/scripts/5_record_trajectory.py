@@ -74,8 +74,13 @@ if __name__ == "__main__":
 
     # 实例化记录器（如开启记录）
     if DO_RECORD:
-        rec = TrajectoryRecorder(REC_FILE)
+        trajectory_dir = os.path.join(script_dir, "trajectory")
+        os.makedirs(trajectory_dir, exist_ok=True)
+        rec_filename = REC_FILE or time.strftime("trajectory_%Y%m%d_%H%M%S.jsonl")
+        rec_path = os.path.join(trajectory_dir, rec_filename)
+        rec = TrajectoryRecorder(rec_path)
         print("开始记录轨迹（位置+速度+夹爪）...")
+        print(f"轨迹保存路径：{rec_path}")
 
     try:
         # 记录轨迹之前先循环发送读取指令，避免未接收到关节状态导致关节角为999
