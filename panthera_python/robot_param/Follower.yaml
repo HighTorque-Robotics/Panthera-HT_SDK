@@ -13,9 +13,9 @@ robot:
   acceleration_limits: [2.0, 2.0, 2.0, 2.0, 2.0, 2.0]
 
 urdf:
-  file_path: "../Panthera-HT_description/urdf/Panthera-HT_description_follower.urdf"
+  file_path: "../Panthera-HT_description_V1.1.0/urdf/Panthera-HT_description_V1.1.0.urdf"
   base_link: "base_link"
-  end_effector_link: "tool_link"
+  end_effector_link: "gripper_center_link"
 
 kinematics:
   joint_names:

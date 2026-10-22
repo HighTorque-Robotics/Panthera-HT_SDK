@@ -19,7 +19,7 @@ if __name__ == "__main__":
     try:
         while(1):
             robot.pos_vel_tqe_kp_kd(pos1, zero_vel, zero_tqe, kp, kd)
-
+            robot.gripper_open()
             positions = robot.get_current_pos()
             velocities = robot.get_current_vel()
             torque = robot.get_current_torque()
