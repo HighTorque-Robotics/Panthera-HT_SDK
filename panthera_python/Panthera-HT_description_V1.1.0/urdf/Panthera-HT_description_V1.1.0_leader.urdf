@@ -178,7 +178,7 @@
   <link name="gripper_center_link">
     <inertial>
       <origin xyz="-0.12885290 -0.00009129 0.00013244" rpy="0 0 0" />
-      <mass value="0.22" />
+      <mass value="0.3" />
       <inertia ixx="0.00009261" ixy="-0.00000021" ixz="-0.00000020" iyy="0.00006874" iyz="0.00000211" izz="0.00014258" />
     </inertial>
     <visual>
@@ -258,7 +258,7 @@
   <!-- <link name="camera_link">
     <inertial>
       <origin xyz="0.00879653211256671 0.0179226948373875 -0.015388922996916" rpy="0 0 0" />
-      <mass value="0.0688844500628508" />
+      <mass value="0.08" />
       <inertia ixx="3.17228381323626E-05" ixy="4.07483666889155E-10" ixz="-1.49573102173192E-08" iyy="1.40854439300304E-05" iyz="-1.49982732096388E-06" izz="3.88356708336766E-05" />
     </inertial>
     <visual>

@@ -3,19 +3,20 @@ robot:
   name: "Panthera-HT"  # 兼容旧版 Python/C++ 扩展
   param_file: "../robot_param/motor_param/6dof_Panthera_params_leader.yaml"
   joint_limits:
-    lower: [-2.4, 0.0, 0.0, -1.6, -1.7, -2.5]
-    upper: [2.4, 3.2, 4.0, 1.6, 1.7, 2.5]
+    lower: [-2.7, -0.1, -0.1, -1.6, -1.7, -2.7]
+    upper: [2.7, 3.14, 4.2, 1.6, 1.7, 2.7]
   gripper_limits:
-    lower: 0.0
+    lower: -0.2
     upper: 2.0
   max_torque: [21.0, 36.0, 36.0, 21.0, 10.0, 10.0]
+  #当前为比较保守的速度限制 需要跑高速运动可以参考urdf内的速度
   velocity_limits: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
   acceleration_limits: [2.0, 2.0, 2.0, 2.0, 2.0, 2.0]
 
 urdf:
-  file_path: "../Panthera-HT_description/urdf/Panthera-HT_description_leader.urdf"
+  file_path: "../Panthera-HT_description/urdf/Panthera-HT_description_V1.1.0_leader.urdf"
   base_link: "base_link"
-  end_effector_link: "joint6"
+  end_effector_link: "gripper_center_link"
 
 kinematics:
   joint_names:

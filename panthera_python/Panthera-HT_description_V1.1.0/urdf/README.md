@@ -100,6 +100,20 @@
 
 ![启用 D405 相机连杆及固定关节的代码示例](../image/camera_link.png)
 
+## 主臂与从臂的质量配置
+
+主臂相比从臂，需要修改 `gripper_center_link` 的质量。用于主臂时，找到该连杆的 `<inertial>` 部分，将其中的 `<mass>` 设置为 `0.3`（单位：kg）：
+
+```xml
+<mass value="0.3" />
+```
+
+只修改 `gripper_center_link` 下的质量项，左右夹爪连杆的质量不随此步骤修改。从臂保留其对应的质量配置。
+
+下图红框标出了主臂需要修改的位置：
+
+![主臂 gripper_center_link 质量设置为 0.3 kg](../image/leader_arm.png)
+
 ## 修改后检查
 
 保存文件并重新加载 URDF。可以在本目录运行以下命令，检查 XML 格式：
