@@ -20,6 +20,7 @@ def print_robot_state(robot):
     positions = robot.get_current_pos()
     velocities = robot.get_current_vel()
     torque = robot.get_current_torque()
+    states = robot.get_current_state()
 
     # 获取夹爪状态
     gripper_state = robot.get_current_state_gripper()
@@ -30,10 +31,10 @@ def print_robot_state(robot):
     
     # 打印6个关节信息
     for i in range(robot.motor_count):
-        print(f"关节{i+1}: 位置={positions[i]:7.3f} rad, 速度={velocities[i]:7.3f} rad/s, 力矩={torque[i]:7.3f}")
+        print(f"关节{i+1}: 位置={positions[i]:7.3f} rad, 速度={velocities[i]:7.3f} rad/s, 力矩={torque[i]:7.3f}, 模式={states[i].mode}, 故障码=0x{states[i].fault:02X}")
     
     # 打印夹爪信息
-    print(f"夹爪:   位置={gripper_state.position:7.3f} rad, 速度={gripper_state.velocity:7.3f} rad/s")
+    print(f"夹爪:   位置={gripper_state.position:7.3f} rad, 速度={gripper_state.velocity:7.3f} rad/s, 模式={gripper_state.mode}, 故障码=0x{gripper_state.fault:02X}")
 
 def main():
     robot = Panthera()

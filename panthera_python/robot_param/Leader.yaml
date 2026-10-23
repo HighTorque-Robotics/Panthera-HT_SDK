@@ -3,7 +3,7 @@ robot:
   name: "Panthera-HT"  # 兼容旧版 Python/C++ 扩展
   param_file: "../robot_param/motor_param/6dof_Panthera_params_leader.yaml"
   joint_limits:
-    lower: [-2.7, -0.1, -0.1, -1.6, -1.7, -2.7]
+    lower: [-2.7, -0.1, -0.1, -2.1, -1.7, -2.7]
     upper: [2.7, 3.14, 4.2, 1.6, 1.7, 2.7]
   gripper_limits:
     lower: -0.2
