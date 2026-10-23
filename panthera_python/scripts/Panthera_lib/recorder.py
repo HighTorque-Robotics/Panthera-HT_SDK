@@ -79,7 +79,7 @@ class Recorder:
         move_vel = [0.5] * len(start_pos)  # 缓慢速度 0.5 rad/s
 
         # 夹爪移动到起点（如果有夹爪数据）
-        if "gripper_pos" in first_frame:
+        if robot.has_gripper and "gripper_pos" in first_frame:
             gripper_start_pos = first_frame["gripper_pos"]
             print(f"[Player] 夹爪移动到起点: {gripper_start_pos:.3f} rad")
             robot.gripper_control(gripper_start_pos, 0.5, 0.5)
@@ -109,7 +109,7 @@ class Recorder:
                 raise ValueError("mode 必须是 'mit' 或 'posvel'")
 
             # 夹爪控制（如果有夹爪数据）
-            if "gripper_pos" in f:
+            if robot.has_gripper and "gripper_pos" in f:
                 robot.gripper_control_MIT(f["gripper_pos"], f["gripper_vel"], 0.0, gripper_kp, gripper_kd)
 
         print("[Player] 回放完成")

@@ -1,8 +1,8 @@
 # Panthera：DLS 迭代逆解与 QP 逆运动学
 
-[English](README_IK_QP_EN.md) · [SDK 总说明](../README.md)
+[English](README_IK_QP_EN.md) · [SDK 总说明](../../README.md)
 
-**适用范围：本目录当前六轴 Panthera SDK，代码核对日期 2026-10-16。** 
+**适用范围：本目录当前六轴 Panthera SDK，代码核对日期 2026-10-24。**
 ## 1. 先看区别
 
 DLS 通常在一次函数调用中反复更新关节角，尝试得到目标位姿的解；这里的 QP 每个控制周期求一个关节速度，再积分出下一步关节角。**QP 也是数值方法，OSQP 内部也有迭代；不能把它理解为解析逆解。**
@@ -36,17 +36,17 @@ flowchart LR
 
 | 文件 | 关注的函数／变量 |
 |---|---|
-| [Panthera_lib/Panthera.py](Panthera_lib/Panthera.py) | `inverse_kinematics`、`_inverse_kinematics_dls_single_impl`、`_inverse_kinematics_dls_multi_init_impl`、`forward_kinematics`、`get_jacobian` |
-| [Panthera_lib/qp_ik.py](Panthera_lib/qp_ik.py) | `PinocchioOSQPIK.__init__`、`_velocity_bounds`、`step`、`reset`、`QPIKResult` |
-| [单臂 VR](7_vr_cartesian_control.py) | `main` 中构造 `qp_solver` 并调用 `step` |
-| [双臂 VR](7_vr_dual_cartesian_control.py) | `create_arm_state`、`process_arm_control`、`sync_targets_to_current_state` |
-| [Follower.yaml](../robot_param/Follower.yaml) / [Leader.yaml](../robot_param/Leader.yaml) | `joint_limits`、`velocity_limits`、`acceleration_limits`、`end_effector_link` |
-| [离线回归](tests/test_vr_qp.py) | URDF 收敛、双臂独立性、重复包、失效处理与夹爪发送 |
+| [Panthera.py](Panthera.py) | `inverse_kinematics`、`_inverse_kinematics_dls_single_impl`、`_inverse_kinematics_dls_multi_init_impl`、`forward_kinematics`、`get_jacobian` |
+| [qp_ik.py](qp_ik.py) | `PinocchioOSQPIK.__init__`、`_velocity_bounds`、`step`、`reset`、`QPIKResult` |
+| [单臂 VR](../7_vr_cartesian_control.py) | `main` 中构造 `qp_solver` 并调用 `step` |
+| [双臂 VR](../7_vr_dual_cartesian_control.py) | `create_arm_state`、`process_arm_control`、`sync_targets_to_current_state` |
+| [Follower.yaml](../../robot_param/Follower.yaml) / [Leader.yaml](../../robot_param/Leader.yaml) | `joint_limits`、`velocity_limits`、`acceleration_limits`、`end_effector_link` |
+| [离线回归](../tests/test_vr_qp.py) | URDF 收敛、双臂独立性、重复包、失效处理与夹爪发送 |
 
 - 关节角：rad；关节速度：rad/s；关节加速度：rad/s²；位置：m；时间：s。
 - `T` 是 4×4 齐次变换：左上 3×3 为旋转矩阵，右上 3×1 为位置。目标与 FK 都在所选 URDF 的模型基座坐标系中。
 - QP 的雅可比来自 `pin.LOCAL_WORLD_ALIGNED`：线速度／角速度用基座方向表示，作用点是配置中的末端 frame。`feedforward_twist = [vx, vy, vz, wx, wy, wz]`，单位 m/s、rad/s。
-- 当前 `Leader.yaml` 的末端为 `joint6`，`Follower.yaml` 为 `tool_link`。不要把两者的 TCP 位姿直接混用。
+- 当前 `Leader.yaml` 和 `Follower.yaml` 在安装夹爪时均使用 `gripper_center_link`；`gripper_installed: false` 时改用 `link6`，并从动力学模型中排除夹爪连杆。
 - 六个关节的顺序是 `joint1 ... joint6`；夹爪独立，不是第七个 IK 自由度。
 
 ## 3. DLS 怎么调用、内部怎么迭代
@@ -220,7 +220,7 @@ flowchart LR
 - `VR_HAND_VELOCITY_TIMEOUT=0.05` 只清除过期的手柄速度前馈。旧位姿目标仍可能被继续跟踪；这不是完整的 UDP 失联急停机制。
 - `gripper_control_MIT(..., send=False)` 缓存夹爪命令，单臂在同周期关节发送时一并下发；QP 失败分支也有显式发送。默认 `send=True` 保留原接口行为。
 
-两个脚本会在启动时移动到预设姿态，退出流程会尝试回零；等不到手柄数据约 10 秒后仍继续初始化。不要把运行脚本当作纯离线导入测试。启动命令见 [SDK 总说明](../README.md)。
+两个脚本会在启动时移动到预设姿态，退出流程会尝试回零；等不到手柄数据约 10 秒后仍继续初始化。不要把运行脚本当作纯离线导入测试。启动命令见 [SDK 总说明](../../README.md)。
 
 ### 4.3 接入已连接的机器人对象（会发送命令）
 

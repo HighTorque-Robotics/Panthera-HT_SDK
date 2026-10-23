@@ -19,7 +19,7 @@ MuJoCo 使用配套脚本将源网格转换为 OBJ，再生成仿真场景。可
 
 ## URDF 内容与配置
 
-主模型文件为 [Panthera-HT_description_V1.1.0.urdf](urdf/Panthera-HT_description_V1.1.0.urdf)，包含连杆惯性、视觉与碰撞模型、关节连接关系、运动轴和限位。
+源模型分为 [Follower URDF](urdf/Panthera-HT_description_V1.1.0_follower.urdf) 和 [Leader URDF](urdf/Panthera-HT_description_V1.1.0_leader.urdf)，均包含连杆惯性、视觉与碰撞模型、关节连接关系、运动轴和限位。MuJoCo 可视化脚本默认使用 Follower URDF。
 
 | 部分 | 内容与配置方式 |
 | --- | --- |

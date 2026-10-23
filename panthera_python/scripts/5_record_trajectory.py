@@ -49,10 +49,18 @@ def main():
         print("\r", end="")
         for i in range(Leader.motor_count):
             print(f"J{i+1}: {Leader_positions[i]:6.3f}rad {Leader_velocity[i]:6.3f}rad/s | ", end="")
-        print(f"夹爪: {gripper_pos:6.3f}rad {gripper_vel:6.3f}rad/s   ", end="", flush=True)
+        if Leader.has_gripper:
+            print(f"夹爪: {gripper_pos:6.3f}rad {gripper_vel:6.3f}rad/s   ", end="", flush=True)
+        else:
+            print("夹爪: 未连接   ", end="", flush=True)
         last_print_time = now
 
-    return Leader_positions, Leader_velocity, gripper_pos, gripper_vel
+    return (
+        Leader_positions,
+        Leader_velocity,
+        gripper_pos if Leader.has_gripper else None,
+        gripper_vel if Leader.has_gripper else None,
+    )
 
 if __name__ == "__main__":
     # 创建机器人实例

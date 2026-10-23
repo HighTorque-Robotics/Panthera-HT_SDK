@@ -363,6 +363,9 @@ def set_gripper_velocity(robot, direction):
     随后的 robot.Joint_Vel() 会在同一个速度数据包中填入六个关节
     速度并统一发送，避免夹爪命令覆盖机械臂命令。
     """
+    if not robot.has_gripper:
+        return 0.0
+
     velocity = float(direction) * gripper_speed
     current_position = robot.get_current_pos_gripper()
     lower = gripper_close_position
@@ -375,7 +378,7 @@ def set_gripper_velocity(robot, direction):
     elif current_position <= lower + gripper_limit_margin and velocity < 0.0:
         velocity = 0.0
 
-    robot.Motors[robot.gripper_id - 1].velocity(velocity)
+    robot.gripper_motor.velocity(velocity)
     return velocity
 
 
@@ -588,8 +591,9 @@ def main():
     finally:
         gamepad.stop()
         print("\n\n停止运动...")
-        robot.Motors[robot.gripper_id - 1].velocity(0.0)
-        robot.motor_send_cmd()
+        if robot.has_gripper:
+            robot.gripper_motor.velocity(0.0)
+            robot.motor_send_cmd()
         q = robot.get_current_pos()
         gra = robot.get_Gravity()
         robot.pos_vel_tqe_kp_kd(

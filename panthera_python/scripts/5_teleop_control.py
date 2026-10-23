@@ -39,13 +39,15 @@ def main():
     Follower.pos_vel_tqe_kp_kd(Leader_positions, Leader_velocity, Follower_tor, kp, kd)
 
     # *******夹爪控制*******
-    Leader_gripper_positions = Leader.get_current_pos_gripper()
-    Leader_gripper_velocity = Leader.get_current_vel_gripper()
-    Follower_gripper = Follower.get_current_state_gripper()
-    gripper_torque = Follower.get_friction_compensation(Leader_gripper_velocity, 0.06, 0.0, 0.15) - Follower_gripper.torque*0.5
-    tor_diff[np.abs(gripper_torque) < 0.2] = 0
-    Leader.gripper_control_MIT(1.5, 0, gripper_torque, 0.2, 0.02)
-    Follower.gripper_control_MIT(Leader_gripper_positions, Leader_gripper_velocity, 0, gripper_kp, gripper_kd)
+    gripper_torque = 0.0
+    if Leader.has_gripper and Follower.has_gripper:
+        Leader_gripper_positions = Leader.get_current_pos_gripper()
+        Leader_gripper_velocity = Leader.get_current_vel_gripper()
+        Follower_gripper = Follower.get_current_state_gripper()
+        gripper_torque = Follower.get_friction_compensation(Leader_gripper_velocity, 0.06, 0.0, 0.15) - Follower_gripper.torque*0.5
+        tor_diff[np.abs(gripper_torque) < 0.2] = 0
+        Leader.gripper_control_MIT(1.5, 0, gripper_torque, 0.2, 0.02)
+        Follower.gripper_control_MIT(Leader_gripper_positions, Leader_gripper_velocity, 0, gripper_kp, gripper_kd)
 
     # 打印6个关节信息
     for i in range(Leader.motor_count):

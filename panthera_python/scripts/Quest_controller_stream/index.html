@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quest 2 WebXR Controller Stream</title>
+  <style>
+    :root {
+      --bg: #f4f1ea;
+      --panel: #fffaf0;
+      --panel-strong: #f0e6d2;
+      --line: #d0c2a8;
+      --text: #2b2418;
+      --muted: #6f6451;
+      --ok: #2f7d4a;
+      --warn: #a55a18;
+      --bad: #a12626;
+    }
+
+    body {
+      font-family: "Noto Sans SC", "Segoe UI", sans-serif;
+      margin: 0;
+      background: radial-gradient(circle at top, #fff7e8, var(--bg) 50%);
+      color: var(--text);
+    }
+
+    .app {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      margin: 0 0 18px;
+      color: var(--muted);
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 10px 28px rgba(67, 49, 13, 0.08);
+      margin-bottom: 16px;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      align-items: end;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    input {
+      font-size: 16px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--text);
+    }
+
+    button {
+      font-size: 16px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--text);
+      background: var(--text);
+      color: #fff7e8;
+      cursor: pointer;
+      transition: transform 120ms ease, opacity 120ms ease;
+    }
+
+    button.secondary {
+      background: transparent;
+      color: var(--text);
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: default;
+      transform: none;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      background: var(--panel);
+    }
+
+    .card .label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .card .value {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .ok { color: var(--ok); }
+    .warn { color: var(--warn); }
+    .bad { color: var(--bad); }
+
+    .hint {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-break: break-all;
+      font-size: 14px;
+      margin: 0;
+      max-height: 40vh;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+      background: #fffdf7;
+    }
+
+    @media (max-width: 640px) {
+      .app {
+        padding: 14px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <h1>Quest Controller Stream</h1>
+    <p class="subtitle">进入 XR 后采集左右手控制器位姿和按钮状态，并通过 WebSocket 推送到电脑端。</p>
+
+    <section class="panel">
+      <div class="controls">
+        <div class="field">
+          <label for="wsUrlInput">WebSocket 地址</label>
+          <input id="wsUrlInput" type="text" placeholder="ws://192.168.1.50:8765" />
+        </div>
+        <div class="field">
+          <label for="sendRateInput">发送频率 (Hz)</label>
+          <input id="sendRateInput" type="number" min="1" max="120" step="1" value="120" />
+        </div>
+        <div class="button-row">
+          <button id="startBtn">Start XR Stream</button>
+          <button id="endBtn" class="secondary">End XR Session</button>
+          <button id="saveBtn" class="secondary">Save Settings</button>
+        </div>
+      </div>
+      <div class="hint">
+        无线使用时，把地址改成电脑局域网 IP。若 Quest 浏览器限制 `immersive-vr`，需要改成 `https` / `wss`。
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="status-grid">
+        <div class="card">
+          <span class="label">XR</span>
+          <div id="xrStatus" class="value warn">Idle</div>
+        </div>
+        <div class="card">
+          <span class="label">WebSocket</span>
+          <div id="wsStatus" class="value warn">Disconnected</div>
+        </div>
+        <div class="card">
+          <span class="label">Send Rate</span>
+          <div id="sendRateStatus" class="value">0.0 Hz</div>
+        </div>
+        <div class="card">
+          <span class="label">Packets</span>
+          <div id="packetStatus" class="value">0</div>
+        </div>
+        <div class="card">
+          <span class="label">Left Pose</span>
+          <div id="leftPoseStatus" class="value warn">Missing</div>
+        </div>
+        <div class="card">
+          <span class="label">Right Pose</span>
+          <div id="rightPoseStatus" class="value warn">Missing</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <pre id="log"></pre>
+    </section>
+  </div>
+
+  <script>
+    const logEl = document.getElementById("log");
+    const startBtn = document.getElementById("startBtn");
+    const endBtn = document.getElementById("endBtn");
+    const saveBtn = document.getElementById("saveBtn");
+    const wsUrlInput = document.getElementById("wsUrlInput");
+    const sendRateInput = document.getElementById("sendRateInput");
+    const xrStatusEl = document.getElementById("xrStatus");
+    const wsStatusEl = document.getElementById("wsStatus");
+    const sendRateStatusEl = document.getElementById("sendRateStatus");
+    const packetStatusEl = document.getElementById("packetStatus");
+    const leftPoseStatusEl = document.getElementById("leftPoseStatus");
+    const rightPoseStatusEl = document.getElementById("rightPoseStatus");
+
+    let session = null;
+    let refSpace = null;
+    let gl = null;
+    let xrCanvas = null;
+    let ws = null;
+    let wsReconnectTimer = null;
+    let seq = 0;
+    let debugCounter = 0;
+    let lastFrameTime = 0;
+    let lastStatsTime = 0;
+    let sendAccumulatorMs = 0;
+    let packetsSent = 0;
+    let packetsSentWindow = 0;
+    let shouldReconnectWS = false;
+
+    const SETTINGS_KEY = "quest-controller-stream-settings";
+    const DEFAULT_SEND_RATE_HZ = 120;
+
+    let triedSetFrameRate = false;
+    let requestedFrameRate = null;
+
+    function getDefaultWSUrl() {
+      const paramUrl = new URLSearchParams(window.location.search).get("ws");
+      if (paramUrl) return paramUrl;
+
+      const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+      const host = window.location.hostname || "127.0.0.1";
+      return `${protocol}//${host}:8765`;
+    }
+
+    function loadSettings() {
+      try {
+        const raw = localStorage.getItem(SETTINGS_KEY);
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch {
+        return null;
+      }
+    }
+
+    function saveSettings() {
+      const settings = {
+        wsUrl: wsUrlInput.value.trim(),
+        sendRateHz: sanitizeSendRate(sendRateInput.value),
+      };
+      localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+      sendRateInput.value = String(settings.sendRateHz);
+      log("设置已保存");
+    }
+
+    function sanitizeSendRate(value) {
+      const n = Number(value);
+      if (!Number.isFinite(n)) return DEFAULT_SEND_RATE_HZ;
+      return Math.min(120, Math.max(1, Math.round(n)));
+    }
+
+    function getSendIntervalMs() {
+      return 1000 / sanitizeSendRate(sendRateInput.value);
+    }
+
+    function setStatus(el, text, level) {
+      el.textContent = text;
+      el.className = `value ${level || ""}`.trim();
+    }
+
+    function refreshButtonState() {
+      startBtn.disabled = !!session;
+      endBtn.disabled = !session;
+    }
+
+    function updatePoseStatus(leftValid, rightValid) {
+      setStatus(leftPoseStatusEl, leftValid ? "Tracking" : "Missing", leftValid ? "ok" : "warn");
+      setStatus(rightPoseStatusEl, rightValid ? "Tracking" : "Missing", rightValid ? "ok" : "warn");
+    }
+
+    function resetRuntimeStats() {
+      sendAccumulatorMs = 0;
+      lastStatsTime = 0;
+      packetsSent = 0;
+      packetsSentWindow = 0;
+      packetStatusEl.textContent = "0";
+      sendRateStatusEl.textContent = "0.0 Hz";
+      updatePoseStatus(false, false);
+    }
+
+    function log(...args) {
+      const s = args.map(v => {
+        if (typeof v === "object") {
+          try {
+            return JSON.stringify(v);
+          } catch {
+            return String(v);
+          }
+        }
+        return String(v);
+      }).join(" ");
+      console.log(s);
+      logEl.textContent = s + "\n" + logEl.textContent.slice(0, 12000);
+    }
+
+    function clearWSReconnect() {
+      if (wsReconnectTimer) {
+        clearTimeout(wsReconnectTimer);
+        wsReconnectTimer = null;
+      }
+    }
+
+    function scheduleWSReconnect() {
+      if (!shouldReconnectWS || wsReconnectTimer) return;
+      clearWSReconnect();
+      wsReconnectTimer = setTimeout(() => {
+        wsReconnectTimer = null;
+        if (shouldReconnectWS && session) {
+          connectWSNonBlocking();
+        }
+      }, 1500);
+    }
+
+    function connectWSNonBlocking() {
+      const url = wsUrlInput.value.trim();
+      if (!url) {
+        setStatus(wsStatusEl, "Missing URL", "bad");
+        log("WebSocket 地址为空");
+        return;
+      }
+
+      if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) {
+        return;
+      }
+
+      try {
+        setStatus(wsStatusEl, "Connecting", "warn");
+        ws = new WebSocket(url);
+        ws.binaryType = "arraybuffer";
+
+        ws.addEventListener("open", () => {
+          clearWSReconnect();
+          setStatus(wsStatusEl, "Connected", "ok");
+          log("WS 已连接", url);
+        });
+        ws.addEventListener("close", (event) => {
+          setStatus(wsStatusEl, shouldReconnectWS ? "Reconnecting" : "Disconnected", shouldReconnectWS ? "warn" : "bad");
+          log("WS 已断开", "code=", event.code, "reason=", event.reason || "(无)", "clean=", event.wasClean);
+          ws = null;
+          scheduleWSReconnect();
+        });
+        ws.addEventListener("error", () => {
+          setStatus(wsStatusEl, "Error", "bad");
+          log("WS 错误（不会阻塞 XR 启动）");
+        });
+      } catch (err) {
+        setStatus(wsStatusEl, "Create Failed", "bad");
+        log("WS 创建失败:", err.message);
+        scheduleWSReconnect();
+      }
+    }
+
+    function buttonValue(gamepad, idx) {
+      if (!gamepad || !gamepad.buttons || idx >= gamepad.buttons.length) return 0;
+      const b = gamepad.buttons[idx];
+      return typeof b.value === "number" ? b.value : 0;
+    }
+
+    function buttonPressed(gamepad, idx) {
+      if (!gamepad || !gamepad.buttons || idx >= gamepad.buttons.length) return 0;
+      return gamepad.buttons[idx].pressed ? 1 : 0;
+    }
+
+    function getBestPose(xrFrame, src, refSpace) {
+      const gripPose = src.gripSpace ? xrFrame.getPose(src.gripSpace, refSpace) : null;
+      if (gripPose) return gripPose;
+
+      const rayPose = src.targetRaySpace ? xrFrame.getPose(src.targetRaySpace, refSpace) : null;
+      if (rayPose) return rayPose;
+
+      return null;
+    }
+
+    function encodeHand(seqNum, handId, pose, gamepad) {
+      const arr = new Float32Array(20);
+
+      arr[0] = seqNum;
+      arr[1] = handId;
+      arr[2] = pose ? 1 : 0;
+
+      if (pose) {
+        const p = pose.transform.position;
+        const q = pose.transform.orientation;
+        arr[3] = p.x;
+        arr[4] = p.y;
+        arr[5] = p.z;
+        arr[6] = q.x;
+        arr[7] = q.y;
+        arr[8] = q.z;
+        arr[9] = q.w;
+      }
+
+      const axes = gamepad?.axes ?? [];
+      const mapping = gamepad?.mapping ?? "";
+
+      let thumbX = 0;
+      let thumbY = 0;
+
+      if (mapping === "xr-standard") {
+        thumbX = axes[2] ?? axes[0] ?? 0;
+        thumbY = axes[3] ?? axes[1] ?? 0;
+      } else {
+        thumbX = axes[0] ?? 0;
+        thumbY = axes[1] ?? 0;
+      }
+
+      arr[10] = thumbX;
+      arr[11] = thumbY;
+
+      arr[12] = buttonValue(gamepad, 0);   // trigger
+      arr[13] = buttonValue(gamepad, 1);   // squeeze
+      arr[14] = buttonPressed(gamepad, 3); // thumbstick click
+      arr[15] = buttonPressed(gamepad, 4); // primary A/X
+      arr[16] = buttonPressed(gamepad, 5); // secondary B/Y
+      arr[17] = buttonPressed(gamepad, 0); // trigger pressed
+      arr[18] = buttonPressed(gamepad, 1); // squeeze pressed
+      arr[19] = 0;
+
+      return arr;
+    }
+
+    async function trySetFrameRateOnce() {
+      if (!session || triedSetFrameRate) return;
+      triedSetFrameRate = true;
+
+      if (
+        !("supportedFrameRates" in session) ||
+        typeof session.updateTargetFrameRate !== "function"
+      ) {
+        log("当前浏览器不支持 supportedFrameRates / updateTargetFrameRate");
+        return;
+      }
+
+      try {
+        const rates = Array.from(session.supportedFrameRates || []);
+        log("supportedFrameRates =", JSON.stringify(rates));
+
+        if (!rates.length) {
+          log("supportedFrameRates 为空，保持默认刷新率");
+          return;
+        }
+
+        requestedFrameRate = rates.includes(120) ? 120 : Math.max(...rates);
+        log("准备请求刷新率 =", requestedFrameRate);
+
+        // 注意：这里只发请求，不阻塞整个启动链路
+        session.updateTargetFrameRate(requestedFrameRate)
+          .then(() => {
+            log("刷新率请求成功 =", requestedFrameRate);
+            if ("frameRate" in session) {
+              log("当前 session.frameRate =", session.frameRate);
+            }
+          })
+          .catch(err => {
+            log("刷新率请求失败:", err.message);
+          });
+      } catch (err) {
+        log("trySetFrameRateOnce 出错:", err.message);
+      }
+    }
+
+    function onXRFrame(time, xrFrame) {
+      if (!session) return;
+      session.requestAnimationFrame(onXRFrame);
+
+      // 首帧里再请求刷新率，更稳
+      if (!triedSetFrameRate) {
+        trySetFrameRateOnce();
+      }
+
+      if (lastFrameTime !== 0 && debugCounter % 120 === 0) {
+        const dt = time - lastFrameTime;
+        const fps = dt > 0 ? (1000 / dt) : 0;
+        const frameRateText = ("frameRate" in session) ? session.frameRate : "n/a";
+        log(
+          "frame dt =", dt.toFixed(2) + "ms",
+          "approx fps =", fps.toFixed(1),
+          "session.frameRate =", frameRateText
+        );
+      }
+      const frameDelta = lastFrameTime === 0 ? 0 : Math.max(0, time - lastFrameTime);
+      lastFrameTime = time;
+
+      const left = new Float32Array(20);
+      const right = new Float32Array(20);
+      let leftPoseValid = false;
+      let rightPoseValid = false;
+
+      left[0] = seq;
+      left[1] = 0;
+
+      right[0] = seq;
+      right[1] = 1;
+
+      for (const src of session.inputSources) {
+        if (!src || (src.handedness !== "left" && src.handedness !== "right")) {
+          continue;
+        }
+
+        const pose = getBestPose(xrFrame, src, refSpace);
+        const encoded = encodeHand(
+          seq,
+          src.handedness === "left" ? 0 : 1,
+          pose,
+          src.gamepad || null
+        );
+
+        if (src.handedness === "left") {
+          left.set(encoded);
+          leftPoseValid = !!encoded[2];
+        } else if (src.handedness === "right") {
+          right.set(encoded);
+          rightPoseValid = !!encoded[2];
+        }
+
+        if (debugCounter % 180 === 0 && src.gamepad) {
+          log(
+            src.handedness,
+            "mapping=", src.gamepad.mapping,
+            "axes=", JSON.stringify(Array.from(src.gamepad.axes)),
+            "buttons.length=", src.gamepad.buttons.length
+          );
+        }
+      }
+
+      const packet = new Float32Array(40);
+      packet.set(left, 0);
+      packet.set(right, 20);
+      updatePoseStatus(leftPoseValid, rightPoseValid);
+
+      sendAccumulatorMs += frameDelta;
+      const sendIntervalMs = getSendIntervalMs();
+
+      if (ws && ws.readyState === WebSocket.OPEN && sendIntervalMs > 0) {
+        let sendCount = 0;
+
+        while (sendAccumulatorMs >= sendIntervalMs && sendCount < 4) {
+          ws.send(packet.buffer);
+          sendAccumulatorMs -= sendIntervalMs;
+          packetsSent++;
+          packetsSentWindow++;
+          sendCount++;
+        }
+
+        if (sendCount > 0) {
+          packetStatusEl.textContent = String(packetsSent);
+        }
+      } else if (sendAccumulatorMs > sendIntervalMs) {
+        // 没连上时只保留一个周期以内的累计量，避免恢复连接后瞬间补发过多旧包
+        sendAccumulatorMs = sendIntervalMs;
+      }
+
+      if (lastStatsTime === 0) {
+        lastStatsTime = time;
+      } else if (time - lastStatsTime >= 1000) {
+        const hz = packetsSentWindow * 1000 / (time - lastStatsTime);
+        sendRateStatusEl.textContent = `${hz.toFixed(1)} Hz`;
+        packetsSentWindow = 0;
+        lastStatsTime = time;
+      }
+
+      debugCounter++;
+      seq++;
+
+      const baseLayer = session.renderState.baseLayer;
+      if (baseLayer) {
+        gl.bindFramebuffer(gl.FRAMEBUFFER, baseLayer.framebuffer);
+        gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+        gl.clearColor(0.08, 0.08, 0.08, 1.0);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      }
+    }
+
+    async function startXR() {
+      if (session) {
+        log("XR 已经在运行");
+        return;
+      }
+
+      saveSettings();
+      resetRuntimeStats();
+      shouldReconnectWS = true;
+      refreshButtonState();
+      setStatus(xrStatusEl, "Starting", "warn");
+      log("开始启动");
+
+      if (!navigator.xr) {
+        setStatus(xrStatusEl, "Unavailable", "bad");
+        log("navigator.xr 不存在");
+        return;
+      }
+
+      const supported = await navigator.xr.isSessionSupported("immersive-vr");
+      log("immersive-vr supported =", supported);
+      if (!supported) {
+        setStatus(xrStatusEl, "Unsupported", "bad");
+        return;
+      }
+
+      xrCanvas = document.createElement("canvas");
+      xrCanvas.width = 16;
+      xrCanvas.height = 16;
+      xrCanvas.style.display = "none";
+      document.body.appendChild(xrCanvas);
+
+      gl = xrCanvas.getContext("webgl2", {
+        xrCompatible: true,
+        alpha: false,
+        antialias: true,
+        depth: true,
+        stencil: false
+      });
+
+      if (!gl) {
+        setStatus(xrStatusEl, "WebGL Failed", "bad");
+        log("获取 webgl2 失败");
+        return;
+      }
+
+      await gl.makeXRCompatible();
+
+      // 先拿 XR session，别被 WS 阻塞
+      session = await navigator.xr.requestSession("immersive-vr", {
+        requiredFeatures: ["local-floor"],
+      });
+      setStatus(xrStatusEl, "Running", "ok");
+      refreshButtonState();
+
+      session.addEventListener("inputsourceschange", (ev) => {
+        log(
+          "inputsourceschange",
+          "added=", ev.added.length,
+          "removed=", ev.removed.length,
+          "current=", session.inputSources.length
+        );
+      });
+
+      session.addEventListener("end", () => {
+        log("XR session ended");
+        setStatus(xrStatusEl, "Ended", "warn");
+        session = null;
+        refSpace = null;
+        gl = null;
+        if (xrCanvas) {
+          xrCanvas.remove();
+          xrCanvas = null;
+        }
+        lastFrameTime = 0;
+        triedSetFrameRate = false;
+        requestedFrameRate = null;
+        shouldReconnectWS = false;
+        clearWSReconnect();
+        refreshButtonState();
+
+        if (ws) {
+          try { ws.close(); } catch {}
+          ws = null;
+        }
+        setStatus(wsStatusEl, "Disconnected", "bad");
+      });
+
+      // 不需要做 onframeratechange 检测，直接监听即可
+      session.addEventListener("frameratechange", () => {
+        log("frameratechange:", ("frameRate" in session) ? session.frameRate : "unknown");
+      });
+
+      session.updateRenderState({
+        baseLayer: new XRWebGLLayer(session, gl),
+      });
+
+      refSpace = await session.requestReferenceSpace("local-floor");
+      log("XR ready");
+
+      // XR 已经准备好后，再去连 WS；连不上也不影响 XR 进入
+      connectWSNonBlocking();
+
+      session.requestAnimationFrame(onXRFrame);
+      log("XR frame loop started");
+    }
+
+    async function endXR() {
+      if (!session) {
+        log("当前没有 XR session");
+        return;
+      }
+
+      try {
+        await session.end();
+      } catch (err) {
+        log("结束 session 失败:", err.message);
+      }
+    }
+
+    startBtn.addEventListener("click", () => {
+      startXR().catch(err => {
+        console.error(err);
+        setStatus(xrStatusEl, "Start Failed", "bad");
+        refreshButtonState();
+        log("启动失败:", err.message);
+      });
+    });
+
+    endBtn.addEventListener("click", () => {
+      endXR().catch(err => {
+        console.error(err);
+        log("结束失败:", err.message);
+      });
+    });
+
+    saveBtn.addEventListener("click", saveSettings);
+
+    {
+      const settings = loadSettings();
+      // 启动器和桌面 UI 会通过 ?ws=... 指定本次连接地址。该参数必须
+      // 优先于 localStorage，否则从 WiFi 切换到 USB 后会继续连接上次
+      // 保存的 wss://局域网地址，并在头显里反复重连。
+      const paramWsUrl = new URLSearchParams(window.location.search).get("ws");
+      wsUrlInput.value = paramWsUrl || settings?.wsUrl || getDefaultWSUrl();
+      sendRateInput.value = String(settings?.sendRateHz || DEFAULT_SEND_RATE_HZ);
+      refreshButtonState();
+      setStatus(xrStatusEl, "Idle", "warn");
+      setStatus(wsStatusEl, "Disconnected", "bad");
+      updatePoseStatus(false, false);
+    }
+  </script>
+</body>
+</html>

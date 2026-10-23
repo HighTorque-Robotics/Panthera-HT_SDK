@@ -24,9 +24,6 @@ import socket
 import struct
 import time
 import threading
-import csv
-from datetime import datetime
-from pathlib import Path
 import numpy as np
 from scipy.spatial.transform import Rotation as R
 from Panthera_lib import Panthera
@@ -357,359 +354,6 @@ def execute_smooth_joint_reset(
     return True
 
 
-def estimate_tracking_delay(time_s, target_values, actual_values, active):
-    """用目标与反馈的变化速度相关性估计整体跟踪延迟。"""
-    target_values = np.asarray(target_values, dtype=np.float64)
-    actual_values = np.asarray(actual_values, dtype=np.float64)
-    if target_values.ndim == 1:
-        target_values = target_values[:, None]
-    if actual_values.ndim == 1:
-        actual_values = actual_values[:, None]
-    if target_values.shape != actual_values.shape:
-        return None
-
-    active_indices = np.flatnonzero(active)
-    if active_indices.size == 0 or len(time_s) < 20:
-        return None
-
-    time_steps = np.diff(time_s)
-    valid_steps = time_steps[np.isfinite(time_steps) & (time_steps > 0.0)]
-    if valid_steps.size == 0:
-        return None
-
-    sample_dt = float(np.median(valid_steps))
-    start_index = max(0, active_indices[0] - 5)
-    settle_samples = max(1, int(round(0.5 / sample_dt)))
-    end_index = min(len(time_s) - 1, active_indices[-1] + settle_samples)
-    if time_s[end_index] - time_s[start_index] < 0.25:
-        return None
-
-    uniform_time = np.arange(
-        time_s[start_index], time_s[end_index] + sample_dt * 0.5, sample_dt
-    )
-    if uniform_time.size < 20:
-        return None
-
-    target_uniform = np.column_stack([
-        np.interp(uniform_time, time_s, target_values[:, axis])
-        for axis in range(target_values.shape[1])
-    ])
-    actual_uniform = np.column_stack([
-        np.interp(uniform_time, time_s, actual_values[:, axis])
-        for axis in range(actual_values.shape[1])
-    ])
-    target_velocity = np.gradient(target_uniform, sample_dt, axis=0)
-    actual_velocity = np.gradient(actual_uniform, sample_dt, axis=0)
-
-    # 约40 ms移动平均，抑制编码器差分噪声但不掩盖主要延迟。
-    smooth_samples = max(1, int(round(0.04 / sample_dt)))
-    if smooth_samples > 1:
-        kernel = np.ones(smooth_samples, dtype=np.float64) / smooth_samples
-        for axis in range(target_values.shape[1]):
-            target_velocity[:, axis] = np.convolve(
-                target_velocity[:, axis], kernel, mode="same"
-            )
-            actual_velocity[:, axis] = np.convolve(
-                actual_velocity[:, axis], kernel, mode="same"
-            )
-
-    target_speed = np.linalg.norm(target_velocity, axis=1)
-    actual_speed = np.linalg.norm(actual_velocity, axis=1)
-    if np.max(target_speed) < 0.002:
-        return None
-
-    max_delay_s = min(1.0, 0.25 * (uniform_time[-1] - uniform_time[0]))
-    max_delay_samples = min(
-        int(round(max_delay_s / sample_dt)), uniform_time.size - 20
-    )
-    delay_samples = np.arange(max_delay_samples + 1)
-    correlation = np.full(delay_samples.shape, np.nan, dtype=np.float64)
-
-    for index, delay in enumerate(delay_samples):
-        if delay == 0:
-            target_segment = target_velocity
-            actual_segment = actual_velocity
-        else:
-            target_segment = target_velocity[:-delay]
-            actual_segment = actual_velocity[delay:]
-
-        target_vector = target_segment.reshape(-1)
-        actual_vector = actual_segment.reshape(-1)
-        target_vector = target_vector - np.mean(target_vector)
-        actual_vector = actual_vector - np.mean(actual_vector)
-        denominator = np.linalg.norm(target_vector) * np.linalg.norm(actual_vector)
-        if denominator > 1e-12:
-            correlation[index] = np.dot(target_vector, actual_vector) / denominator
-
-    if not np.any(np.isfinite(correlation)):
-        return None
-
-    best_index = int(np.nanargmax(correlation))
-    return {
-        "delay_ms": float(delay_samples[best_index] * sample_dt * 1000.0),
-        "correlation": float(correlation[best_index]),
-        "time": uniform_time,
-        "target_speed": target_speed,
-        "actual_speed": actual_speed,
-    }
-
-
-def save_and_plot_tracking(samples):
-    """保存VR控制跟踪数据，并在机械臂安全停止后显示诊断曲线。"""
-    if len(samples) < 2:
-        print("跟踪数据不足，未生成曲线")
-        return
-
-    output_dir = Path(__file__).resolve().parent / "vr_tracking_results"
-    output_dir.mkdir(parents=True, exist_ok=True)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    csv_path = output_dir / f"vr_qp_tracking_{timestamp}.csv"
-    image_path = output_dir / f"vr_qp_tracking_{timestamp}_cartesian.png"
-    joint_image_path = output_dir / f"vr_qp_tracking_{timestamp}_joints.png"
-    velocity_image_path = (
-        output_dir / f"vr_qp_tracking_{timestamp}_joint_velocities.png"
-    )
-
-    joint_count = len(samples[0]["actual_q"])
-    header = [
-        "time_s", "active",
-        "hand_sequence", "new_hand_sample", "hand_sample_interval_ms",
-        "hand_packet_age_ms",
-        "target_x_m", "target_y_m", "target_z_m",
-        "actual_x_m", "actual_y_m", "actual_z_m",
-        "position_error_m", "rotation_error_rad",
-        "qp_time_ms", "loop_period_ms",
-    ]
-    header += [f"target_q{i + 1}_rad" for i in range(joint_count)]
-    header += [f"actual_q{i + 1}_rad" for i in range(joint_count)]
-    header += [f"target_qdot{i + 1}_rad_s" for i in range(joint_count)]
-    header += [f"actual_qdot{i + 1}_rad_s" for i in range(joint_count)]
-
-    with csv_path.open("w", newline="", encoding="utf-8") as csv_file:
-        writer = csv.writer(csv_file)
-        writer.writerow(header)
-        for sample in samples:
-            writer.writerow([
-                sample["time"], int(sample["active"]),
-                sample["hand_sequence"], int(sample["new_hand_sample"]),
-                sample["hand_sample_interval_ms"],
-                sample["hand_packet_age_ms"],
-                *sample["target_pos"], *sample["actual_pos"],
-                sample["position_error"], sample["rotation_error"],
-                sample["qp_ms"], sample["loop_ms"],
-                *sample["target_q"], *sample["actual_q"],
-                *sample["target_qdot"], *sample["actual_qdot"],
-            ])
-
-    try:
-        import matplotlib.pyplot as plt
-
-        time_s = np.asarray([sample["time"] for sample in samples])
-        active = np.asarray([sample["active"] for sample in samples], dtype=bool)
-        target_pos = np.asarray([sample["target_pos"] for sample in samples])
-        actual_pos = np.asarray([sample["actual_pos"] for sample in samples])
-        position_error = 1000.0 * np.asarray([
-            sample["position_error"] for sample in samples
-        ])
-        target_q = np.asarray([sample["target_q"] for sample in samples])
-        actual_q = np.asarray([sample["actual_q"] for sample in samples])
-        target_qdot = np.asarray([
-            sample["target_qdot"] for sample in samples
-        ])
-        actual_qdot = np.asarray([
-            sample["actual_qdot"] for sample in samples
-        ])
-        qp_ms = np.asarray([sample["qp_ms"] for sample in samples])
-        loop_ms = np.asarray([sample["loop_ms"] for sample in samples])
-
-        # 去掉开始控制前的长时间等待，但保留激活前约0.5秒作为观察基线。
-        active_indices = np.flatnonzero(active)
-        start_index = max(0, active_indices[0] - 50) if active_indices.size else 0
-        view = slice(start_index, None)
-        plot_time = time_s[view] - time_s[start_index]
-        reference_pos = actual_pos[start_index]
-        target_displacement = 1000.0 * (target_pos - reference_pos)
-        actual_displacement = 1000.0 * (actual_pos - reference_pos)
-
-        delay_result = estimate_tracking_delay(
-            time_s, target_pos, actual_pos, active
-        )
-        if delay_result is None:
-            delay_title = "Estimated delay: insufficient motion data"
-        else:
-            delay_title = (
-                f"Estimated tracking delay: {delay_result['delay_ms']:.0f} ms "
-                f"(correlation {delay_result['correlation']:.2f})"
-            )
-
-        figure, axes = plt.subplots(2, 2, figsize=(14, 8))
-        figure.suptitle(f"VR target vs feedback trajectory - {delay_title}")
-
-        axis_names = ("X", "Y", "Z")
-        axis_colors = ("tab:red", "tab:green", "tab:blue")
-        for axis, index, name, color in zip(
-            (axes[0, 0], axes[0, 1], axes[1, 0]),
-            range(3), axis_names, axis_colors,
-        ):
-            axis.plot(
-                plot_time, target_displacement[view, index], "--",
-                color="black", linewidth=1.4, label="target",
-            )
-            axis.plot(
-                plot_time, actual_displacement[view, index],
-                color=color, linewidth=1.2, label="feedback",
-            )
-            axis.set_title(f"{name}-axis trajectory")
-            axis.set_ylabel("Displacement (mm)")
-            axis.legend()
-
-        axis = axes[1, 1]
-        if delay_result is None:
-            axis.plot(plot_time, position_error[view], color="tab:red")
-            axis.set_ylabel("Position error (mm)")
-        else:
-            speed_time = delay_result["time"] - delay_result["time"][0]
-            axis.plot(
-                speed_time, 1000.0 * delay_result["target_speed"], "--",
-                color="black", linewidth=1.4, label="target speed",
-            )
-            axis.plot(
-                speed_time, 1000.0 * delay_result["actual_speed"],
-                color="tab:purple", linewidth=1.2, label="feedback speed",
-            )
-            axis.set_ylabel("Cartesian speed (mm/s)")
-            axis.legend()
-        axis.set_title(delay_title)
-
-        for axis in axes.flat:
-            axis.set_xlabel("Time (s)")
-            axis.grid(True, alpha=0.3)
-
-        figure.tight_layout()
-        figure.savefig(image_path, dpi=160, bbox_inches="tight")
-
-        joint_figure, joint_axes = plt.subplots(3, 2, figsize=(14, 10), sharex=True)
-        joint_figure.suptitle("Joint target vs encoder feedback trajectory")
-        joint_delays = []
-        for joint_index, axis in enumerate(joint_axes.flat):
-            axis.plot(
-                plot_time, np.rad2deg(target_q[view, joint_index]), "--",
-                color="black", linewidth=1.4, label="QP target",
-            )
-            axis.plot(
-                plot_time, np.rad2deg(actual_q[view, joint_index]),
-                color=f"C{joint_index}", linewidth=1.2,
-                label="encoder feedback",
-            )
-            joint_delay = estimate_tracking_delay(
-                time_s,
-                target_q[:, joint_index],
-                actual_q[:, joint_index],
-                active,
-            )
-            joint_delays.append(joint_delay)
-            if joint_delay is None:
-                delay_text = "delay: insufficient motion"
-            else:
-                delay_text = (
-                    f"delay: {joint_delay['delay_ms']:.0f} ms, "
-                    f"corr: {joint_delay['correlation']:.2f}"
-                )
-            axis.set_title(f"J{joint_index + 1} - {delay_text}")
-            axis.set_ylabel("Joint angle (deg)")
-            axis.set_xlabel("Time (s)")
-            axis.grid(True, alpha=0.3)
-            axis.legend(fontsize=8)
-
-        joint_figure.tight_layout()
-        joint_figure.savefig(joint_image_path, dpi=160, bbox_inches="tight")
-
-        velocity_figure, velocity_axes = plt.subplots(
-            3, 2, figsize=(14, 10), sharex=True
-        )
-        velocity_figure.suptitle(
-            "QP trajectory velocity vs encoder velocity"
-        )
-        for joint_index, axis in enumerate(velocity_axes.flat):
-            axis.plot(
-                plot_time, target_qdot[view, joint_index], "--",
-                color="black", linewidth=1.3,
-                label="QP trajectory qdot (MIT target is zero)",
-            )
-            axis.plot(
-                plot_time, actual_qdot[view, joint_index],
-                color=f"C{joint_index}", linewidth=1.1,
-                label="encoder velocity",
-            )
-            axis.axhline(0.0, color="gray", linewidth=0.6)
-            axis.set_title(f"J{joint_index + 1} velocity")
-            axis.set_ylabel("Velocity (rad/s)")
-            axis.set_xlabel("Time (s)")
-            axis.grid(True, alpha=0.3)
-            axis.legend(fontsize=8)
-
-        velocity_figure.tight_layout()
-        velocity_figure.savefig(
-            velocity_image_path, dpi=160, bbox_inches="tight"
-        )
-        print(f"跟踪数据已保存: {csv_path}")
-        print(f"笛卡尔跟踪曲线已保存: {image_path}")
-        print(f"关节跟踪曲线已保存: {joint_image_path}")
-        print(f"关节速度曲线已保存: {velocity_image_path}")
-        if delay_result is not None:
-            print(
-                f"估计笛卡尔轨迹跟踪延迟: "
-                f"{delay_result['delay_ms']:.0f} ms "
-                f"(相关系数 {delay_result['correlation']:.2f})"
-            )
-        for joint_index, joint_delay in enumerate(joint_delays):
-            if joint_delay is not None:
-                print(
-                    f"J{joint_index + 1} 估计跟踪延迟: "
-                    f"{joint_delay['delay_ms']:.0f} ms "
-                    f"(相关系数 {joint_delay['correlation']:.2f})"
-                )
-        active_timing = active & np.isfinite(loop_ms)
-        active_qp = active & np.isfinite(qp_ms)
-        if np.any(active_timing):
-            median_period = float(np.median(loop_ms[active_timing]))
-            print(
-                f"真实控制频率: {1000.0 / median_period:.1f} Hz | "
-                f"周期中位数: {median_period:.2f} ms | "
-                f"周期P90: {np.percentile(loop_ms[active_timing], 90):.2f} ms"
-            )
-        if np.any(active_qp):
-            print(
-                f"QP耗时中位数: {np.median(qp_ms[active_qp]):.2f} ms | "
-                f"QP耗时P90: {np.percentile(qp_ms[active_qp], 90):.2f} ms"
-            )
-        hand_intervals = np.asarray([
-            sample["hand_sample_interval_ms"] for sample in samples
-            if sample["active"] and sample["new_hand_sample"]
-            and np.isfinite(sample["hand_sample_interval_ms"])
-        ])
-        hand_ages = np.asarray([
-            sample["hand_packet_age_ms"] for sample in samples
-            if sample["active"] and np.isfinite(sample["hand_packet_age_ms"])
-        ])
-        if hand_intervals.size:
-            median_hand_period = float(np.median(hand_intervals))
-            print(
-                f"Quest真实新位姿频率: {1000.0 / median_hand_period:.1f} Hz | "
-                f"新位姿周期P90: {np.percentile(hand_intervals, 90):.2f} ms"
-            )
-        if hand_ages.size:
-            print(
-                f"UDP包龄中位数: {np.median(hand_ages):.2f} ms | "
-                f"包龄P90: {np.percentile(hand_ages, 90):.2f} ms"
-            )
-        print("关闭三个跟踪曲线窗口后程序退出")
-        plt.show()
-    except Exception as error:
-        print(f"跟踪数据已保存: {csv_path}")
-        print(f"跟踪曲线生成或显示失败: {error}")
-
-
 # ==================== 主程序 ====================
 
 def main():
@@ -824,8 +468,6 @@ def main():
     reset_move_duration = 2.0
     last_qp_ms = 0.0
     qp_time_window = []
-    tracking_samples = []
-    tracking_start = time.perf_counter()
     previous_loop_start = None
     next_loop_deadline = time.perf_counter()
     loop_period_window = []
@@ -854,10 +496,7 @@ def main():
                 loop_period_window.append(loop_period_ms)
                 if len(loop_period_window) > 200:
                     del loop_period_window[0]
-            qp_ms_sample = np.nan
             should_hold_arm = False
-            new_hand_sample = False
-            hand_sample_interval_ms = np.nan
             target_feedforward_twist = latest_hand_twist.copy()
             if (
                 not control_activated
@@ -995,9 +634,6 @@ def main():
                             )
                             if measured_sample_dt > 1e-6:
                                 hand_sample_dt = measured_sample_dt
-                        new_hand_sample = True
-                        hand_sample_interval_ms = hand_sample_dt * 1000.0
-
                         delta_hand_pos = hand_pos_robot - last_hand_pos
                         delta_hand_rot = hand_rot_robot @ last_hand_rot.T
                         delta_rotvec = R.from_matrix(delta_hand_rot).as_rotvec()
@@ -1094,7 +730,6 @@ def main():
                 last_qp_ms = (
                     time.perf_counter() - qp_start
                 ) * 1000.0
-                qp_ms_sample = last_qp_ms
                 qp_time_window.append(last_qp_ms)
                 if len(qp_time_window) > 200:
                     del qp_time_window[0]
@@ -1177,56 +812,12 @@ def main():
                 qp_solver.reset()
                 last_command_joint_velocity.fill(0.0)
 
-            # 获取当前末端位姿（用于显示）
-            current_joint_pos = robot.get_current_pos()
-            current_joint_velocity = np.asarray(
-                robot.get_current_vel(), dtype=np.float64
-            )
-            current_fk = robot.forward_kinematics()
-            current_pos = current_fk['position']
-            target_pos_array = np.asarray(target_position, dtype=np.float64)
-            current_pos_array = np.asarray(current_pos, dtype=np.float64)
-            target_rotation_array = np.asarray(target_rotation, dtype=np.float64)
-            current_rotation_array = np.asarray(
-                current_fk['rotation'], dtype=np.float64
-            )
-            rotation_error = R.from_matrix(
-                target_rotation_array @ current_rotation_array.T
-            ).magnitude()
-            if right_info is None:
-                hand_sequence = -1
-                hand_packet_age_ms = np.nan
-            else:
-                hand_sequence = int(right_info.get('seq', -1))
-                received_at = right_info.get('received_at')
-                hand_packet_age_ms = (
-                    (time.perf_counter() - received_at) * 1000.0
-                    if received_at is not None else np.nan
-                )
-            tracking_samples.append({
-                "time": time.perf_counter() - tracking_start,
-                "active": control_activated,
-                "hand_sequence": hand_sequence,
-                "new_hand_sample": new_hand_sample,
-                "hand_sample_interval_ms": hand_sample_interval_ms,
-                "hand_packet_age_ms": hand_packet_age_ms,
-                "target_pos": target_pos_array.copy(),
-                "actual_pos": current_pos_array.copy(),
-                "position_error": float(np.linalg.norm(
-                    target_pos_array - current_pos_array
-                )),
-                "rotation_error": float(rotation_error),
-                "qp_ms": float(qp_ms_sample),
-                "loop_ms": float(loop_period_ms),
-                "target_q": last_valid_joint_pos.copy(),
-                "actual_q": current_joint_pos.copy(),
-                "target_qdot": last_command_joint_velocity.copy(),
-                "actual_qdot": current_joint_velocity.copy(),
-            })
-
             # 定期打印状态信息
             print_count += 1
             if print_count % 20 == 0:
+                # 状态栏才需要当前末端位置，避免为已删除的轨迹记录在
+                # 每个控制周期额外执行一次正运动学。
+                current_pos = robot.forward_kinematics()['position']
                 control_status = "激活" if control_activated else "停止"
 
                 if right_info is not None and is_hand_data_valid(right_info) and not is_hand_data_all_zero(right_info) and current_hand_pos_robot is not None:
@@ -1314,8 +905,7 @@ def main():
         )
 
         running = False
-        print("机械臂已回零；关闭曲线窗口后释放电机控制")
-        save_and_plot_tracking(tracking_samples)
+        print("机械臂已回零")
         print("程序结束")
 
 

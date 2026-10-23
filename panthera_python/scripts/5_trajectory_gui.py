@@ -755,7 +755,11 @@ class RobotWorker(QtCore.QThread):
     def read_state(self):
         r = self.robot
         pos, vel = list(r.get_current_pos()), list(r.get_current_vel())
-        gp, gv = float(r.get_current_pos_gripper()), float(r.get_current_vel_gripper())
+        if r.has_gripper:
+            gp = float(r.get_current_pos_gripper())
+            gv = float(r.get_current_vel_gripper())
+        else:
+            gp = gv = 0.0
         if not all(math.isfinite(v) and abs(v) < 999 for v in [*pos, *vel, gp, gv]):
             raise ValueError("机械臂状态无效，请检查电机通信")
         return pos, vel, gp, gv
@@ -810,11 +814,19 @@ class RobotWorker(QtCore.QThread):
                     self.recording_changed.emit(False, str(recording_path))
                     self.status.emit("轨迹已保存，重力补偿仍开启，可继续拖动或再次记录")
                 if recorder is not None and now >= next_record:
-                    recorder.log(pos, vel, gp, gv)
+                    recorder.log(
+                        pos,
+                        vel,
+                        gp if self.robot.has_gripper else None,
+                        gv if self.robot.has_gripper else None,
+                    )
                     next_record = now + 0.01
                 if now >= next_display:
                     self.sample.emit(now - start, pos)
-                    self.state_snapshot.emit({"pos": list(pos), "gripper_pos": gp})
+                    snapshot = {"pos": list(pos)}
+                    if self.robot.has_gripper:
+                        snapshot["gripper_pos"] = gp
+                    self.state_snapshot.emit(snapshot)
                     next_display = now + 0.1
                 tick = self.wait_next_tick(tick)
         finally:
@@ -829,7 +841,7 @@ class RobotWorker(QtCore.QThread):
                     zip(frame["pos"], limits["lower"], limits["upper"])):
                 raise ValueError("轨迹中存在超出机械臂关节限位的位置")
             grip = self.robot.gripper_limits
-            if "gripper_pos" in frame and grip is not None:
+            if self.robot.has_gripper and "gripper_pos" in frame and grip is not None:
                 if not grip["lower"] <= frame["gripper_pos"] <= grip["upper"]:
                     raise ValueError("轨迹中存在超出夹爪限位的位置")
 
@@ -837,7 +849,7 @@ class RobotWorker(QtCore.QThread):
         self.check_cancel()
         pos, _, gp, _ = self.read_state()
         current = {"pos": pos}
-        if "gripper_pos" in frame:
+        if self.robot.has_gripper and "gripper_pos" in frame:
             current["gripper_pos"] = gp
         self.validate_limits([current, frame])
         duration = transition_duration(current, frame, minimum_duration)
@@ -864,7 +876,8 @@ class RobotWorker(QtCore.QThread):
             self.send_frame(frame, hold=True)
             pos, _, gp, _ = self.read_state()
             reached = all(abs(p - target) < 0.05 for p, target in zip(pos, frame["pos"]))
-            grip_reached = ("gripper_pos" not in frame or
+            grip_reached = (not self.robot.has_gripper or
+                            "gripper_pos" not in frame or
                             abs(gp - frame["gripper_pos"]) < 0.05)
             if reached and grip_reached:
                 return duration
@@ -874,8 +887,9 @@ class RobotWorker(QtCore.QThread):
     def send_mit(self, pos, velocity, torque, kp, kd, gripper):
         """缓存夹爪后，由完整的六关节 MIT 命令统一发送一次。"""
         self.check_cancel()
-        if self.robot.gripper_control_MIT(*gripper, send=False) is False:
-            raise ValueError("夹爪 MIT 命令被拒绝，本周期未发送")
+        if self.robot.has_gripper:
+            if self.robot.gripper_control_MIT(*gripper, send=False) is False:
+                raise ValueError("夹爪 MIT 命令被拒绝，本周期未发送")
         if self.robot.pos_vel_tqe_kp_kd(pos, velocity, torque, kp, kd) is False:
             raise ValueError("关节 MIT 命令被拒绝，本周期未发送")
 

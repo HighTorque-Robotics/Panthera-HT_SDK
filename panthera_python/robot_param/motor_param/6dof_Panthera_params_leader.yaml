@@ -84,7 +84,7 @@ robot:
             motor7:
               type: "3536_32"
               id: 7
-              name: "joint7"
+              name: "gripper"
               num: 7
               pos_limit_enable: false
               pos_upper: 5

@@ -10,7 +10,7 @@
     name="spawn_model"
     pkg="gazebo_ros"
     type="spawn_model"
-    args="-file $(find Panthera-HT_description_V1.1.0)/urdf/Panthera-HT_description_V1.1.0.urdf -urdf -model Panthera-HT_description_V1.1.0"
+    args="-file $(find Panthera-HT_description_V1.1.0)/urdf/Panthera-HT_description_V1.1.0_follower.urdf -urdf -model Panthera-HT_description_V1.1.0"
     output="screen" />
   <node
     name="fake_joint_calibration"

@@ -35,6 +35,7 @@ APP = QtWidgets.QApplication.instance() or QtWidgets.QApplication([])
 
 class FakeRobot:
     motor_count = 6
+    has_gripper = True
     joint_limits = {"lower": [-3.0]*6, "upper": [3.0]*6}
     gripper_limits = {"lower": 0.0, "upper": 2.0}
     GRAVITY = np.array([1.0, .8, .6, .4, .2, .1])
@@ -72,6 +73,19 @@ class FakeRobot:
         raise AssertionError("夹爪也必须始终使用 MIT")
 
 
+class NoGripperRobot(FakeRobot):
+    has_gripper = False
+
+    def get_current_pos_gripper(self):
+        raise AssertionError("无夹爪模式不应读取夹爪位置")
+
+    def get_current_vel_gripper(self):
+        raise AssertionError("无夹爪模式不应读取夹爪速度")
+
+    def gripper_control_MIT(self, *args, **kwargs):
+        raise AssertionError("无夹爪模式不应发送夹爪命令")
+
+
 def load_mit_bindings():
     """执行库中实际的两个 MIT 方法，避开机器人构造和原生 SDK 导入。"""
     path = SCRIPTS / "Panthera_lib/Panthera.py"
@@ -98,6 +112,7 @@ class BufferedRobot(FakeRobot):
         self.pending = [None] * 7
         self.sent = []
         self.Motors = [types.SimpleNamespace(pos_vel_tqe_kp_kd=self.stage_motor(i)) for i in range(7)]
+        self.gripper_motor = self.Motors[-1]
 
     def stage_motor(self, index):
         def stage(*args):
@@ -559,6 +574,19 @@ class TrajectoryTests(unittest.TestCase):
             worker.send_frame(frame, hold=hold)
             self.assertEqual(len(worker.robot.sent), count + 1)
             self.assert_complete_playback_packet(worker.robot.sent[-1])
+
+    def test_no_gripper_mode_skips_gripper_io_and_limits(self):
+        worker = make_worker()
+        worker.robot = NoGripperRobot()
+        frame = dict(frames()[0], gripper_pos=99.0)
+
+        pos, vel, gripper_pos, gripper_vel = worker.read_state()
+        self.assertEqual(len(pos), 6)
+        self.assertEqual(len(vel), 6)
+        self.assertEqual((gripper_pos, gripper_vel), (0.0, 0.0))
+        worker.validate_limits([frame])
+        worker.send_frame(frame)
+        self.assertEqual(len(worker.robot.commands), 1)
 
     def test_play_request_never_sends_gravity_only_before_playback(self):
         worker = make_worker()

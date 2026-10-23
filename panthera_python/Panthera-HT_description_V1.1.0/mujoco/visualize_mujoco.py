@@ -11,7 +11,7 @@ import numpy as np
 import trimesh
 
 ROOT = Path(__file__).resolve().parent.parent
-SOURCE = ROOT / "urdf/Panthera-HT_description_V1.1.0.urdf"
+SOURCE = ROOT / "urdf/Panthera-HT_description_V1.1.0_follower.urdf"
 OUTPUT = Path(__file__).resolve().parent
 OBJ_DIR = OUTPUT / "meshes" / "obj"
 HOME = np.zeros(6)

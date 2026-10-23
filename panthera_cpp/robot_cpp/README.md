@@ -33,7 +33,7 @@
 ### 系统要求
 - Ubuntu 20.04 / 22.04 / 24.04
 - CMake >= 3.10
-- C++17 或更高版本
+- C++14 或更高版本
 
 ### 安装步骤
 
@@ -58,7 +58,8 @@ sudo apt install pinocchio
 2. **编译安装**
 
 ```bash
-cd ~/Panthera-HT_git/Panthera-HT_SDK/panthera_cpp/robot_cpp
+# 从 Panthera-HT_SDK 仓库根目录执行
+cd panthera_cpp/robot_cpp
 mkdir build && cd build
 cmake ..
 make -j$(nproc)
@@ -94,15 +95,14 @@ b. 运行位置速度控制程序
 机械臂会按指定速度运动到不同位置，并控制夹爪开合。若机械臂依次完成动作，则说明工作正常。
 
 ### 实现记录与播放轨迹
-运行 `5_record_trajectory` 程序，进行主从协同同时记录机械臂运动轨迹。记录完成后按 Ctrl+C 退出程序，轨迹文件会自动保存在当前目录下（命名如 trajectory_20251211_160537.jsonl）。
+运行 `5_record_trajectory` 程序，记录 `Follower.yaml` 对应机械臂的运动轨迹。记录完成后按 Ctrl+C 退出程序，轨迹文件会自动保存在当前目录下（命名如 trajectory_20251211_160537.jsonl）。
 ```bash
 ./5_record_trajectory
 ```
-随后在 `5_replay_trajectory` 程序内修改 trajectory_file 变量，将路径改成刚刚保存好的文件路径，然后重新编译运行该程序，主臂会自动运行记录好的轨迹。
+随后将轨迹文件路径作为参数传给 `5_replay_trajectory`，程序会使用 `Follower.yaml` 对应的机械臂回放轨迹，无需修改源码或重新编译：
 ```bash
-./5_replay_trajectory
+./5_replay_trajectory trajectory_20251211_160537.jsonl
 ```
-若想使用从臂运行轨迹，则在程序中将 config_path 变量中的 Leader.yaml 路径改成 Follower.yaml。
 
 ### 主从遥操
 将从臂连接至can口1,主臂连接至can口2
@@ -119,13 +119,13 @@ b. 运行位置速度控制程序
 
 ## API 参考
 
-### Robot 类
+### Panthera 类
 
-Robot 类提供了机械臂级别的控制接口。
+`panthera::Panthera` 类提供机械臂级别的控制接口。
 
 #### 初始化
-- `Robot(config_path = "")` - 创建机械臂实例
-  - `config_path`: 配置文件路径，默认使用 Leader.yaml
+- `Panthera()` - 使用默认的 `Follower.yaml` 创建机械臂实例
+- `Panthera(config_path)` - 使用指定 YAML 配置创建机械臂实例
 
 #### 状态获取
 - `get_current_state()` - 获取所有关节状态列表
@@ -225,13 +225,17 @@ panthera_cpp/robot_cpp/
 │   ├── 0_robot_set_zero.cpp           # 设置零位
 │   │
 │   ├── 1_PosVel_control.cpp           # 位置速度控制
+│   ├── 1_Vel_control.cpp              # 速度控制
+│   ├── 1_Joints_Sync_Arrival_control.cpp # 多关节同步到达
 │   ├── 1_PD_control.cpp               # PD控制
+│   ├── 1_forward_kinematics_test.cpp  # 正运动学测试
+│   ├── 1_inverse_kinematics_test.cpp  # 逆运动学测试
 │   │
 │   ├── 2_inv_PosVel_control.cpp       # 基于逆运动学的位置控制
 │   ├── 2_gravity_compensation_control.cpp              # 重力补偿控制
 │   ├── 2_gravity_friction_compensation_control.cpp    # 重力摩擦力补偿控制
-│   ├── 2_joint_impedance_control.cpp                  # 关节阻抗控制(重力+PD)
-│   ├── 2_joint_impedance_control_with_friction.cpp   # 关节阻抗控制(重力+摩擦力+PD)
+│   ├── 2_Jointimpendence_control_with_gra_pd.cpp      # 关节阻抗控制(重力+PD)
+│   ├── 2_Jointimpendence_control_with_gra_fri_pd.cpp  # 关节阻抗控制(重力+摩擦力+PD)
 │   │
 │   ├── 3_interpolation_control_zeroVel.cpp            # 插值轨迹控制(零速度)
 │   ├── 3_interpolation_control_nozeroVel.cpp          # 插值轨迹控制(非零速度)
@@ -268,7 +272,7 @@ panthera_cpp/robot_cpp/
 ### 编译错误
 - 确保所有依赖库已正确安装（libyaml-cpp-dev, liblcm-dev, pinocchio）
 - 检查 CMake 版本是否满足要求（>= 3.10）
-- 确认 C++17 或更高版本已启用
+- 确认 C++14 或更高版本已启用
 
 ### URDF加载失败
 检查配置文件中的URDF路径是否正确，确保相对路径从配置文件所在目录计算。

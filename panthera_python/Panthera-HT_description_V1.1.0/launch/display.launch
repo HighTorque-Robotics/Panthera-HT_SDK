@@ -3,7 +3,7 @@
     name="model" />
   <param
     name="robot_description"
-    textfile="$(find Panthera-HT_description_V1.1.0)/urdf/Panthera-HT_description_V1.1.0.urdf" />
+    textfile="$(find Panthera-HT_description_V1.1.0)/urdf/Panthera-HT_description_V1.1.0_follower.urdf" />
   <node
     name="joint_state_publisher_gui"
     pkg="joint_state_publisher_gui"

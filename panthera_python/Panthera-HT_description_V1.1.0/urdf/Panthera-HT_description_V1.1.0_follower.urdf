@@ -219,6 +219,7 @@
       </geometry>
     </collision>
   </link>
+
   <joint name="gripper_L_joint" type="fixed">
   <!-- <joint name="gripper_L_joint" type="prismatic"> -->
     <origin xyz="-0.000333779823793873 0.041000000000008 0" rpy="0 0 0" />

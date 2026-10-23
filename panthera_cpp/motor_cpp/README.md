@@ -90,14 +90,6 @@ motor_cpp/
 
 ## 二、安装依赖
 
-### 一键安装
-在 install_scripts 目录下运行
-```
-chmod 777 Interface_cpp_setup.sh
-./Interface_cpp_setup.sh
-```
-若不使用一键安装，则按下面步骤手动进行
-
 ### 依赖库
 
 * CMake >= 3.5
@@ -119,21 +111,16 @@ sudo apt-get install libyaml-cpp-dev
 
 ## 三、编译
 
-1. 获取代码
-```
-git clone http://git.clicki.cn/livelybot/hightorque_robot.git
-```
+从 `Panthera-HT_SDK` 仓库根目录编译：
 
-2. 编译
-```
-cd hightorque_robot
-mkdir build
-cd build
+```bash
+cd panthera_cpp/motor_cpp
+mkdir -p build && cd build
 cmake ..
-make -j8
+make -j$(nproc)
 ```
 
-3. 安装
+安装：
 ```
 sudo make install
 ```

@@ -1,6 +1,6 @@
 # URDF 配置说明
 
-修改本目录中的 [Panthera-HT_description_V1.1.0.urdf](Panthera-HT_description_V1.1.0.urdf)，可以组合出以下配置：
+根据机械臂用途修改本目录中的 [Follower URDF](Panthera-HT_description_V1.1.0_follower.urdf) 或 [Leader URDF](Panthera-HT_description_V1.1.0_leader.urdf)，可以组合出以下配置：
 
 | 配置 | 左右夹爪关节类型 | 相机部分 |
 | --- | --- | --- |
@@ -9,7 +9,7 @@
 | 固定夹爪 + D405 | `fixed` | 取消注释 |
 | 可动夹爪 + D405 | `prismatic`，右侧 mimic 左侧 | 取消注释 |
 
-当前文件采用固定夹爪，相机部分处于注释状态。以下操作直接修改源 URDF，无需修改 `../mujoco/robot.urdf`；后者是脚本生成的中间文件。
+两个源文件均采用固定夹爪，相机部分处于注释状态。以下操作直接修改实际使用的源 URDF，无需修改 `../mujoco/robot.urdf`；后者是脚本生成的中间文件。
 
 ## 启用夹爪自由度
 
@@ -116,10 +116,10 @@
 
 ## 修改后检查
 
-保存文件并重新加载 URDF。可以在本目录运行以下命令，检查 XML 格式：
+保存文件并重新加载 URDF。可以在本目录运行以下命令，同时检查两个文件的 XML 格式：
 
 ```bash
-python -c "import xml.etree.ElementTree as ET; ET.parse('Panthera-HT_description_V1.1.0.urdf'); print('XML 格式正确')"
+python -c "import glob, xml.etree.ElementTree as ET; [ET.parse(path) for path in glob.glob('*.urdf')]; print('两个 URDF 的 XML 格式正确')"
 ```
 
 此命令仅检查 XML 格式。夹爪运动与 mimic 跟随效果需要在实际使用的可视化或仿真工具中确认。

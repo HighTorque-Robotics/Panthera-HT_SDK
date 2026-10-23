@@ -34,7 +34,10 @@ def print_robot_state(robot):
         print(f"关节{i+1}: 位置={positions[i]:7.3f} rad, 速度={velocities[i]:7.3f} rad/s, 力矩={torque[i]:7.3f}, 模式={states[i].mode}, 故障码=0x{states[i].fault:02X}")
     
     # 打印夹爪信息
-    print(f"夹爪:   位置={gripper_state.position:7.3f} rad, 速度={gripper_state.velocity:7.3f} rad/s, 模式={gripper_state.mode}, 故障码=0x{gripper_state.fault:02X}")
+    if robot.has_gripper:
+        print(f"夹爪:   位置={gripper_state.position:7.3f} rad, 速度={gripper_state.velocity:7.3f} rad/s, 模式={gripper_state.mode}, 故障码=0x{gripper_state.fault:02X}")
+    else:
+        print("夹爪: 未启用或未连接，已跳过")
 
 def main():
     robot = Panthera()

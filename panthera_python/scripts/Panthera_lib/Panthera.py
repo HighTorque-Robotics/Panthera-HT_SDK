@@ -1,6 +1,10 @@
 import time
 import sys
 import os
+import copy
+import tempfile
+from types import SimpleNamespace
+import xml.etree.ElementTree as ET
 import yaml
 import numpy as np
 import pinocchio as pin
@@ -49,8 +53,15 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
         self._load_joint_limits()
         self._load_gripper_limits()
 
-        # 初始化父类和电机
-        super().__init__(config_path)
+        self.gripper_installed = self.config['robot']['gripper_installed']
+        if not isinstance(self.gripper_installed, bool):
+            raise ValueError('robot.gripper_installed 必须为布尔值')
+
+        # 底层 SDK 会根据电机参数文件探测电机。无夹爪时为本次实例生成
+        # 一份去掉夹爪电机的临时配置，避免等待不存在的第七电机。
+        with tempfile.TemporaryDirectory(prefix='panthera-config-') as directory:
+            sdk_config_path = self._prepare_sdk_config(config_path, directory)
+            super().__init__(sdk_config_path)
         self.Motors = self.get_motors()
         self._init_motors()
 
@@ -115,13 +126,134 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
         except Exception as e:
             print(f"夹爪限位加载失败: {e}")
 
+    def _prepare_sdk_config(self, config_path, directory):
+        """为底层 SDK 生成与夹爪开关一致的临时配置。"""
+        param_path = self.config['robot']['param_file']
+        if not os.path.isabs(param_path):
+            param_path = os.path.join(self.config_dir, param_path)
+        param_path = os.path.normpath(param_path)
+
+        with open(param_path, 'r', encoding='utf-8') as stream:
+            motor_config = yaml.safe_load(stream)
+
+        joint_names = list(self.config['kinematics']['joint_names'])
+        configured_motor_names = [
+            value['name']
+            for board in motor_config['robot']['CANboard'].values()
+            for port in board['CANport'].values()
+            for value in port['motor'].values()
+        ]
+        gripper_name = self.config['robot'].get('gripper_name')
+        if gripper_name is None:
+            extra_names = [
+                name for name in configured_motor_names
+                if name not in joint_names
+            ]
+            if len(extra_names) != 1:
+                raise ValueError(
+                    '旧配置未提供 robot.gripper_name，且无法从机械臂关节之外'
+                    f'唯一推断夹爪电机: {extra_names}'
+                )
+            gripper_name = extra_names[0]
+        self.gripper_name = gripper_name
+        if gripper_name in joint_names:
+            raise ValueError('robot.gripper_name 不得与机械臂关节名称重复')
+
+        expected_names = set(joint_names)
+        if self.gripper_installed:
+            expected_names.add(gripper_name)
+
+        motor_names = []
+        for board in motor_config['robot']['CANboard'].values():
+            for port in board['CANport'].values():
+                motors = port['motor']
+                if not self.gripper_installed:
+                    motors = {
+                        key: value
+                        for key, value in motors.items()
+                        if value['name'] != gripper_name
+                    }
+                    port['motor'] = motors
+                port['motor_num'] = len(motors)
+                motor_names.extend(value['name'] for value in motors.values())
+
+        if len(motor_names) != len(expected_names) or set(motor_names) != expected_names:
+            raise ValueError(
+                f'电机配置与关节/夹爪开关不一致：期望 {sorted(expected_names)}，'
+                f'实际 {motor_names}'
+            )
+
+        self.total_motor_count = len(motor_names)
+        motor_config_copy = os.path.join(directory, 'motors.yaml')
+        with open(motor_config_copy, 'w', encoding='utf-8') as stream:
+            yaml.safe_dump(motor_config, stream, sort_keys=False)
+
+        sdk_config = copy.deepcopy(self.config)
+        sdk_config['robot']['param_file'] = motor_config_copy
+        sdk_config_copy = os.path.join(directory, 'robot.yaml')
+        with open(sdk_config_copy, 'w', encoding='utf-8') as stream:
+            yaml.safe_dump(sdk_config, stream, sort_keys=False)
+        return sdk_config_copy
+
     def _init_motors(self):
         """初始化电机并打印电机信息"""
-        self.gripper_id = len(self.Motors)
-        self.motor_count = len(self.Motors) - 1
+        configured_motors = list(self.Motors)
+        motors_by_name = {
+            motor.get_motor_name(): motor for motor in configured_motors
+        }
+        joint_names = list(self.config['kinematics']['joint_names'])
+        missing_joint_names = [
+            name for name in joint_names if name not in motors_by_name
+        ]
+        if missing_joint_names:
+            raise RuntimeError(f'机械臂关节配置缺失: {missing_joint_names}')
+
+        self.Motors = [motors_by_name[name] for name in joint_names]
+        self.motor_count = len(joint_names)
+        gripper_name = self.gripper_name
+        self.gripper_motor = (
+            motors_by_name.get(gripper_name) if self.gripper_installed else None
+        )
+        self.has_gripper = (
+            self.gripper_motor is not None
+            and self.gripper_motor.get_version().id != 0
+        )
+        self.gripper_id = None
+        if self.gripper_motor is not None:
+            self.Motors.append(self.gripper_motor)
+            # 保持现有接口使用的 1-based 索引语义。
+            self.gripper_id = len(self.Motors)
+
+        self._configured_motors = configured_motors
+        self._absent_gripper_state = SimpleNamespace(
+            position=0.0,
+            velocity=0.0,
+            torque=0.0,
+            ID=0,
+            time=0,
+            mode=0,
+            fault=0,
+            available=False,
+        )
+
+        offline_joints = [
+            motor.get_motor_name()
+            for motor in self.Motors[:self.motor_count]
+            if motor.get_version().id == 0
+        ]
+        if offline_joints:
+            print(f'警告: 机械臂关节未连接: {offline_joints}')
 
         print("初始化机械臂...")
-        print(f"发现 {self.motor_count} 个电机")
+        print(
+            f"配置电机总数: {self.total_motor_count}，"
+            f"机械臂关节数: {self.motor_count}，"
+            f"夹爪安装: {'有' if self.gripper_installed else '无'}，"
+            f"夹爪连接: {'在线' if self.has_gripper else '无'}"
+        )
+
+        if not self.has_gripper:
+            print('无夹爪模式：跳过夹爪状态读取和控制')
 
         if self.motor_count == 0:
             print("未发现电机。请检查您的配置和连接。")
@@ -132,6 +264,21 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
             print(f"Motor {i}: ID={motor.get_motor_id()}, "
                   f"Type={motor.get_motor_enum_type()}, "
                   f"Name={motor.get_motor_name()}")
+
+    def set_reset_zero(self):
+        """避免底层 SDK 等待配置中存在但未连接的电机。"""
+        offline_motors = [
+            motor.get_motor_name()
+            for motor in self._configured_motors
+            if motor.get_version().id == 0
+        ]
+        if offline_motors:
+            raise RuntimeError(
+                f'配置中存在未连接的电机 {offline_motors}，已取消置零。'
+                '若实机未安装夹爪，请在 YAML 设置 '
+                'robot.gripper_installed: false 后重新启动。'
+            )
+        return super().set_reset_zero()
 
     def _load_motor_parameters(self):
         """从配置文件加载电机相关参数（最大力矩、速度限幅、加速度限制）"""
@@ -207,8 +354,24 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
             config_dir = getattr(self, "config_dir", os.path.dirname(os.path.abspath(__file__)))
             urdf_path = os.path.normpath(os.path.join(config_dir, urdf_relative_path))
 
-            # 使用pinocchio加载URDF
-            self.model = pin.buildModelFromUrdf(urdf_path)
+            # 未安装夹爪时，不能只停用夹爪电机。end_effector_link
+            # 及其后代的质量也必须从 Pinocchio 模型移除，否则重力
+            # 补偿仍会把虚构的夹爪质量计算进去。
+            model_urdf_path = urdf_path
+            temporary_urdf = None
+            if not self.gripper_installed:
+                temporary_urdf = tempfile.TemporaryDirectory(
+                    prefix='panthera-urdf-'
+                )
+                model_urdf_path = self._create_urdf_without_gripper(
+                    urdf_path, temporary_urdf.name
+                )
+
+            try:
+                self.model = pin.buildModelFromUrdf(model_urdf_path)
+            finally:
+                if temporary_urdf is not None:
+                    temporary_urdf.cleanup()
             self.data = self.model.createData()
 
             # 获取关节信息
@@ -223,11 +386,18 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
                     print(f"警告: 关节 {joint_name} 未在模型中找到")
 
             print(f"URDF加载成功: {urdf_path}")
+            if not self.gripper_installed:
+                print("动力学模型: 已排除 end_effector_link 及其后代质量")
             print(f"模型包含 {self.model.njoints - 1} 个关节（不含base）")
             print(f"配置关节数: {len(self.joint_ids)}")
 
             # 获取末端执行器 frame ID
-            end_effector_link = self.config['urdf']['end_effector_link']
+            if self.gripper_installed:
+                end_effector_link = self.config['urdf']['end_effector_link']
+            else:
+                end_effector_link = self.config['urdf'].get(
+                    'end_effector_link_without_gripper', 'link6'
+                )
             if self.model.existFrame(end_effector_link):
                 self.end_effector_frame_id = self.model.getFrameId(end_effector_link)
                 print(f"末端执行器frame: {end_effector_link} (ID: {self.end_effector_frame_id})")
@@ -235,7 +405,56 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
                 print(f"警告: 末端执行器frame '{end_effector_link}' 未找到，回退到最后一个关节")
                 self.end_effector_frame_id = self.model.getFrameId(self.joint_names[-1])
         except Exception as e:
-            print(f"URDF加载失败: {e}")
+            raise RuntimeError(f"URDF加载失败: {e}") from e
+
+    def _create_urdf_without_gripper(self, urdf_path, directory):
+        """删除 end_effector_link 本身及其全部后代。"""
+        tree = ET.parse(urdf_path)
+        root = tree.getroot()
+        without_gripper_link = self.config['urdf'].get(
+            'end_effector_link_without_gripper', 'link6'
+        )
+        with_gripper_link = self.config['urdf']['end_effector_link']
+
+        link_names = {
+            element.get('name') for element in root.findall('link')
+        }
+        if without_gripper_link not in link_names:
+            raise ValueError(
+                f"URDF 中不存在无夹爪末端连杆 '{without_gripper_link}'"
+            )
+
+        joints = list(root.findall('joint'))
+        # 以配置的 end_effector_link 为裁剪起点。相机等挂在其父连杆
+        # 上的并列分支不会被删除。裁剪起点已经被用户手动删除时，仍
+        # 清理引用该名称的残留 joint 及其后代。
+        removed_links = {with_gripper_link}
+        changed = True
+        while changed:
+            changed = False
+            for joint in joints:
+                parent = joint.find('parent')
+                child = joint.find('child')
+                if parent is None or child is None:
+                    continue
+                if (
+                    parent.get('link') in removed_links
+                    and child.get('link') not in removed_links
+                ):
+                    removed_links.add(child.get('link'))
+                    changed = True
+
+        for joint in joints:
+            child = joint.find('child')
+            if child is not None and child.get('link') in removed_links:
+                root.remove(joint)
+        for link in list(root.findall('link')):
+            if link.get('name') in removed_links:
+                root.remove(link)
+
+        output_path = os.path.join(directory, 'robot_without_gripper.urdf')
+        tree.write(output_path, encoding='utf-8', xml_declaration=True)
+        return output_path
 
     #######################
     # 状态获取方法
@@ -273,22 +492,24 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
         return joint_torques
 
     def get_current_state_gripper(self):
-        """获取当前夹爪状态"""
-        return self.Motors[self.gripper_id-1].get_current_motor_state()
+        """获取夹爪状态；无夹爪时返回 available=False 的零值状态。"""
+        if not self.has_gripper:
+            return self._absent_gripper_state
+        return self.gripper_motor.get_current_motor_state()
     
     def get_current_pos_gripper(self):
         """获取当前夹爪位置"""
-        state = self.Motors[self.gripper_id-1].get_current_motor_state()
+        state = self.get_current_state_gripper()
         return state.position
 
     def get_current_vel_gripper(self):
         """获取当前夹爪速度"""
-        state = self.Motors[self.gripper_id-1].get_current_motor_state()
+        state = self.get_current_state_gripper()
         return state.velocity
     
     def get_current_torque_gripper(self):
         """获取当前夹爪力矩"""
-        state = self.Motors[self.gripper_id-1].get_current_motor_state()
+        state = self.get_current_state_gripper()
         return state.torque
 
     #######################
@@ -531,6 +752,8 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
     #######################
     def gripper_control(self, pos, vel, max_tqu=0.5):
         """夹爪控制（位置速度最大力矩模式）"""
+        if not self.has_gripper:
+            return False
         # 检查夹爪位置是否在限位范围内
         if self.gripper_limits is not None:
             lower = self.gripper_limits['lower']
@@ -556,6 +779,8 @@ class Panthera(htr.Robot):  # 继承自htr.Robot
 
         ``send=False`` 仅缓存夹爪命令，供同周期机械臂命令统一发送。
         """
+        if not self.has_gripper:
+            return False
         # 检查夹爪位置是否在限位范围内
         if self.gripper_limits is not None:
             lower = self.gripper_limits['lower']

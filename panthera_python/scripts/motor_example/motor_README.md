@@ -36,28 +36,30 @@ pip3 install pybind11 numpy
 ```
 
 ### C++项目
-需要先编译C++项目:
+从 SDK 源码构建 Python 扩展时，需要先编译并安装底层 C++ 项目。以下命令从 `Panthera-HT_SDK` 仓库根目录执行：
 ```bash
-cd path/to/hightorque_robot
+cd panthera_cpp/motor_cpp
 mkdir -p build && cd build
 cmake ..
-make
+make -j$(nproc)
+sudo make install
 ```
+
+普通用户建议直接按 [Python SDK 安装说明](../../README.md#环境安装) 安装与 Python 版本匹配的预编译 whl，无需自行编译 C++ 项目。
 
 ## 安装
 
 ### 方式1: 使用pip安装 (开发模式)
 ```bash
-cd path/to/hightorque_robot_python
-pip3 install -e .
+# 从 Panthera-HT_SDK 仓库根目录执行
+python -m pip install -e ./panthera_python --no-build-isolation --no-deps
 ```
 
 ### 方式2: 使用CMake构建
 ```bash
-cd path/to/hightorque_robot_python
-mkdir -p build && cd build
-cmake ..
-make
+# 从 Panthera-HT_SDK 仓库根目录执行
+cmake -S panthera_python -B panthera_python/build
+cmake --build panthera_python/build -j$(nproc)
 ```
 
 ## 使用示例
@@ -67,7 +69,7 @@ make
 import hightorque_robot as htr
 
 # 使用配置文件创建电机对象
-robot = htr.Robot("/path/to/robot_config.yaml")
+robot = htr.Robot("../../robot_param/motor_param/robot_config.yaml")
 
 # 启用LCM消息发布
 robot.lcm_enable()
@@ -98,7 +100,7 @@ robot.set_stop()
 import hightorque_robot as htr
 import time
 
-robot = htr.Robot("/path/to/robot_config.yaml")
+robot = htr.Robot("../../robot_param/motor_param/robot_config.yaml")
 motors = robot.get_motors()
 
 # 使用混合控制模式
@@ -134,7 +136,7 @@ while True:
 import hightorque_robot as htr
 
 # 使用YAML配置文件初始化
-robot = htr.Robot("path/to/hightorque_robot/robot_param/robot_config.yaml")
+robot = htr.Robot("../../robot_param/motor_param/robot_config.yaml")
 
 # 查看机器人名称
 print(f"机器人名称: {robot.robot_params.robot_name}")
@@ -194,9 +196,9 @@ robot.set_reset()
 ### 找不到C++库
 确保C++项目已编译:
 ```bash
-cd path/to/hightorque_robot/build
+cd panthera_cpp/motor_cpp/build
 cmake ..
-make
+make -j$(nproc)
 ```
 
 ### 找不到pybind11
@@ -211,9 +213,9 @@ sudo usermod -a -G dialout $USER
 ```
 
 ### 导入错误
-确保Python能找到编译的模块:
+确认当前 Python 环境安装了 SDK：
 ```bash
-export PYTHONPATH=path/to/hightorque_robot_python:$PYTHONPATH
+python -c "import hightorque_robot; print('hightorque_robot 导入成功')"
 ```
 
 ## 项目结构
@@ -227,8 +229,9 @@ export PYTHONPATH=path/to/hightorque_robot_python:$PYTHONPATH
     └── 04_torque_control.py        # 力矩控制
     └── 05_voltage_control.py       # 扭矩电压控制
     └── 06_current_control.py       # 扭矩电流控制
-    └── 07_pos_vel_maxtorque.py     # 位置-速度-最大扭矩控制
-    └── 08_pos_vel_torque_kp_kd.py  # 示例程序
+    └── 07_pos_vel_maxtorque_control.py     # 位置-速度-最大扭矩控制
+    └── 08_pos_vel_torque_kp_kd_control.py  # 五参数MIT控制
+    └── 09_set_zero.py                     # 设置电机零位
 ```
 
 ## 许可证

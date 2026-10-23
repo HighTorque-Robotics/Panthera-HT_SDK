@@ -1,5 +1,7 @@
 # Panthera 机械臂控制 Python SDK
 
+[English](README_EN.md)
+
 ## 功能特性
 
 - **多种控制模式**:
@@ -37,7 +39,7 @@
 为避免与系统环境（如 ROS）冲突，强烈建议创建独立的 conda 环境：
 
 ```bash
-# 创建新环境（Python 3.9、3.10 或 3.12）
+# 创建新环境（支持 Python 3.9–3.12）
 conda create -n panthera python=3.10
 conda activate panthera
 ```
@@ -150,7 +152,7 @@ python -m pip install "osqp>=1.1.0,<2.0"
 | 功能 | 安装命令 |
 | --- | --- |
 | 轨迹 GUI、GUI 离线测试 | `python -m pip install PyQt5` |
-| 绘图示例、VR 跟踪曲线 | `python -m pip install matplotlib` |
+| 绘图示例 | `python -m pip install matplotlib` |
 | 键盘遥操作 | `python -m pip install pynput` |
 | 北通/XInput 手柄 | `python -m pip install evdev` |
 | GELLO、飞特舵机读取 | `python -m pip install feetech-servo-sdk` |
@@ -175,7 +177,8 @@ python -c "from Panthera_lib import Panthera"
 
 ### 通信板接线参考
 
-![通信板接线图](images/Board.png)
+![通信板接线图1](images/Board1.png)
+![通信板接线图2](images/Board2.png)
 
 ### 赋串口权限
 设备正常连接后可以查看串口设备；数量取决于所连接的通信板，不等于电机数量
@@ -245,7 +248,8 @@ python 5_teleop_control.py
 进入 `scripts` 目录，并指定 GELLO 串口启动遥操程序：
 
 ```bash
-cd Panthera-HT_SDK/panthera_python/scripts
+# 从 Panthera-HT_SDK/ 仓库根目录执行
+cd panthera_python/scripts
 python 7_gello_teleop.py --gello-port /dev/ttyACM1
 ```
 
@@ -279,7 +283,7 @@ import numpy as np
 robot = Panthera()
 
 # 或指定配置文件
-#robot = Panthera("path/to/Leader.yaml")
+# robot = Panthera("../robot_param/Leader.yaml")
 
 # 获取当前关节角度
 joint_pos = robot.get_current_pos()
@@ -311,6 +315,26 @@ Panthera 类继承自 `htr.Robot`，提供了机械臂级别的控制接口。
 #### 初始化
 - `Panthera(config_path=None)` - 创建机械臂实例
   - `config_path`: 配置文件路径，默认使用 Follower.yaml
+
+`robot.gripper_installed` 是必填项。在实际机械臂没有夹爪时，将所用的 `Follower.yaml` 或 `Leader.yaml` 修改为：
+
+```yaml
+robot:
+  gripper_installed: false
+  gripper_name: "gripper"
+```
+
+设置为 `false` 后，底层 SDK 只初始化六个机械臂关节，不再探测第七个夹爪电机；动力学模型会删除 `urdf.end_effector_link` 本身及其全部后代，并使用 `urdf.end_effector_link_without_gripper` 作为控制末端。相机等挂在 `end_effector_link` 父连杆上的并列分支会保留。因此重力补偿、FK、IK、MoveL 和 VR 笛卡尔控制都会使用无夹爪模型，不需要修改原始 URDF 或 `motor_param` 中的 `motor_num`。实机安装夹爪时设置为 `true`。
+
+如果自定义 URDF 已经手动删除 `end_effector_link`，无夹爪模式也可以直接加载；程序会继续清理引用该名称的残留 joint 和后代。`end_effector_link_without_gripper` 对应的 link 必须保留。
+
+```yaml
+urdf:
+  end_effector_link: "gripper_center_link"
+  end_effector_link_without_gripper: "link6"
+```
+
+夹爪配置只从 YAML 读取，修改后需要重新启动程序。运行后可通过 `robot.has_gripper` 判断夹爪是否可用；无夹爪时，夹爪控制接口返回 `False`，夹爪状态接口返回 `available=False` 的零值占位状态。
 
 #### 状态获取
 - `get_current_state()` - 获取所有关节状态列表
@@ -412,11 +436,13 @@ panthera_python/
 │   ├── hightorque_robot-1.2.0-cp312-cp312-linux_x86_64.whl
 │   └── hightorque_robot-1.0.0-*-linux_aarch64.whl # cp39/cp310/cp311/cp312
 │
-├── Panthera-HT_description/    # 机械臂URDF模型
-│   ├── urdf/                   # URDF文件
-│   ├── meshes/                 # 3D模型文件
-│   ├── config/                 # 配置文件
-│   └── launch/                 # 启动文件
+├── Panthera-HT_description_V1.1.0/ # 机械臂模型与仿真资源
+│   ├── urdf/                   # Leader/Follower URDF及配置说明
+│   ├── meshes/                 # GLB外观与STL碰撞网格
+│   ├── mujoco/                 # MuJoCo场景、网格和可视化脚本
+│   ├── image/                  # URDF配置说明图片
+│   ├── config/                 # 关节名称配置
+│   └── launch/                 # ROS启动文件
 │
 ├── robot_param/                # 机械臂配置文件
 │   ├── Leader.yaml             # 主臂配置
@@ -475,8 +501,11 @@ panthera_python/
 │   ├── 7_keyboard_cartesian_vel_control.py  # 键盘控制末端速度（雅可比矩阵）
 │   ├── 7_vr_cartesian_control.py            # Quest VR单臂笛卡尔空间遥操作
 │   ├── 7_vr_dual_cartesian_control.py       # Quest VR双臂笛卡尔空间遥操作
+│   ├── 7_vr_usb_start_quickly.py             # USB快速启动Quest数据转发和VR遥操
+│   ├── Quest_controller_stream/            # 内置 Quest 手柄数据转发服务及使用说明
 │   │
 │   ├── tests/                 # 不连接硬件的自动化测试
+│   │   ├── test_optional_gripper.py
 │   │   ├── test_trajectory_gui.py
 │   │   └── test_vr_qp.py
 │   └── motor_example/          # 底层电机控制示例
@@ -502,64 +531,142 @@ panthera_python/
 └── README.md                   # 本文档
 ```
 
-## Quest VR 手柄数据转发
+## Quest VR 遥操
 
-`scripts/7_vr_cartesian_control.py`（单臂）和 `scripts/7_vr_dual_cartesian_control.py`（双臂）均依赖外部 Quest 手柄数据流服务。两个脚本都会在本机监听 `UDP 5005`，因此在启动机械臂控制前，需要先启动 `Quest_controller_stream` 工程，将 Quest 手柄位姿和按键数据转发到本机。
+### 先了解三个程序的作用
 
-`Quest_controller_stream` 仓库：
+VR 遥操的数据链路如下：
 
-[https://github.com/HighTorque-Robotics/Quest_controller_stream](https://github.com/HighTorque-Robotics/Quest_controller_stream)
-
-> 建议直接使用仓库主页进行克隆和查看说明，不需要进入 GitHub 的 `settings` 页面。
-
-### 1. 先启动外部数据转发服务
-
-先进入 `Quest_controller_stream` 工程目录并启动手柄数据转发服务：
-
-```bash
-cd Quest_controller_stream
-python3 quest_stream_ui.py
+```text
+Quest Browser / 手柄
+        │ WebSocket
+        ▼
+Quest_controller_stream          只转发数据，不控制机械臂
+        │ UDP 127.0.0.1:5005
+        ▼
+单臂或双臂遥操接收脚本           解算 QP，并向机械臂发送 MIT 指令
+        │
+        ▼
+Panthera 机械臂
 ```
 
-或使用命令行方式启动：
+| 程序 | 功能 | 是否控制机械臂 |
+|---|---|---|
+| `Quest_controller_stream/start_stream_server.py` | 提供 Quest 网页，将 WebSocket 手柄数据转发到 UDP 5005 | 否 |
+| `Quest_controller_stream/quest_stream_ui.py` | 上述转发服务的桌面调试界面，可查看和验证手柄数据 | 否 |
+| `7_vr_cartesian_control.py` | 接收 UDP 数据，使用右手柄控制一台 `Follower` | 是，单臂 |
+| `7_vr_dual_cartesian_control.py` | 接收 UDP 数据，左手柄控制 `Leader`，右手柄控制 `Follower` | 是，双臂 |
+| `7_vr_usb_start_quickly.py` | 通过 USB 自动启动转发服务，并从单臂、双臂接收脚本中选择一个启动 | 间接控制，推荐入口 |
+
+**USB 遥操推荐只运行 `7_vr_usb_start_quickly.py`。使用快速启动脚本时，不要再单独运行 `Quest_controller_stream`、单臂脚本或双臂脚本，否则会产生端口占用或重复控制。**
+
+### 启动前准备
+
+安装 Python 依赖：
 
 ```bash
-cd Quest_controller_stream
-python3 start_stream_server.py --udp-ip 127.0.0.1 --udp-port 5005
+python -m pip install -r panthera_python/requirements.txt
+python -m pip install websockets
 ```
 
-确保该工程最终将 Quest 手柄数据转发到本机 `127.0.0.1:5005`。
-
-### 2. 启动 VR 笛卡尔控制脚本
-
-两个 VR 入口均使用 `Panthera_lib/qp_ik.py` 的速度级 QP（OSQP），积分生成关节位置目标，再通过 MIT 模式下发；MIT 目标速度仍为零。双臂各自维护 QP 速度历史和手柄目标，新 UDP 序号到达时才累计位姿增量。
-
-请先安装 `requirements.txt` 中的 OSQP 依赖。单臂退出时会保存跟踪 CSV；安装 `matplotlib` 后还可绘制诊断曲线。
-
-本版本沿用参考脚本的 VR 参数：关节速度上限 `[3, 3, 3, 3, 4, 4] rad/s`，覆盖 YAML 速度限制；关节加速度和末端线／角速度不裁剪，关节位置限位仍生效。参数位于两个脚本顶部的 `VR_MAX_*`。
-
-单臂控制默认 `Follower.yaml`；双臂为左手柄 `Leader.yaml`、右手柄 `Follower.yaml`。启动会移动到预设姿态，退出流程会尝试回零。离线验证不代表实机跟踪性能已验证。
-
-在 Quest 手柄数据转发服务启动后，再打开另一个终端运行：
+一键启动只支持 USB，需要安装 `adb`。手动使用 WiFi 转发时，还需要 `openssl` 生成本地证书：
 
 ```bash
-cd Panthera-HT_SDK/panthera_python/scripts
-# 单臂：右手柄控制一台机械臂
-python3 7_vr_cartesian_control.py
-
-# 双臂：左手柄控制 Leader，右手柄控制 Follower
-python3 7_vr_dual_cartesian_control.py
+sudo apt install adb openssl
 ```
 
-程序启动后会等待 Quest 手柄连接，并从 `UDP 5005` 接收左右手柄数据。
+USB 使用前连接 Quest，允许头显中的 USB 调试授权，并确认：
 
-### 3. 使用说明
+```bash
+adb devices
+```
 
-- 按住对应手柄的 `Squeeze`：激活机械臂控制；单臂使用右手柄，双臂分别使用左右手柄
-- 移动手柄位置：控制机械臂末端位置
-- 旋转手柄姿态：控制机械臂末端姿态
-- 按住 `Squeeze` 再按 `Trigger`：控制夹爪开合
-- 松开 `Squeeze`：机械臂停止运动并保持当前位置
+设备状态应显示为 `device`，不能是 `unauthorized`。
+
+### 方式一：USB 快速启动（推荐）
+
+从 SDK 根目录进入脚本目录：
+
+```bash
+cd panthera_python/scripts
+```
+
+`7_vr_usb_start_quickly.py` 只使用 USB 有线连接，并同时启动 Quest 数据转发和机械臂遥操。根据机械臂数量选择一条命令：
+
+| 使用方式 | 启动命令 |
+|---|---|
+| USB + 单臂 | `python 7_vr_usb_start_quickly.py` |
+| USB + 双臂 | `python 7_vr_usb_start_quickly.py --controller dual` |
+
+单臂模式使用右手柄控制 `Follower.yaml` 对应的机械臂。双臂模式使用左手柄控制 `Leader.yaml`、右手柄控制 `Follower.yaml`。
+
+#### 快速启动步骤
+
+1. 用 USB 连接 Quest，确认 `adb devices` 能看到设备。
+2. 运行上表中的 USB 单臂或双臂命令。
+3. 启动器自动配置 `adb reverse`、启动数据转发服务，并在 Quest Browser 打开 `http://localhost:8080` 页面。
+4. 在头显网页中点击 `Start XR Stream`。
+5. 等待终端显示已收到 Quest 数据和机械臂初始化完成，再按住手柄 `Squeeze` 开始控制。
+
+启动时会关闭 Quest Browser 中遗留的旧 WebVR 会话和标签页，确保页面使用 USB 的 `localhost + adb reverse` 链路。
+
+其他启动选项：
+
+```bash
+# USB 模式不自动打开 Quest Browser
+python 7_vr_usb_start_quickly.py --no-open-quest
+
+# 只显示将要执行的命令，不连接设备
+python 7_vr_usb_start_quickly.py --dry-run
+```
+
+按一次 `Ctrl+C` 后，启动器会停止数据转发、通过 ADB 自动关闭 Quest Browser 页面和 WebXR 会话，并等待机械臂完成回零。回零完成前不要关闭终端或切断机械臂电源。回零期间重复按 `Ctrl+C` 不会跳过安全退出流程。
+
+Quest Browser 页面本身不占用电脑的 `8080/8765` 端口，占用端口的是数据转发进程；快速启动脚本退出时会同时回收该进程。使用 `--no-open-quest` 时，启动器不会自动打开或关闭 Quest Browser。需要 WiFi 时，请使用下面的分步调试方式。
+
+### 方式二：分步启动（仅用于调试）
+
+分步启动需要两个终端：终端 1 只运行数据转发，终端 2 只运行一个遥操接收脚本。**不要同时运行 USB 快速启动脚本。**
+
+#### 终端 1：启动数据转发
+
+```bash
+cd panthera_python/scripts/Quest_controller_stream
+
+# USB 转发
+python start_stream_server.py --adb always --udp-ip 127.0.0.1 --udp-port 5005
+
+# WiFi 转发（与上一条二选一）
+python start_stream_server.py --adb never --udp-ip 127.0.0.1 --udp-port 5005
+```
+
+也可以运行 `python quest_stream_ui.py` 使用桌面界面；桌面 UI 和 `start_stream_server.py` 仍然只能二选一。完整说明见 [Quest Controller Stream 使用说明](scripts/Quest_controller_stream/README.md)。
+
+在 Quest Browser 打开终端或 UI 显示的对应地址，并点击 `Start XR Stream`。如果使用过 UI 的 `Start Verify` 或 `udp_receiver_test.py`，启动机械臂控制前必须停止验证，释放 UDP 5005。
+
+#### 终端 2：启动一个遥操接收脚本
+
+```bash
+cd panthera_python/scripts
+
+# 单臂：右手柄控制 Follower
+python 7_vr_cartesian_control.py
+
+# 双臂：左手柄控制 Leader，右手柄控制 Follower（与上一条二选一）
+python 7_vr_dual_cartesian_control.py
+```
+
+### 手柄操作与控制方式
+
+- 按住对应手柄的 `Squeeze`：激活控制；单臂使用右手柄，双臂使用左右手柄。
+- 移动手柄：控制机械臂末端位置。
+- 旋转手柄：控制机械臂末端姿态。
+- 按住 `Squeeze` 并按下 `Trigger`：控制对应夹爪。
+- 松开 `Squeeze`：停止运动并保持当前位置。
+
+单臂和双臂脚本均监听本机 `UDP 5005`，使用 `Panthera_lib/qp_ik.py` 的速度级 QP（OSQP）生成连续关节位置目标，并通过 MIT 模式控制机械臂。单臂和双臂遥操均不保存轨迹 CSV，也不生成或弹出曲线图。启动时机械臂会移动到预设姿态，正常退出时会尝试回零。
+
+当前 VR 参数位于两个控制脚本顶部的 `VR_MAX_*`。关节速度上限为 `[3, 3, 3, 3, 4, 4] rad/s`，关节位置限位保持生效。离线测试只能验证软件逻辑，不能代替实机方向和跟踪性能验证。
 
 ## 离线测试
 
@@ -573,12 +680,16 @@ QT_QPA_PLATFORM=offscreen python -m unittest discover -s scripts/tests -p 'test_
 
 # VR/QP：依赖 requirements.txt 中的高层库依赖
 python -m unittest discover -s scripts/tests -p 'test_vr_qp.py' -v
+
+# 可选夹爪：使用模拟底层 SDK，不连接硬件
+python -m unittest discover -s scripts/tests -p 'test_optional_gripper.py' -v
 ```
 
 - `test_trajectory_gui.py`：使用模拟机器人和临时轨迹目录，检查插值、回放时序、循环/取消、拼接配方、关节限位、七电机完整指令和关闭流程。
 - `test_vr_qp.py`：替换原生电机 SDK，检查 QP 求解和 VR 控制集成逻辑。
+- `test_optional_gripper.py`：替换底层电机 SDK，检查六/七电机配置、夹爪缺失处理和无夹爪动力学模型裁剪。
 
-这两组测试不连接硬件；GUI 测试以无窗口模式运行。它们验证软件逻辑，不验证实机运动效果。`scripts/1_forward_kinematics_test.py` 等普通示例仍会创建机器人实例，不属于上述离线测试。
+这三组测试不连接硬件；GUI 测试以无窗口模式运行。它们验证软件逻辑，不验证实机运动效果。`scripts/1_forward_kinematics_test.py` 等普通示例仍会创建机器人实例，不属于上述离线测试。
 
 ## 故障排除
 
@@ -594,7 +705,7 @@ python -m unittest discover -s scripts/tests -p 'test_vr_qp.py' -v
 
 ### 7_vr_cartesian_control.py 无法收到手柄数据
 
-检查 `Quest_controller_stream` 是否已经启动，并确认以下项目一致：
+检查内置的 `scripts/Quest_controller_stream` 是否已经启动，并确认以下项目一致：
 
 - `Quest_controller_stream` 的 `UDP IP` 为 `127.0.0.1`
 - `Quest_controller_stream` 的 `UDP Port` 为 `5005`
@@ -641,25 +752,7 @@ ls -la /usr/local/lib/libyaml-cpp*
 
 若当前库为 0.7，而 wheel 需要 0.6，说明动态库版本不匹配。优先使用前文源码编译方式，让 SDK 匹配本机依赖，无需删除现有库。
 
-如果必须使用依赖 0.6 的旧 wheel，可按下面步骤编译对应版本；不要删除已有的 0.7 库。
-克隆仓库到用户主目录
-cd ~
-git clone https://github.com/jbeder/yaml-cpp.git
-cd yaml-cpp
-git checkout yaml-cpp-0.6.1
-
-创建干净的构建目录
-mkdir build
-cd build
-
-配置编译选项
-cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON
-
-编译
-make -j$(nproc)
-
-安装
-sudo make install
+依赖 yaml-cpp 0.6 的旧 wheel 不适用于当前系统库时，请改用与当前 Python/架构匹配的 wheel，或按前文说明从 `Panthera-HT_SDK/` 仓库源码编译 SDK。不要通过删除或覆盖系统现有 yaml-cpp 库来兼容旧 wheel。
 
 更新库缓存
 sudo ldconfig

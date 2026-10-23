@@ -740,6 +740,8 @@ def run(args, sdk, panthera_class=None) -> int:
                 panthera_class = import_panthera_class()
             print("正在初始化 Panthera 从臂：{}".format(args.follower_config))
             robot = panthera_class(args.follower_config)
+            if not robot.has_gripper:
+                args.no_gripper = True
             if int(robot.motor_count) != 6:
                 raise RuntimeError(
                     "期望 6 个从臂关节，实际发现 {} 个".format(robot.motor_count)

@@ -1,8 +1,8 @@
 # Panthera: iterative DLS and QP inverse kinematics
 
-[中文](README_IK_QP_CN.md) · [SDK overview](../README.md)
+[中文](README_IK_QP_CN.md) · [SDK overview](../../README.md)
 
-**Scope: the current six-axis Panthera SDK in this directory; source checked on 2026-10-16.** This guide distinguishes implemented behavior, usage examples, and proposed extensions. The new examples calculate motion only; launching the VR scripts operates hardware.
+**Scope: the current six-axis Panthera SDK in this directory; source checked on 2026-10-24.** This guide distinguishes implemented behavior, usage examples, and proposed extensions. The new examples calculate motion only; launching the VR scripts operates hardware.
 
 The four flowcharts use embedded Mermaid and render in Markdown viewers with Mermaid support; no external image files are needed.
 
@@ -39,17 +39,17 @@ Figure 1. The upper branch's iterations belong to one solve; the lower branch's 
 
 | File | Functions / variables to inspect |
 |---|---|
-| [Panthera_lib/Panthera.py](Panthera_lib/Panthera.py) | `inverse_kinematics`, `_inverse_kinematics_dls_single_impl`, `_inverse_kinematics_dls_multi_init_impl`, `forward_kinematics`, `get_jacobian` |
-| [Panthera_lib/qp_ik.py](Panthera_lib/qp_ik.py) | `PinocchioOSQPIK.__init__`, `_velocity_bounds`, `step`, `reset`, `QPIKResult` |
-| [Single-arm VR](7_vr_cartesian_control.py) | `main` constructs `qp_solver` and calls `step` |
-| [Dual-arm VR](7_vr_dual_cartesian_control.py) | `create_arm_state`, `process_arm_control`, `sync_targets_to_current_state` |
-| [Follower.yaml](../robot_param/Follower.yaml) / [Leader.yaml](../robot_param/Leader.yaml) | `joint_limits`, `velocity_limits`, `acceleration_limits`, `end_effector_link` |
-| [Offline regression](tests/test_vr_qp.py) | URDF convergence, independent arms, repeated packets, failure handling, gripper dispatch |
+| [Panthera.py](Panthera.py) | `inverse_kinematics`, `_inverse_kinematics_dls_single_impl`, `_inverse_kinematics_dls_multi_init_impl`, `forward_kinematics`, `get_jacobian` |
+| [qp_ik.py](qp_ik.py) | `PinocchioOSQPIK.__init__`, `_velocity_bounds`, `step`, `reset`, `QPIKResult` |
+| [Single-arm VR](../7_vr_cartesian_control.py) | `main` constructs `qp_solver` and calls `step` |
+| [Dual-arm VR](../7_vr_dual_cartesian_control.py) | `create_arm_state`, `process_arm_control`, `sync_targets_to_current_state` |
+| [Follower.yaml](../../robot_param/Follower.yaml) / [Leader.yaml](../../robot_param/Leader.yaml) | `joint_limits`, `velocity_limits`, `acceleration_limits`, `end_effector_link` |
+| [Offline regression](../tests/test_vr_qp.py) | URDF convergence, independent arms, repeated packets, failure handling, gripper dispatch |
 
 - Joint angles: rad; joint velocity: rad/s; joint acceleration: rad/s²; position: m; time: s.
 - `T` is a 4×4 homogeneous transform: the upper-left 3×3 block is rotation and the upper-right 3×1 block is position. Targets and FK use the selected URDF model's base frame.
 - The QP Jacobian uses `pin.LOCAL_WORLD_ALIGNED`: linear/angular components are expressed along base-aligned axes at the configured end-effector frame. `feedforward_twist = [vx, vy, vz, wx, wy, wz]`, in m/s and rad/s.
-- `Leader.yaml` currently selects `joint6`; `Follower.yaml` selects `tool_link`. Their TCP poses are not interchangeable.
+- Both current YAML files use `gripper_center_link` when a gripper is installed. With `gripper_installed: false`, the SDK uses `link6` and removes the gripper links from the dynamics model.
 - The six coordinates follow `joint1 ... joint6`. The gripper is separate, not a seventh IK degree of freedom.
 
 ## 3. Calling DLS and understanding its iterations
@@ -223,7 +223,7 @@ Figure 3. QP velocity generates a position trajectory. The current VR scripts st
 - `VR_HAND_VELOCITY_TIMEOUT=0.05` clears stale hand-velocity feedforward only. The old pose target can still be tracked; this is not a complete UDP-disconnection stop mechanism.
 - `gripper_control_MIT(..., send=False)` queues a gripper command for the single arm's joint dispatch in the same interval. A QP-failure branch also flushes commands explicitly. Default `send=True` preserves the existing interface behavior.
 
-Both scripts move to a preset pose at startup and attempt to return to zero during shutdown. After about ten seconds without hand data, startup still proceeds to robot initialization. Running the scripts is not an offline import test. Launch commands are in the [SDK overview](../README.md).
+Both scripts move to a preset pose at startup and attempt to return to zero during shutdown. After about ten seconds without hand data, startup still proceeds to robot initialization. Running the scripts is not an offline import test. Launch commands are in the [SDK overview](../../README.md).
 
 ### 4.3 Integrating with an already connected robot (sends commands)
 

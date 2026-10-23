@@ -7,6 +7,7 @@ import importlib.util
 import io
 from pathlib import Path
 import sys
+import tempfile
 import types
 import unittest
 from unittest.mock import patch
@@ -65,11 +66,13 @@ class OfflineArm:
         self.velocity_limits = np.asarray(cfg['robot']['velocity_limits'])
         self.acceleration_limits = np.asarray(cfg['robot']['acceleration_limits'])
         self.gripper_limits = cfg['robot']['gripper_limits']
+        self.has_gripper = True
         self.gripper_id = 7
         self.q = np.array([0., .6, .6, 0., 0., 0.])
         self.pending = [None] * 7
         self.sent = []
         self.Motors = [types.SimpleNamespace(pos_vel_tqe_kp_kd=self.record_motor(i)) for i in range(7)]
+        self.gripper_motor = self.Motors[-1]
 
     def record_motor(self, index):
         def record(*args):
@@ -93,6 +96,32 @@ def hand(seq=1, squeeze=1., offset=0., valid=1):
 
 
 class VRQPTests(unittest.TestCase):
+    def test_sdk_motor_config_follows_gripper_option(self):
+        config_path = SCRIPTS.parent / 'robot_param' / 'Follower.yaml'
+        config = yaml.safe_load(config_path.read_text())
+
+        for enabled, expected_count in ((False, 6), (True, 7)):
+            with self.subTest(enabled=enabled), tempfile.TemporaryDirectory() as directory:
+                robot = Panthera.__new__(Panthera)
+                robot.config = config
+                robot.config_dir = str(config_path.parent)
+                robot.gripper_installed = enabled
+                generated_path = robot._prepare_sdk_config(
+                    str(config_path), directory
+                )
+                generated = yaml.safe_load(Path(generated_path).read_text())
+                motor_path = Path(generated['robot']['param_file'])
+                motor_config = yaml.safe_load(motor_path.read_text())
+                port = motor_config['robot']['CANboard']['No_1_CANboard'][
+                    'CANport'
+                ]['CANport_1']
+                names = [motor['name'] for motor in port['motor'].values()]
+                gripper_name = config['robot']['gripper_name']
+
+                self.assertEqual(port['motor_num'], expected_count)
+                self.assertEqual(gripper_name in names, enabled)
+                self.assertEqual(robot.total_motor_count, expected_count)
+
     def test_real_models_qp_convergence_and_limits(self):
         for config in ('Leader.yaml', 'Follower.yaml'):
             with self.subTest(config=config):
@@ -168,7 +197,6 @@ class VRQPTests(unittest.TestCase):
     def run_single_loop(self, fail_qp):
         robot = OfflineArm()
         output = io.StringIO()
-        captured = []
         ticks = [0]
         single.running = True
         single.control_activated = False
@@ -179,7 +207,9 @@ class VRQPTests(unittest.TestCase):
             i = ticks[0]
             single.right_hand_data = hand(i+1, squeeze=0 if i == 3 else 1,
                                           offset=.001*i, valid=0 if i == 4 else 1)
-            if i >= 5:
+            # 覆盖第 20 周期的终端状态刷新，防止显示变量依赖已删除的
+            # 轨迹记录代码。
+            if i >= 25:
                 single.running = False
 
         # main() executes the actual controller, but no threads, sockets, or motors.
@@ -189,23 +219,18 @@ class VRQPTests(unittest.TestCase):
             stack.enter_context(patch.object(single.threading, 'Thread'))
             stack.enter_context(patch.object(single, 'move_to_safe_position', return_value=True))
             stack.enter_context(patch.object(single, 'execute_smooth_joint_reset', return_value=True))
-            stack.enter_context(patch.object(single, 'save_and_plot_tracking', side_effect=lambda s: captured.extend(s)))
             stack.enter_context(patch.object(single.time, 'sleep', side_effect=fake_sleep))
             if fail_qp:
                 stack.enter_context(patch.object(PinocchioOSQPIK, 'step', side_effect=RuntimeError('test QP failure')))
             single.main()
         self.assertNotIn('错误:', output.getvalue())
-        self.assertGreaterEqual(len(captured), 5)
         self.assertGreaterEqual(len(robot.sent), 5)
         if fail_qp:
             # Error messages are throttled; assert the actual flush behavior.
             self.assertTrue(any(frame[0] is None and frame[-1] is not None
                                 for frame in robot.sent))
-            self.assertTrue(all(np.linalg.norm(s['target_qdot']) == 0
-                                for s in captured))
         else:
             self.assertNotIn('QP求解失败', output.getvalue())
-            self.assertTrue(any(np.linalg.norm(s['target_qdot']) > 0 for s in captured))
 
 
 if __name__ == '__main__':

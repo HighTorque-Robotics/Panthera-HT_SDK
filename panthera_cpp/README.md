@@ -62,7 +62,7 @@ Panthera C++ SDK 分为两个层级：
 ### 系统要求
 - Ubuntu 20.04 / 22.04 / 24.04
 - CMake >= 3.10
-- C++17 或更高版本
+- C++14 或更高版本
 
 ### 安装依赖
 
@@ -82,22 +82,20 @@ sudo apt install pinocchio
 
 ### 编译
 
+以下命令均从 `Panthera-HT_SDK/` 仓库根目录执行。
+
 #### 编译 motor_cpp（电机底层 SDK）
 
 ```bash
-cd motor_cpp
-mkdir build && cd build
-cmake ..
-make -j$(nproc)
+cmake -S panthera_cpp/motor_cpp -B panthera_cpp/motor_cpp/build
+cmake --build panthera_cpp/motor_cpp/build -j$(nproc)
 ```
 
 #### 编译 robot_cpp（机械臂高级 SDK）
 
 ```bash
-cd robot_cpp
-mkdir build && cd build
-cmake ..
-make -j$(nproc)
+cmake -S panthera_cpp/robot_cpp -B panthera_cpp/robot_cpp/build
+cmake --build panthera_cpp/robot_cpp/build -j$(nproc)
 ```
 
 > **注意**: robot_cpp 会自动链接 motor_cpp，无需单独编译 motor_cpp。
