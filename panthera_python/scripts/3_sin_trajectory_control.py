@@ -1,11 +1,27 @@
 #!/usr/bin/env python3
 """
 正弦轨迹跟踪控制程序
-机器人关节沿着正弦函数轨迹运动
+机器人关节和夹爪沿着正弦函数轨迹运动，夹爪范围取自配置限位
 """
 import time
 import numpy as np
 from Panthera_lib import Panthera 
+
+
+def move_gripper_to(position, velocity, max_torque, timeout=15.0):
+    """缓慢移动夹爪并确认到位，避免从当前位置直接跳到正弦轨迹中点。"""
+    deadline = time.perf_counter() + timeout
+    while time.perf_counter() < deadline:
+        if robot.gripper_control(position, velocity, max_torque) is False:
+            raise RuntimeError("夹爪位置命令被拒绝")
+        actual = float(robot.get_current_pos_gripper())
+        if not np.isfinite(actual) or abs(actual) >= 999:
+            raise RuntimeError("夹爪位置反馈无效，请检查通信")
+        if abs(actual - position) <= 0.03:
+            return
+        time.sleep(0.02)
+    raise RuntimeError("夹爪移动到目标位置超时")
+
 
 def main():
     # 控制参数
@@ -13,39 +29,51 @@ def main():
     duration = 10.0  # 运动持续时间（秒）
     control_rate = 500  # 控制频率 Hz
     dt = 1.0 / control_rate
-    max_torque = [21.0, 36.0, 36.0, 21.0, 10.0, 10.0] 
+    gripper_frequency = frequency  # 与前六个关节共用频率
+    gripper_range_ratio = 0.8  # 使用限位总行程的 80%，两端各留 10%
+    gripper_move_velocity = 0.5  # rad/s，移动到中点的速度
+    gripper_max_torque = 0.5  # Nm
 
-    # 定义各关节角度限制（弧度）
-    # 1关节：±180° = ±π, 2-3关节：0到-180° = 0到-π, 4-5关节：±90° = ±π/2, 6关节：±180° = ±π
-    joint_limits = [
-        [-np.pi, np.pi],        # 关节1：±180度
-        [0, np.pi],             # 关节2：-180到0度
-        [0, np.pi],             # 关节3：-180到0度
-        [0, np.pi/2],           # 关节4：±90度
-        [-np.pi/2, np.pi/2],    # 关节5：±90度
-        [-np.pi, np.pi]         # 关节6：±180度
-    ]
+    if robot.has_gripper:
+        if robot.gripper_limits is None:
+            raise ValueError("夹爪正弦运动需要配置 gripper_limits")
+        gripper_lower = float(robot.gripper_limits["lower"])
+        gripper_upper = float(robot.gripper_limits["upper"])
+        if not (np.isfinite(gripper_lower) and np.isfinite(gripper_upper)
+                and gripper_lower < gripper_upper):
+            raise ValueError("夹爪限位必须是有限数值，且下限小于上限")
+        if not (0 < gripper_range_ratio < 1 and np.isfinite(gripper_frequency)
+                and gripper_frequency > 0):
+            raise ValueError("夹爪行程比例必须在 (0, 1) 内，频率必须为正的有限数值")
+        gripper_center = (gripper_lower + gripper_upper) / 2
+        gripper_amplitude = (gripper_upper - gripper_lower) / 2 * gripper_range_ratio
+        gripper_omega = 2 * np.pi * gripper_frequency
+        print(f"夹爪正弦范围: [{gripper_center - gripper_amplitude:.3f}, "
+              f"{gripper_center + gripper_amplitude:.3f}] rad，频率: {gripper_frequency} Hz")
+        print("夹爪缓慢移动到中点...")
+        move_gripper_to(gripper_center, gripper_move_velocity, gripper_max_torque)
+    else:
+        print("未检测到夹爪，仅运行关节正弦轨迹")
+
+    # 使用 Panthera 从 YAML 的 robot.joint_limits 加载的限位（弧度）
+    lower_limits = robot.joint_limits["lower"]
+    upper_limits = robot.joint_limits["upper"]
     
     # 获取初始位置作为中心位置（返回np.ndarray）
     print("获取初始位置...")
     center_pos = robot.get_current_pos()
     print(f"中心位置: {center_pos}")
 
-    # 将关节限制转换为numpy数组以便向量化运算
-    joint_limits_array = np.array(joint_limits)
-    lower_limits = joint_limits_array[:, 0]
-    upper_limits = joint_limits_array[:, 1]
-
-    # 检查初始位置是否在限制范围内
+    # 超限时停止，避免生成负的安全振幅
     for i, pos in enumerate(center_pos):
         if pos < lower_limits[i] or pos > upper_limits[i]:
-            print(f"警告: 关节{i+1}初始位置 {pos:.3f} 超出限制范围 [{lower_limits[i]:.3f}, {upper_limits[i]:.3f}]")
+            raise ValueError(f"关节{i+1}初始位置 {pos:.3f} 超出限制范围 [{lower_limits[i]:.3f}, {upper_limits[i]:.3f}]")
 
     # 设置各关节的振幅（弧度）- 自动调整以避免超限（向量化运算）
     dist_to_upper = upper_limits - center_pos
     dist_to_lower = center_pos - lower_limits
     safe_amplitudes = np.minimum(dist_to_upper, dist_to_lower) * 0.8
-    preset_amplitudes = np.array([0.4, 0.6, 0.6, 0.5, 0.4, 0.0])
+    preset_amplitudes = np.array([0.4, 0.6, 0.6, 1.0, 0.8, 0.5])
     amplitudes = np.minimum(safe_amplitudes, preset_amplitudes)
 
     print(f"调整后的振幅: {amplitudes} rad")
@@ -62,13 +90,13 @@ def main():
     print(f"频率: {frequency} Hz, 持续时间: {duration} 秒")
     print(f"振幅: {amplitudes}")
     
-    start_time = time.time()
+    start_time = time.perf_counter()
     step = 0
     
     try:
-        while (time.time() - start_time) < duration:
-            loop_start = time.time()
-            current_time = time.time() - start_time
+        while (time.perf_counter() - start_time) < duration:
+            loop_start = time.perf_counter()
+            current_time = loop_start - start_time
             
             # 计算正弦轨迹（向量化运算）
             omega = 2 * np.pi * frequency
@@ -87,19 +115,30 @@ def main():
             # 到达限位时速度置零
             vel[below_limit | above_limit] = 0
             
-            robot.Joint_Pos_Vel(pos, vel, max_torque, iswait=False)
+            robot.Joint_Pos_Vel(pos, vel, robot.max_torque, iswait=False)
+
+            if robot.has_gripper:
+                gripper_pos = float(np.clip(
+                    gripper_center + gripper_amplitude * np.sin(gripper_omega * current_time),
+                    gripper_lower, gripper_upper))
+                gripper_vel = float(gripper_amplitude * gripper_omega
+                                    * np.cos(gripper_omega * current_time))
+                if robot.gripper_control(gripper_pos, gripper_vel, gripper_max_torque) is False:
+                    raise RuntimeError("夹爪正弦轨迹命令被拒绝")
 
             # 定期打印状态
             if step % 50 == 0:  # 每0.5秒打印一次
                 print(f"\r时间: {current_time:.2f}s | "
                       f"关节1位置: {pos[0]:.3f} | "
                       f"关节2位置: {pos[1]:.3f} | "
-                      f"关节3位置: {pos[2]:.3f}", end="")
+                      f"关节3位置: {pos[2]:.3f}"
+                      + (f" | 夹爪位置: {gripper_pos:.3f} rad" if robot.has_gripper else ""),
+                      end="")
 
             step += 1
 
             # 控制循环频率
-            loop_time = time.time() - loop_start
+            loop_time = time.perf_counter() - loop_start
             if loop_time < dt:
                 time.sleep(dt - loop_time)
 
@@ -108,6 +147,8 @@ def main():
 
     # 返回中心位置
     print("\n\n返回中心位置...")
+    if robot.has_gripper:
+        move_gripper_to(gripper_center, gripper_move_velocity, gripper_max_torque)
     robot.Joint_Pos_Vel(center_pos, [0.5] * robot.motor_count, [10.0] * robot.motor_count, iswait=True)
     
     print("运动完成")
@@ -122,19 +163,18 @@ if __name__ == "__main__":
     # init_pos = [0.0, -1.0, -1.0, 0.0, 0.0, 0.0]
     init_pos = [-0.3, 1.1, 1.1, 0.2, -0.3, 0.0]
     vel = [0.5] * robot.motor_count
-    max_torque = [10.0] * robot.motor_count
     
-    success = robot.Joint_Pos_Vel(zero_pos, vel, max_torque, iswait=True)
+    success = robot.Joint_Pos_Vel(zero_pos, vel, robot.max_torque, iswait=True)
     time.sleep(3)
 
-    success = robot.Joint_Pos_Vel(init_pos, vel, max_torque, iswait=True)
+    success = robot.Joint_Pos_Vel(init_pos, vel, robot.max_torque, iswait=True)
     if success:
         print("到达初始位置")
         time.sleep(1)
 
     try:
         main()
-        success = robot.Joint_Pos_Vel(zero_pos, vel, max_torque, iswait=True)
+        success = robot.Joint_Pos_Vel(zero_pos, vel, robot.max_torque, iswait=True)
         time.sleep(2)
     except KeyboardInterrupt:
         # robot.set_stop()

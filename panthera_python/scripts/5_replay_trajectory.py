@@ -8,7 +8,7 @@ import numpy as np
 from Panthera_lib import Panthera, TrajectoryRecorder
 
 # ---------------- 参数区 ----------------
-TRAJECTORY_FILE = "trajectory_test_1.jsonl"  # scripts/trajectory 文件夹中的轨迹文件名
+TRAJECTORY_FILE = "trajectory_test1.jsonl"  # scripts/trajectory 文件夹中的轨迹文件名
 
 # 关节PD增益
 kp_play = [30.0, 40.0, 55.0, 15.0, 7.0, 5.0]        # 回放时刚度（可微调）

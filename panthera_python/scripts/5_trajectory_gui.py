@@ -31,6 +31,11 @@ PLAYBACK_SMOOTH_WINDOW = 7
 TRANSITION_LIMIT_SCALE = 1.1
 
 
+def display_positions(positions, gripper_pos=None):
+    """显示数据独立于六关节控制数组，夹爪作为可选的第七条曲线。"""
+    return list(positions) + ([] if gripper_pos is None else [gripper_pos])
+
+
 @lru_cache(maxsize=4)
 def load_transition_limits(path, modified_ns):
     """按配置版本缓存，避免重复读取 YAML；错误配置不回退到静默默认值。"""
@@ -822,7 +827,8 @@ class RobotWorker(QtCore.QThread):
                     )
                     next_record = now + 0.01
                 if now >= next_display:
-                    self.sample.emit(now - start, pos)
+                    self.sample.emit(now - start, display_positions(
+                        pos, gp if self.robot.has_gripper else None))
                     snapshot = {"pos": list(pos)}
                     if self.robot.has_gripper:
                         snapshot["gripper_pos"] = gp
@@ -864,7 +870,9 @@ class RobotWorker(QtCore.QThread):
             now = time.perf_counter()
             if now >= next_display or elapsed >= duration:
                 self.progress.emit(int(100*elapsed/max(duration+body_duration, 1e-9)), completed)
-                self.sample.emit(elapsed, list(self.robot.get_current_pos()))
+                pos, _, gp, _ = self.read_state()
+                self.sample.emit(elapsed, display_positions(
+                    pos, gp if self.robot.has_gripper else None))
                 next_display = now+.1
             if elapsed >= duration:
                 break
@@ -953,7 +961,8 @@ class RobotWorker(QtCore.QThread):
                 if now >= next_display or elapsed >= timestamps[-1]:
                     total = initial_duration+timestamps[-1]
                     self.progress.emit(int((initial_duration+elapsed)*100/total) if total else 100, completed)
-                    self.sample.emit(initial_duration+elapsed, list(frame["pos"]))
+                    self.sample.emit(initial_duration+elapsed, display_positions(
+                        frame["pos"], frame.get("gripper_pos")))
                     next_display = now + 0.1
                 if elapsed >= timestamps[-1]:
                     break
@@ -972,7 +981,8 @@ class RobotWorker(QtCore.QThread):
 
 class TrajectoryPlot(QtWidgets.QWidget):
     """使用 Qt 绘图，无额外绘图库依赖。"""
-    COLORS = ["#2563eb", "#dc2626", "#16a34a", "#9333ea", "#ea580c", "#0891b2"]
+    COLORS = ["#2563eb", "#dc2626", "#16a34a", "#9333ea", "#ea580c", "#0891b2", "#be185d"]
+    LABELS = ["J1", "J2", "J3", "J4", "J5", "J6", "夹爪"]
 
     def __init__(self):
         super().__init__()
@@ -985,14 +995,16 @@ class TrajectoryPlot(QtWidgets.QWidget):
     def set_frames(self, frames, stages=None):
         self.stages = stages or []
         step = max(1, len(frames) // 1500)
-        self.points = [(f["t"], f["pos"]) for f in frames[::step]]
+        self.points = [(f["t"], display_positions(f["pos"], f.get("gripper_pos")))
+                       for f in frames[::step]]
         if frames and self.points[-1][0] != frames[-1]["t"]:
-            self.points.append((frames[-1]["t"], frames[-1]["pos"]))
+            last = frames[-1]
+            self.points.append((last["t"], display_positions(last["pos"], last.get("gripper_pos"))))
         self.update()
 
     def append(self, timestamp, positions):
         self.stages = []
-        self.points.append((timestamp, positions))
+        self.points.append((timestamp, list(positions)))
         self.points = self.points[-1500:]
         self.update()
 
@@ -1014,10 +1026,11 @@ class TrajectoryPlot(QtWidgets.QWidget):
         self.stage_regions = []
         painter.setPen(QtGui.QColor("#64748b"))
         painter.drawRect(area)
-        painter.drawText(8, 20, "关节位置 (rad)")
-        for j, color in enumerate(self.COLORS):
+        painter.drawText(8, 20, "位置 (rad)")
+        channel_count = max((len(pos) for _, pos in self.points), default=6)
+        for j, color in enumerate(self.COLORS[:channel_count]):
             painter.setPen(QtGui.QColor(color))
-            painter.drawText(160 + j * 55, 20, f"J{j + 1}")
+            painter.drawText(160 + j * 55, 20, self.LABELS[j])
         if not self.points:
             painter.drawText(area, QtCore.Qt.AlignCenter, "选择轨迹预览，或开始记录")
             return
@@ -1046,15 +1059,20 @@ class TrajectoryPlot(QtWidgets.QWidget):
         painter.drawText(3, int(area.bottom()), f"{low:.2f}")
         painter.drawText(int(area.left()), self.height() - 8, f"{t0:.1f} s")
         painter.drawText(int(area.right()) - 70, self.height() - 8, f"{t1:.1f} s")
-        for j, color in enumerate(self.COLORS):
+        for j, color in enumerate(self.COLORS[:channel_count]):
             path = QtGui.QPainterPath()
-            for i, (t, pos) in enumerate(self.points):
+            connected = False
+            for t, pos in self.points:
+                if j >= len(pos):
+                    connected = False
+                    continue
                 x = area.left() + (t - t0) / max(t1 - t0, 0.001) * area.width()
                 y = area.bottom() - (pos[j] - low) / (high - low) * area.height()
-                if i == 0:
+                if not connected:
                     path.moveTo(x, y)
                 else:
                     path.lineTo(x, y)
+                connected = True
             painter.setPen(QtGui.QPen(QtGui.QColor(color), 1.5))
             painter.drawPath(path)
         painter.setPen(QtGui.QPen(QtGui.QColor("#64748b"), 1, QtCore.Qt.DashLine))
@@ -1388,7 +1406,7 @@ class TrajectoryWindow(QtWidgets.QWidget):
 
     def update_sample(self, timestamp, positions):
         self.live.setText(f"{timestamp:.2f} 秒  " + "  ".join(
-            f"J{i + 1}: {p:.3f}" for i, p in enumerate(positions)))
+            f"{TrajectoryPlot.LABELS[i]}: {p:.3f}" for i, p in enumerate(positions)))
         if self.mode == "record":
             self.plot.append(timestamp, positions)
 
